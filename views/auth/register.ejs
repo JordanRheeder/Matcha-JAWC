@@ -1,0 +1,57 @@
+<%- include('../includes/head.ejs') %>
+  <body>
+      <!-- Nav starts -->
+        <%- include('../includes/nav.ejs') %>
+            <header id="header" class="alt">
+            <div class="inner">
+                <div class="container" align='center'">  
+                <div class='form'> 
+                    <form action="/register" method="POST"> 
+                    <h1> Signup form </h1><br/>            
+                    <input class="box" type="text" name="fname" id="fname" 
+                    placeholder="First Name"  required /><br> 
+                                        
+                    <input class="box" type="text" name="sname" id="sname" 
+                    placeholder="Surname"  required /><br> 
+                                        
+                    <input class="box" type="email" name="email" id="email" 
+                    placeholder="E-Mail " required /><br> 
+                                        
+                    <input class="box" type="text" name="username" id="username" 
+                    placeholder="Username"  required /><br> 
+
+                    <input class="box" type="password" name="password" 
+                    id="password" placeholder="Password " required/>
+                    <h3>Sexuality</h3>
+                    <ul>
+                    <div>
+                    <li>
+                        <input type="radio" id="f-option" name="sexuality" value='Straight'>
+                        <label for="f-option" value='Straight'>Straight</label>
+                        <input type="radio" id="s-option" name="sexuality" value='Gay'>
+                        <label for="s-option" value='Gay'>Gay</label>
+                        <input type="radio" id="t-option" name="sexuality" value='Lesbian'>
+                        <label for="t-option" value='Lesbian'>Lesbian</label>
+                        <input type="radio" id="ft-option" name="sexuality" value='Bisexual'>
+                        <label for="ft-option" value='Bisexual'>Bisexual</label>
+                    </li>
+                    </div>
+                    </ul>
+                    <input class='button is-danger is-light' type="submit" id="submitDetails" name="submitDetails" value="Submit" /><br>        
+                    </form>   
+                    </div>                
+                </div>
+                </div>
+            </header>
+                    <!-- Wrapper -->
+                      <%- include('../includes/footer.ejs') %>
+                    <!-- Scripts -->
+                      <script src="assets/js/jquery.min.js"></script>
+                      <script src="assets/js/skel.min.js"></script>
+                      <script src="assets/js/util.js"></script>
+                      <script src="assets/js/main.js"></script>
+                  </body>
+                </html>
+  </section>
+  </body>
+</html>

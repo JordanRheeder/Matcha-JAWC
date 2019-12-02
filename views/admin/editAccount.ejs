@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Matcha</title>
+    <link rel="stylesheet" href="assets/css/account.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link rel="shortcut icon" type="image/jpg" href="../../outputDir/favicon.ico"/>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+      <!-- Nav starts -->
+        <%- include('../includes/nav.ejs') %>
+        <% if (messages.error) { %>
+            <%= locals.messages.error %>
+            <% } %>
+
+            <header id="header" class="alt">
+                <div style='position:absolute;left:32px;top:32px'>
+                    <figure class="image is-128x128" style="left:42px">
+
+                        <% if(files){ %>
+                            <% files.forEach(function(file) { %>
+                              <div class="card card-body mb-3">
+                                <% if(file.isImage) { %>
+                                  <img src="image/<%= file.filename %>" alt="">
+                                  <% } else { %>
+                                    <a href = "<%= file.filename %>" target = "_blank"><%= file.filename %></a>
+                                      <% } %>
+                                        <!-- <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
+                                          <button class="btn btn-danger btn-block mt-4">Delete</button>
+                                        </form> -->
+                              </div>
+                              <% }) %>
+                                <% } else { %>
+                                  <p>No files to show</p>
+                                  <% } %>
+                        <img class="is-rounded" src='' href='/editPP'></img>
+                    </figure><br/>
+                    
+                    <a class="button" href='/EditAccount'>Edit Account</a>
+                </div>
+
+                <!-- if button is pressed initialise code. look at ejs syntax -->
+                <div class="inner" style='top:-50px;'>
+                    <div class="container" align='center'">  
+                            <div class='form'> 
+                            <form action="/account" method="POST"><br/>   
+                                <h1> Edit Account </h1><br/>             
+                                <input class="box" type="text" name="email" id="email" 
+                                placeholder="E-Mail " required /><br> 
+                                <input class="box" type="text" name="fname" 
+                                id="fname" placeholder="First Name " required/><br>
+                                <input class="box" type="text" name="sname" 
+                                id="Surname" placeholder="Surname " required/><br> 
+                                <input class="box" type="password" name="password" 
+                                id="password" placeholder="Password " required/><br>
+                                <ul>
+                                        <div>
+                                        <li>
+                                            <input type="radio" id="f-option" name="sexuality" value='Straight'>
+                                            <label for="f-option" value='Straight'>Straight</label>
+                                            <input type="radio" id="s-option" name="sexuality" value='Gay'>
+                                            <label for="s-option" value='Gay'>Gay</label>
+                                            <input type="radio" id="t-option" name="sexuality" value='Lesbian'>
+                                            <label for="t-option" value='Lesbian'>Lesbian</label>
+                                            <input type="radio" id="ft-option" name="sexuality" value='Bisexual'>
+                                            <label for="ft-option" value='Bisexual'>Bisexual</label>
+                                        </li>
+                                        </div>
+                                        </ul>
+                                        <input class = 'button is-danger is-light'type="submit" id="submitDetails"
+                                            name="submitDetails" value="Save Changes" /><br> 
+                            </form>   
+                            
+                        </div>                
+                    </div>
+                </div>
+            </header>
+    <!-- Wrapper -->
+        <%- include('../includes/footer.ejs') %>
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/skel.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+    </body>
+</html>
+
+
+
+
+
+
+

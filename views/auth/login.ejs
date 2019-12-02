@@ -1,0 +1,50 @@
+<%- include('../includes/head.ejs') %>
+  <body>
+      <!-- Nav starts -->
+        <%- include('../includes/nav.ejs') %>
+            <style>
+            #className {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                max-width: 100%;
+                max-height: 100%;
+                margin: auto;
+                overflow: auto;
+            }</style>
+            <header id="header" class="alt">
+                <div class="inner">
+                    <div class="container" align='center'">  
+                        <div class='form'> 
+                            <form action="/login" method="POST"><br/>   
+                                <h1> Login </h1><br/>             
+                                <input class="box" type="email" name="email" id="email" 
+                                placeholder="E-Mail " required /><br> 
+                    
+                                <input class="box" type="password" name="password" 
+                                id="password" placeholder="Password " required/><br> 
+                    
+                                <input class = 'button is-danger is-light'type="submit" id="submitDetails"  
+                                name="submitDetails" value="Login" /><br> 
+                                        
+                                </form>   
+                        </div>                
+                    </div>
+                </div>
+            </header>
+    <!-- Wrapper -->
+        <%- include('../includes/footer.ejs') %>
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/skel.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+    </body>
+</html>
+
+
+
+
+
