@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const userSchema = new Schema({
+var userSchema = new Schema({
     firstname: String,
     lastname: String,
     email: {type: String, lowercase: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true, unique: true},
@@ -8,8 +8,6 @@ const userSchema = new Schema({
     password: String,
 	hash: String,
 	gender: String,
-    sexuality: String,
-    profileImage: { data: Buffer, contentType: String}
+    sexuality: String
 });
-
-mongoose.model('user', userSchema);
+module.exports = mongoose.model('user', userSchema);
