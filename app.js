@@ -36,7 +36,7 @@ var db=mongoose.connection;
 db.on('error', console.log.bind(console, "connection error")); 
 db.once('open', function(callback){
     gfs = Grid(db.db, mongoose.mongo);
-    gfs.collection('Images');
+    gfs.collection('images');
     console.log("connection succeeded"); 
 })
 var userSchema = mongoose.model('user');
@@ -97,10 +97,30 @@ app.get('/register', function(req,res){
     res.render('auth/register.ejs');
 })
 
-app.post('/register', (req,res) => {
-	var register = require('./controllers/register.js');
-	// import { register } from './controllers/register.js';
-	register.registerNewUser(req, res);
+app.post('/register', async (req,res) => {
+    var register = require('./controllers/register.js');
+    register.register(req, res);
+    // if we want to be lazy and not figure this shieeeeeeeeeeet out...
+	// try {
+	// 	// console.log(req.body.fname, req.body.sname, req.body.email, req.body.username, req.body.password, Date.now() + Math.random().toString(16).slice(2, 14), req.body.gender, req.body.sexuality);
+    //     const hashedPassword = await bcrypt.hash(req.body.password, 10);
+	// 	var datay = new userSchema({
+	// 		firstname: req.body.fname,
+	// 		lastname: req.body.sname,
+	// 		email: req.body.email,
+	// 		username: req.body.username,
+	// 		password: hashedPassword,
+	// 		hash: 123,
+	// 		gender: req.body.gender,
+	// 		sexuality: req.body.sexuality
+	// 	})
+	// 	db.collection('user').insertOne(datay, function (err, collection) {
+	// 		if (err) throw err;
+	// 		console.log("Record insterted successfully");
+	// 	});
+	// 	} catch {
+	// 		res.redirect('/');
+	// 	}
 })
 
 app.get('/account', (req, res, next) => {
@@ -112,9 +132,6 @@ app.get('/login', (req, res, next) => {
 })
 
 app.post('/login', async (req, res) => {
-// 
-// This also needs to be changed and work with SQL
-// 
     const email= req.body.email;
     const password = req.body.password;
     console.log({email, password});
@@ -132,7 +149,6 @@ app.post('/login', async (req, res) => {
                 req.session.user = user;
                 return res.redirect('/')
             } else {
-                // need to add a proper error message ... that is rendered on the page.
                 return res.status(400).json({ password: 'password incorrect' });
             }
         } catch (error) {
@@ -159,7 +175,7 @@ const storage = new GridFsStorage({
                 req.session.user.filename = filename;
                 const fileInfo = {
                     filename: filename,
-                    bucketName: 'Images'
+                    bucketName: 'images'
                 };
                 resolve(fileInfo);
             });
