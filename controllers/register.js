@@ -1,5 +1,6 @@
 const user = require("../models/user.js");
 const mongoose = require('mongoose');	
+const bcrypt = require('bcrypt');
 var uri = process.env.URI;
 mongoose.connect(uri, {
     useNewUrlParser: true,
@@ -7,16 +8,26 @@ mongoose.connect(uri, {
 }); 
 var db=mongoose.connection;
 
+function hash(password)
+{
+	return new Promise((resolve, reject) => {
+		bcrypt.hash(password, 10, (err, hash) => {
+			if (err)
+				reject(err)
+			resolve(hash)
+		});
+	})
+}
 module.exports = {
 	register: async function registerNewUser(req, res) {
 	try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+		let hashedpassword = await hash(req.body.password)
 		var data = new user({
 			firstname: req.body.fname,
 			lastname: req.body.sname,
 			email: req.body.email,
 			username: req.body.username,
-			password: hashedPassword,
+			password: hashedpassword,
 			hash: Date.now() + Math.random().toString(16).slice(2, 14),
 			gender: req.body.gender,
 			sexuality: req.body.sexuality
@@ -27,7 +38,7 @@ module.exports = {
 		});
 		} catch {
 			res.redirect('/');
-			console.log('error catch');
+			console.log(err.message);
 		}
 		console.log(data);
 	}
