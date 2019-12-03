@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 // Modules
 
 const express = require("express"); // creates the app
@@ -11,13 +14,36 @@ const bcrypt = require("bcrypt"); // using bcrypt because it can generate us a h
 //
 const passport = require("passport"); // Allows for different login/out strategies http://www.passportjs.org/
 const fs = require("fs");
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const mongoose = require('mongoose');
+const flash = require('express-flash');
+const methodOverride = require('method-override');
+
+
 // *****************
 
 // Models for our DB
-    //require('./models/user');
+    require('./models/user');
 //
+let gfs;
+var uri = process.env.URI;
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}); 
+var db=mongoose.connection;
+db.on('error', console.log.bind(console, "connection error")); 
+db.once('open', function(callback){
+    gfs = Grid(db.db, mongoose.mongo);
+    gfs.collection('Images');
+    console.log("connection succeeded"); 
+})
+var userSchema = mongoose.model('User');
+
 
 const app = express();
+app.use(methodOverride('_method'));
 app.use(session({
     secret: 'MatchyMatcha',
     resave: true,
@@ -75,31 +101,31 @@ app.post('/register', async (req,res) => {
     // 
 //  This needs to be changed to work with SQL
     // 
-    // try {
-    //     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    //     // Grabbing the inputs form data 
-    //     var data = new userSchema({
-    //         firstname: req.body.fname,
-    //         lastname: req.body.sname,
-    //         email: req.body.email,
-    //         username: req.body.username,
-    //         password: hashedPassword,
-    //         hash: Date.now() + Math.random().toString(16).slice(2, 14),
-    //         sexuality: req.body.sexuality,
-    //     })
-    //     exist = false;
-    //     if (!exist) {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        // Grabbing the inputs form data 
+        var data = new userSchema({
+            firstname: req.body.fname,
+            lastname: req.body.sname,
+            email: req.body.email,
+            username: req.body.username,
+            password: hashedPassword,
+            hash: Date.now() + Math.random().toString(16).slice(2, 14),
+            sexuality: req.body.sexuality,
+        })
+        exist = false;
+        if (!exist) {
 
-    //     }
-    //         db.collection('User').insertOne(data,function(err, collection){
-    //             if (err) throw err;
-    //             console.log("Record insterted successfully");
-    //         });
-    // } catch {
-    //     res.redirect('/register');
-    // }
-    // console.log(data);
-    // res.redirect('/login');
+        }
+            db.collection('User').insertOne(data,function(err, collection){
+                if (err) throw err;
+                console.log("Record insterted successfully");
+            });
+    } catch {
+        res.redirect('/register');
+    }
+    console.log(data);
+    res.redirect('/login');
 })
 
 app.get('/account', (req, res, next) => {
@@ -114,31 +140,31 @@ app.post('/login', async (req, res) => {
 // 
 // This also needs to be changed and work with SQL
 // 
-    // const email= req.body.email;
-    // const password = req.body.password;
-    // console.log({email, password});
-    // if (!email || !password) {
-    //     res.status(400).json({ message: 'No data provided' });
-    // } else {
-    //     const user = await db.collection('User').findOne({ email: email });
-    //     console.log(user);
-    //     if (!user) {
-    //         return res.status(404).json({ message: 'User not found' });
-    //     }
-    //     try {
-    //         isMatch = await bcrypt.compare(password, user.password);
-    //         if (isMatch) {
-    //             req.session.user = user;
-    //             return res.redirect('/')
-    //         } else {
-    //             // need to add a proper error message ... that is rendered on the page.
-    //             return res.status(400).json({ password: 'password incorrect' });
-    //         }
-    //     } catch (error) {
-    //         console.log(error)
-    //         return res.status(500).json({ error, message: 'Something went wrong' });
-    //     }
-    // }
+    const email= req.body.email;
+    const password = req.body.password;
+    console.log({email, password});
+    if (!email || !password) {
+        res.status(400).json({ message: 'No data provided' });
+    } else {
+        const user = await db.collection('User').findOne({ email: email });
+        console.log(user);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        try {
+            isMatch = await bcrypt.compare(password, user.password);
+            if (isMatch) {
+                req.session.user = user;
+                return res.redirect('/')
+            } else {
+                // need to add a proper error message ... that is rendered on the page.
+                return res.status(400).json({ password: 'password incorrect' });
+            }
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({ error, message: 'Something went wrong' });
+        }
+    }
 });
 
 app.get('/signOut', async (req, res,) => {
@@ -146,13 +172,92 @@ app.get('/signOut', async (req, res,) => {
     return res.redirect('/')
 });
 
+const storage = new GridFsStorage({
+    url: uri,
+    file: (req, file) => {
+        return new Promise((resolve, reject) => {
+            crypto.randomBytes(16, (err, buf)=> {
+                if (err) {
+                    return reject(err);
+                }
+                const filename = buf.toString('hex') + path.extname(file.originalname);
+                req.session.user.filename = filename;
+                const fileInfo = {
+                    filename: filename,
+                    bucketName: 'Images'
+                };
+                resolve(fileInfo);
+            });
+        });
+    }
+});
+
+const upload = multer({storage})
+
 app.get('/UploadPP', function(req, res){
     return res.render('admin/UploadPP.ejs');
 });
 
-// app.post('/UploadPP', upload.single('file'), (req, res) => {
-//     res.redirect('/EditAccount');
-// });
+app.post('/UploadPP', upload.single('file'), (req, res) => {
+    res.redirect('/EditAccount');
+});
+
+// render image to browser
+app.get('/EditAccount', (req, res) =>{
+    const fname = (req.session.user.filename);
+    gfs.files.find({ filename: fname }).toArray((err, files) => {
+        if (!files || files.length === 0) {
+            res.render('admin/editAccount.ejs', {files: false});
+        } else {
+            files.map(file => {
+                if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+                    console.log('true')
+                    file.isImage = true;
+                } else {
+                    console.log('false')
+                    file.isImage = false;
+                }
+                console.log('File exists')
+            });
+            res.render('admin/editAccount.ejs', {files: files})
+        }
+    })
+});
+
+app.get('/files/:filename', (req, res) => {
+    gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+      // Check if file
+      if (!file || file.length === 0) {
+        return res.status(404).json({
+          err: 'No file exists'
+        });
+      }
+      // If File exists this will get executed
+      const readstream = gfs.createReadStream(file.filename);
+      return readstream.pipe(res);
+    });
+  });
+
+  app.get('/image/:filename', (req, res) => {
+    gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+      // Check if the input is a valid image or not
+      if (!file || file.length === 0) {
+        return res.status(404).json({
+          err: 'No file exists'
+        });
+      }
+      // If the file exists then check whether it is an image
+      if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+        // Read output to browser
+        const readstream = gfs.createReadStream(file.filename);
+        readstream.pipe(res);
+      } else {
+        res.status(404).json({
+          err: 'Not an image'
+        });
+      }
+    });
+  });
 
 app.get('/chats', (req,res) => {
     return res.render('chats/chat.ejs');
