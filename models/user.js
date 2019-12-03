@@ -6,9 +6,10 @@ const userSchema = new Schema({
     email: {type: String, lowercase: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true, unique: true},
     username: String,
     password: String,
-    hash: String,
+	hash: String,
+	gender: String,
     sexuality: String,
     profileImage: { data: Buffer, contentType: String}
 });
 
-mongoose.model('User', userSchema);
+mongoose.model('user', userSchema);

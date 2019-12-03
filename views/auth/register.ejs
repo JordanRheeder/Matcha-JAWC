@@ -1,10 +1,11 @@
 <%- include('../includes/head.ejs') %>
-  <body>
-      <!-- Nav starts -->
+
+    <body>
+        <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
-            <div class="inner">
-                <div class="container" align='center'">  
+                <div class="inner">
+                    <div class="container" style="text-align:center">  
                 <div class='form'> 
                     <form action="/register" method="POST"> 
                     <h1> Signup form </h1><br/>            
@@ -15,27 +16,38 @@
                     placeholder="Surname"  required /><br> 
                                         
                     <input class="box" type="email" name="email" id="email" 
-                    placeholder="E-Mail " required /><br> 
+                    placeholder="E-Mail" required /><br> 
                                         
                     <input class="box" type="text" name="username" id="username" 
                     placeholder="Username"  required /><br> 
 
                     <input class="box" type="password" name="password" 
-                    id="password" placeholder="Password " required/>
-                    <h3>Sexuality</h3>
+                    id="password" placeholder="Password" required/>
+					<h3>Gender</h3>
                     <ul>
-                    <div>
-                    <li>
-                        <input type="radio" id="f-option" name="sexuality" value='Straight'>
-                        <label for="f-option" value='Straight'>Straight</label>
-                        <input type="radio" id="s-option" name="sexuality" value='Gay'>
-                        <label for="s-option" value='Gay'>Gay</label>
-                        <input type="radio" id="t-option" name="sexuality" value='Lesbian'>
-                        <label for="t-option" value='Lesbian'>Lesbian</label>
-                        <input type="radio" id="ft-option" name="sexuality" value='Bisexual'>
-                        <label for="ft-option" value='Bisexual'>Bisexual</label>
-                    </li>
-                    </div>
+						<div>
+							<li>
+								<input type="radio" id="f-option" name="gender" value='Male'>
+								<label for="f-option" value='Male'>Male</label>
+								<input type="radio" id="s-option" name="gender" value='Female'>
+								<label for="s-option" value='Female'>Female</label>
+								<input type="radio" id="t-option" name="gender" value='Other'>
+								<label for="t-option" value='Other'>Other</label>
+							</li>
+						</div>
+                    </ul>
+					<br><h3>Sexual Interest</h3>
+                    <ul>
+						<div>
+							<li>
+								<input type="radio" id="x-option" name="sexuality" value='Male'>
+								<label for="x-option" value='Male'>Male</label>
+								<input type="radio" id="y-option" name="sexuality" value='Female'>
+								<label for="y-option" value='Female'>Female</label>
+								<input type="radio" id="z-option" name="sexuality" value='Both'>
+								<label for="z-option" value='Both'>Both</label>
+							</li>
+						</div>
                     </ul>
                     <input class='button is-danger is-light' type="submit" id="submitDetails" name="submitDetails" value="Submit" /><br>        
                     </form>   

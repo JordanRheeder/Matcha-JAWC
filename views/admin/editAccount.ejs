@@ -24,7 +24,7 @@
                                 <% if(file.isImage) { %>
                                   <img src="image/<%= file.filename %>" alt="">
                                   <% } else { %>
-                                    <a href = "<%= file.filename %>" target = "_blank"><%= file.filename %></a>
+                                    <a href ="<%= file.filename %>" target ="_blank"><%= file.filename %></a>
                                       <% } %>
                                         <!-- <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
                                           <button class="btn btn-danger btn-block mt-4">Delete</button>
@@ -47,29 +47,27 @@
                             <form action="/account" method="POST"><br/>   
                                 <h1> Edit Account </h1><br/>             
                                 <input class="box" type="text" name="email" id="email" 
-                                placeholder="E-Mail " required /><br> 
+                                placeholder="E-Mail" ><br> 
                                 <input class="box" type="text" name="fname" 
-                                id="fname" placeholder="First Name " required/><br>
+                                id="fname" placeholder="First Name" ><br>
                                 <input class="box" type="text" name="sname" 
-                                id="Surname" placeholder="Surname " required/><br> 
+                                id="Surname" placeholder="Surname" ><br> 
                                 <input class="box" type="password" name="password" 
-                                id="password" placeholder="Password " required/><br>
+                                id="password" placeholder="Password" ><br>
                                 <ul>
                                         <div>
                                         <li>
                                             <input type="radio" id="f-option" name="sexuality" value='Straight'>
-                                            <label for="f-option" value='Straight'>Straight</label>
+                                            <label for="f-option" value='men'>Males</label>
                                             <input type="radio" id="s-option" name="sexuality" value='Gay'>
-                                            <label for="s-option" value='Gay'>Gay</label>
-                                            <input type="radio" id="t-option" name="sexuality" value='Lesbian'>
-                                            <label for="t-option" value='Lesbian'>Lesbian</label>
+                                            <label for="s-option" value='woman'>Female</label>
                                             <input type="radio" id="ft-option" name="sexuality" value='Bisexual'>
-                                            <label for="ft-option" value='Bisexual'>Bisexual</label>
+                                            <label for="ft-option" value='both'>Bisexual</label>
                                         </li>
                                         </div>
                                         </ul>
                                         <input class = 'button is-danger is-light'type="submit" id="submitDetails"
-                                            name="submitDetails" value="Save Changes" /><br> 
+                                            name="submitDetails" value="Save Changes"><br> 
                             </form>   
                             
                         </div>                

@@ -39,7 +39,7 @@ db.once('open', function(callback){
     gfs.collection('Images');
     console.log("connection succeeded"); 
 })
-var userSchema = mongoose.model('User');
+var userSchema = mongoose.model('user');
 
 
 const app = express();
@@ -73,7 +73,7 @@ app.use(function(req, res, next) {
 var initializePassport = require('./config/passport.js');
 initializePassport(
     passport,
-    email => db.collection('User').findOne({ email: email })
+    email => db.collection('user').findOne({ email: email })
 )
 
 //
@@ -97,35 +97,10 @@ app.get('/register', function(req,res){
     res.render('auth/register.ejs');
 })
 
-app.post('/register', async (req,res) => {
-    // 
-//  This needs to be changed to work with SQL
-    // 
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        // Grabbing the inputs form data 
-        var data = new userSchema({
-            firstname: req.body.fname,
-            lastname: req.body.sname,
-            email: req.body.email,
-            username: req.body.username,
-            password: hashedPassword,
-            hash: Date.now() + Math.random().toString(16).slice(2, 14),
-            sexuality: req.body.sexuality,
-        })
-        exist = false;
-        if (!exist) {
-
-        }
-            db.collection('User').insertOne(data,function(err, collection){
-                if (err) throw err;
-                console.log("Record insterted successfully");
-            });
-    } catch {
-        res.redirect('/register');
-    }
-    console.log(data);
-    res.redirect('/login');
+app.post('/register', (req,res) => {
+	var register = require('./controllers/register.js');
+	// import { register } from './controllers/register.js';
+	register.registerNewUser(req, res);
 })
 
 app.get('/account', (req, res, next) => {
@@ -146,7 +121,7 @@ app.post('/login', async (req, res) => {
     if (!email || !password) {
         res.status(400).json({ message: 'No data provided' });
     } else {
-        const user = await db.collection('User').findOne({ email: email });
+        const user = await db.collection('user').findOne({ email: email });
         console.log(user);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
