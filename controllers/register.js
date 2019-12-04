@@ -44,5 +44,6 @@ module.exports = {
 			console.log(err.message);
 		}
 		console.log(data);
+		res.redirect('/');
 	}
 }
