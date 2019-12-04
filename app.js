@@ -19,6 +19,7 @@ const Grid = require('gridfs-stream');
 const mongoose = require('mongoose');
 const flash = require('express-flash');
 const methodOverride = require('method-override');
+const path = require('path');
 
 
 // *****************
@@ -44,8 +45,9 @@ db.once('open', function(callback){
 
 const app = express();
 app.use(methodOverride('_method'));
+var secretKey = process.env.SESSION_SECRET;
 app.use(session({
-    secret: 'MatchyMatcha',
+    secret: secretKey,
     resave: true,
     saveUninitialized: false
 }));
@@ -103,7 +105,7 @@ app.post('/register', async (req,res) => {
 })
 
 app.get('/account', (req, res, next) => {
-    res.render('admin/account.ejs', {user: req.session.user.firstname});
+    res.render('admin/account.ejs', {user: req.session.user.firstname, filename: req.session});
 })
 
 app.get('/login', (req, res, next) => {
