@@ -39,7 +39,7 @@ db.once('open', function(callback){
     gfs.collection('images');
     console.log("connection succeeded"); 
 })
-var userSchema = mongoose.model('user');
+// var userSchema = mongoose.model('user');
 
 
 const app = express();
@@ -100,10 +100,11 @@ app.get('/register', function(req,res){
 app.post('/register', async (req,res) => {
     var register = require('./controllers/register.js');
     register.register(req, res);
+    res.render('auth/login.ejs');
 })
 
 app.get('/account', (req, res, next) => {
-    res.render('admin/account.ejs');
+    res.render('admin/account.ejs', {user: req.session.user.firstname});
 })
 
 app.get('/login', (req, res, next) => {
@@ -111,30 +112,9 @@ app.get('/login', (req, res, next) => {
 })
 
 app.post('/login', async (req, res) => {
-    const email= req.body.email;
-    const password = req.body.password;
-    console.log({email, password});
-    if (!email || !password) {
-        res.status(400).json({ message: 'No data provided' });
-    } else {
-        const user = await db.collection('user').findOne({ email: email });
-        console.log(user);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        try {
-            isMatch = await bcrypt.compare(password, user.password);
-            if (isMatch) {
-                req.session.user = user;
-                return res.redirect('/')
-            } else {
-                return res.status(400).json({ password: 'password incorrect' });
-            }
-        } catch (error) {
-            console.log(error)
-            return res.status(500).json({ error, message: 'Something went wrong' });
-        }
-    }
+    var login = require('./controllers/login.js');
+    login.login(req, res);
+    res.render('/');
 });
 
 app.get('/signOut', async (req, res,) => {

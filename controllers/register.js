@@ -20,12 +20,10 @@ function hash(password)
 	})
 }
 
-
 module.exports = {
 	register: async function registerNewUser(req, res) {
 	try {
 		let hashedpassword = await hash(req.body.password)
-		
 		var data = new user({
 			firstname: req.body.fname,
 			lastname: req.body.sname,
@@ -34,7 +32,8 @@ module.exports = {
 			password: hashedpassword,
 			hash: Date.now() + Math.random().toString(16).slice(2, 14),
 			gender: req.body.gender,
-			sexuality: req.body.sexuality
+			sexuality: req.body.sexuality,
+			profilepicture: req.body.profilepicture
 		});
 		db.collection('user').insertOne(data, function (err, collection) {
 			if (err) throw err;
@@ -42,8 +41,7 @@ module.exports = {
 		});
 		} catch(err) {
 			res.redirect('/');
-			console.log('error catch');
-			console.log(err.message)
+			console.log(err.message);
 		}
 		console.log(data);
 	}

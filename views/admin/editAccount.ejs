@@ -26,9 +26,6 @@
                                   <% } else { %>
                                     <a href ="<%= file.filename %>" target ="_blank"><%= file.filename %></a>
                                       <% } %>
-                                        <!-- <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
-                                          <button class="btn btn-danger btn-block mt-4">Delete</button>
-                                        </form> -->
                               </div>
                               <% }) %>
                                 <% } else { %>
@@ -77,12 +74,7 @@
     <!-- Wrapper -->
         <%- include('../includes/footer.ejs') %>
     <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/skel.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-    </body>
-</html>
+    <%- include('../includes/end.ejs') %>
 
 
 
