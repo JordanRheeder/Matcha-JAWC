@@ -32,18 +32,19 @@ module.exports = {
 			password: hashedpassword,
 			hash: Date.now() + Math.random().toString(16).slice(2, 14),
 			gender: req.body.gender,
-			sexuality: req.body.sexuality,
-			profilepicture: req.body.profilepicture
+			pp: '',
+			sexuality: req.body.sexuality
 		});
-		db.collection('user').insertOne(data, function (err, collection) {
-			if (err) throw err;
-			console.log("Record insterted successfully");
+			db.collection('user').insertOne(data, function (err, collection) {
+				if (err) throw err;
+				
+				else {
+					console.log("Record insterted successfully");
+					console.log(data);	
+				}
 		});
 		} catch(err) {
-			res.redirect('/');
 			console.log(err.message);
 		}
-		console.log(data);
-		res.redirect('/');
 	}
 }
