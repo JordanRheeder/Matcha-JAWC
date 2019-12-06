@@ -9,6 +9,6 @@ var userSchema = new Schema({
 	hash: {type: String, trim:true, required: [true, "can't be blank"]},
     gender: {type: String, trim:true, required: [true, "can't be blank"]},
     sexuality: {type: String, trim:true, required: [true, "can't be blank"]},
-    pp: {type: String, default: '', required: false}
+    pp: {type: String, default: '', required: false, trim: true}
 });
 module.exports = mongoose.model('user', userSchema);
