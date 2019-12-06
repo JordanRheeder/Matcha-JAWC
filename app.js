@@ -114,9 +114,9 @@ app.get('/login', (req, res, next) => {
 })
 
 app.post('/login', async (req, res) => {
-    var login = require('./controllers/login.js');
-    login.login(req, res);
-    res.render('/');
+	var login = require('./controllers/login.js');
+	await login.login(req, res);
+	// res.render('/');
 });
 
 app.get('/signOut', async (req, res,) => {
@@ -156,24 +156,28 @@ app.post('/UploadPP', upload.single('file'), (req, res) => {
 
 // render image to browser
 app.get('/EditAccount', (req, res) =>{
+	var edit = require('./controllers/editaccount.js');
+	edit.edit(req, res);
+	
+	// Can we move the following lines of code to the back end?
     const fname = (req.session.user.filename);
     gfs.files.find({ filename: fname }).toArray((err, files) => {
-        if (!files || files.length === 0) {
-            res.render('admin/editAccount.ejs', {files: false});
+		if (!files || files.length === 0) {
+			res.render('admin/editAccount.ejs', {files: false});
         } else {
-            files.map(file => {
-                if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-                    console.log('true')
+			files.map(file => {
+				if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+					console.log('true')
                     file.isImage = true;
                 } else {
-                    console.log('false')
+					console.log('false')
                     file.isImage = false;
                 }
                 console.log('File exists')
             });
             res.render('admin/editAccount.ejs', {files: files})
         }
-    })
+	})
 });
 
 app.get('/files/:filename', (req, res) => {

@@ -11,15 +11,16 @@ var db=mongoose.connection;
 
 module.exports = {
 	login: async function loginUser(req, res) {
-		console.log("asdf");
 		const email= req.body.email;
 		const password = req.body.password;
-		console.log({email, password});
+		// console.log({email, password});
 		if (!email || !password) {
 			res.status(400).json({ message: 'No data provided' });
 		} else {
 			const user = await db.collection('user').findOne({ email: email });
-			console.log(user);
+			// console.log("\n");
+			// console.log(user);
+			// console.log("\nUser logged in successfully.\n");
 			if (!user) {
 				return res.status(404).json({ message: 'User not found' });
 			}
@@ -32,7 +33,7 @@ module.exports = {
 					return res.status(400).json({ password: 'password incorrect' });
 				}
 			} catch (error) {
-				console.log(error)
+				console.log("==========" + error + "==========")
 				return res.status(500).json({ error, message: 'Something went wrong' });
 			}
 		}
