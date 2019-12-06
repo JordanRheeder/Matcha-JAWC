@@ -92,11 +92,11 @@ app.get('/', (req, res) => {
     res.set({
         'Access-control-Allow-Origin': '*'
     });
-    return res.render('generic/index.ejs');
+    return res.render('generic/index.ejs', {title: 'Matcha'});
 }).listen(3000)
 
 app.get('/register', function(req,res){
-    res.render('auth/register.ejs');
+    res.render('auth/register.ejs', {title: 'Register'});
 })
 
 app.post('/register', async (req,res) => {
@@ -106,11 +106,11 @@ app.post('/register', async (req,res) => {
 })
 
 app.get('/account', (req, res, next) => {
-    res.render('admin/account.ejs', {user: req.session.user.firstname, filename: req.session});
+    res.render('admin/account.ejs', {user: req.session.user.firstname, filename: req.session.filename, title: 'Account'});
 })
 
 app.get('/login', (req, res, next) => {
-    res.render('auth/login.ejs');
+    res.render('auth/login.ejs', {title: 'Login'});
 })
 
 app.post('/login', async (req, res) => {
@@ -147,7 +147,7 @@ const storage = new GridFsStorage({
 const upload = multer({storage})
 
 app.get('/UploadPP', function(req, res){
-    return res.render('admin/UploadPP.ejs');
+    return res.render('admin/UploadPP.ejs', {title: 'Upload'});
 });
 
 app.post('/UploadPP', upload.single('file'), (req, res) => {
@@ -175,7 +175,7 @@ app.get('/EditAccount', (req, res) =>{
                 }
                 console.log('File exists')
             });
-            res.render('admin/editAccount.ejs', {files: files})
+            res.render('admin/editAccount.ejs', {files: files, title: 'Account'})
         }
 	})
 });
@@ -216,7 +216,7 @@ app.get('/files/:filename', (req, res) => {
   });
 
 app.get('/chats', (req,res) => {
-    return res.render('chats/chat.ejs');
+    return res.render('chats/chat.ejs', {title: 'Chats'});
 })
 
 console.log("Started: Now listening on P-3000");
