@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 // Modules
+// 'use strict';
 
 const express = require("express"); // creates the app
 // const flash = require("express-flash"); // define a flash message and render it without redirecting the request.
@@ -20,6 +21,8 @@ const mongoose = require('mongoose');
 const flash = require('express-flash');
 const methodOverride = require('method-override');
 const path = require('path');
+var sessionStorage = require('sessionstorage');
+const ls = require('local-storage');
 
 
 // *****************
@@ -107,7 +110,7 @@ app.post('/register', async (req,res) => {
 })
 
 app.get('/account', (req, res, next) => {
-    res.render('admin/account.ejs', {user: req.session.user.firstname, filename: req.session.filename, title: 'Account'});
+    res.render('admin/account.ejs', {user: req.session.user.firstname, filename: ls.get('PP'), title: 'Account'});
 })
 
 app.get('/login', (req, res, next) => {
@@ -125,6 +128,7 @@ app.get('/signOut', async (req, res,) => {
     return res.redirect('/')
 });
 
+
 const storage = new GridFsStorage({
     url: uri,
     file: (req, file) => {
@@ -134,54 +138,22 @@ const storage = new GridFsStorage({
                     return reject(err);
                 }
                 const filename = buf.toString('hex') + path.extname(file.originalname);
-                req.session.user.filename = filename;
-            //     db.collection('user').findOneAndUpdate({
-            //         _id: req.session.user._id,
-            //         profilepicture: filename
-            //     }, {$set: {profilepicture: filename}}, function (err, result) {
-
-            //         //Error handling
-            //         if (err) {
-            //            return res.status(500).send('Something broke!');
-            //         }
-            
-            //        //Send response based on the required
-            //         if (result.hasOwnProperty("value") && 
-            //           result.value !== null) {
-            //              res.send(true);
-            //         } else {
-            //              res.send(false);
-            //         }
-            //    });
-
-            const fileInfo = {
-                filename: filename,
-                bucketName: 'images'
-            };
-            console.log(req.session.user._id + "\n" + req.params._id + '\n' + req.params.id);
-            console.log(filename);
-            // var id = toString(req.session.user._id);
-            db.collection('user').findOneAndDelete({ firstname: 'Jordan', hash: '157562476209335a1a7345fc2'}, function(err, user){
-                if(err) throw(err);
-                console.log('logtest');
-                // else res.json('Successfully removed');
-              });
-                // // { $set: { pp: filename }}
-                // function (err,result) {
-                //     //Error handling
-                //     if (err) {
-                //         console.log(err.message);
-                //     }
-                //     else {
-                //         console.log(result);
-                //     }
-                // });
+                // req.session.user.filename = filename;
+                const fileInfo = {
+                    filename: filename,
+                    bucketName: 'images'
+                };
+                ls.set('PP', filename);
+                db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { pp: filename } }); {  
+                    if (err) throw(err);
+                };
+                let j = ls.get('PP');
+                console.log(j + "\n 321");
                 resolve(fileInfo);
             });
         });
     }
 });
-
 const upload = multer({storage})
 
 app.get('/UploadPP', function(req, res){
@@ -194,7 +166,8 @@ app.post('/UploadPP', upload.single('file'), (req, res) => {
 
 // render image to browser
 app.get('/EditAccount', (req, res) =>{
-    const fname = (req.session.user.filename);
+    const fname = ls.get('PP');
+    console.log("EditAcc\t" + fname);
     gfs.files.find({ filename: fname }).toArray((err, files) => {
         if (!files || files.length === 0) {
             res.render('admin/editAccount.ejs', {files: false, title: 'Account'});
