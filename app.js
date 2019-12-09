@@ -25,13 +25,14 @@ const path = require('path');
 // *****************
 
 // Models for our DB
-    require('./models/user');
+    const user2 = require('./models/user');
 //
 let gfs;
 var uri = process.env.URI;
 mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    useFindAndModify: false 
 }); 
 var db=mongoose.connection;
 db.on('error', console.log.bind(console, "connection error")); 
@@ -102,7 +103,7 @@ app.get('/register', function(req,res){
 app.post('/register', async (req,res) => {
     var register = require('./controllers/register.js');
     register.register(req, res);
-    res.render('auth/login.ejs');
+    res.render('auth/login.ejs', {title: 'Login'});
 })
 
 app.get('/account', (req, res, next) => {
@@ -116,7 +117,7 @@ app.get('/login', (req, res, next) => {
 app.post('/login', async (req, res) => {
     var login = require('./controllers/login.js');
     login.login(req, res);
-    res.render('/');
+    // res.render('generic/index.ejs', {title: 'Matcha'});
 });
 
 app.get('/signOut', async (req, res,) => {
@@ -134,10 +135,47 @@ const storage = new GridFsStorage({
                 }
                 const filename = buf.toString('hex') + path.extname(file.originalname);
                 req.session.user.filename = filename;
-                const fileInfo = {
-                    filename: filename,
-                    bucketName: 'images'
-                };
+            //     db.collection('user').findOneAndUpdate({
+            //         _id: req.session.user._id,
+            //         profilepicture: filename
+            //     }, {$set: {profilepicture: filename}}, function (err, result) {
+
+            //         //Error handling
+            //         if (err) {
+            //            return res.status(500).send('Something broke!');
+            //         }
+            
+            //        //Send response based on the required
+            //         if (result.hasOwnProperty("value") && 
+            //           result.value !== null) {
+            //              res.send(true);
+            //         } else {
+            //              res.send(false);
+            //         }
+            //    });
+
+            const fileInfo = {
+                filename: filename,
+                bucketName: 'images'
+            };
+            console.log(req.session.user._id + "\n" + req.params._id + '\n' + req.params.id);
+            console.log(filename);
+            // var id = toString(req.session.user._id);
+            db.collection('user').findOneAndDelete({ firstname: 'Jordan', hash: '157562476209335a1a7345fc2'}, function(err, user){
+                if(err) throw(err);
+                console.log('logtest');
+                // else res.json('Successfully removed');
+              });
+                // // { $set: { pp: filename }}
+                // function (err,result) {
+                //     //Error handling
+                //     if (err) {
+                //         console.log(err.message);
+                //     }
+                //     else {
+                //         console.log(result);
+                //     }
+                // });
                 resolve(fileInfo);
             });
         });
@@ -159,7 +197,7 @@ app.get('/EditAccount', (req, res) =>{
     const fname = (req.session.user.filename);
     gfs.files.find({ filename: fname }).toArray((err, files) => {
         if (!files || files.length === 0) {
-            res.render('admin/editAccount.ejs', {files: false});
+            res.render('admin/editAccount.ejs', {files: false, title: 'Account'});
         } else {
             files.map(file => {
                 if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {

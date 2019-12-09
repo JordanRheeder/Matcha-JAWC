@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 var userSchema = new Schema({
-    firstname: String,
-    lastname: String,
-    email: {type: String, lowercase: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true, unique: true},
-    username: String,
-    password: String,
-	hash: String,
-	gender: String,
-	sexuality: String,
-	profilepicture: String
+    firstname: {type: String, trim:true, required: [true, "can't be blank"]},
+    lastname: {type: String, trim:true, required: [true, "can't be blank"]},
+    email: {type: String, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true, unique: true, trim: true},
+    username: {type: String, trim:true, required: [true, "can't be blank"]},
+    password: {type: String, trim:true, required: [true, "can't be blank"]},
+	hash: {type: String, trim:true, required: [true, "can't be blank"]},
+    gender: {type: String, trim:true, required: [true, "can't be blank"]},
+    sexuality: {type: String, trim:true, required: [true, "can't be blank"]},
+    pp: {type: String, default: '', required: false, trim: true}
 });
 module.exports = mongoose.model('user', userSchema);
