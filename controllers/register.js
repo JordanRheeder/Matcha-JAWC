@@ -11,24 +11,27 @@ var db=mongoose.connection;
 
 module.exports = {
 	register: async function registerNewUser(req, res) {
-		try {
-			let hashedpassword = await hash(req.body.password)
-			var data = new user({
-				firstname: req.body.fname,
-				lastname: req.body.sname,
-				email: req.body.email,
-				username: req.body.username,
-				password: hashedpassword,
-				hash: Date.now() + Math.random().toString(16).slice(2, 14),
-				gender: req.body.gender,
-				sexuality: req.body.sexuality,
-				profilepicture: req.body.profilepicture
-			});
+	try {
+		let hashedpassword = await hash(req.body.password)
+		var data = new user({
+			firstname: req.body.fname,
+			lastname: req.body.sname,
+			email: req.body.email,
+			username: req.body.username,
+			password: hashedpassword,
+			hash: Date.now() + Math.random().toString(16).slice(2, 14),
+			gender: req.body.gender,
+			sexuality: req.body.sexuality,
+			pp: '',
+		});
 			db.collection('user').insertOne(data, function (err, collection) {
-			console.log("Record insterted successfully");
-			});
+				if (err) throw err;
+				else {
+					console.log("Record insterted successfully");
+					console.log(data);	
+				}
+		});
 		} catch(err) {
-			res.redirect('/');
 			console.log(err.message);
 		}
 		console.log(data);

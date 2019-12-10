@@ -19,12 +19,12 @@
                     <figure class="image is-128x128" style="left:42px">
 
                         <% if(files){ %>
-                            <% files.forEach(function(file) { %>
+                            <% files.forEach(function(files) { %>
                               <div class="card card-body mb-3">
-                                <% if(file.isImage) { %>
-                                  <img src="image/<%= file.filename %>" alt="">
+                                <% if(files.isImage) { %>
+                                  <img src="image/<%= files.filename %>" alt="">
                                   <% } else { %>
-                                    <a href ="<%= file.filename %>" target ="_blank"><%= file.filename %></a>
+                                    <a href ="<%= files.filename %>" target ="_blank"><%= files.filename %></a>
                                       <% } %>
                               </div>
                               <% }) %>
