@@ -21,7 +21,7 @@ module.exports = {
 			password: hashedpassword,
 			hash: Date.now() + Math.random().toString(16).slice(2, 14),
 			gender: req.body.gender,
-			sexuality: req.body.sexuality,
+			interest: req.body.interest,
 			pp: '',
 		});
 			db.collection('user').insertOne(data, function (err, collection) {

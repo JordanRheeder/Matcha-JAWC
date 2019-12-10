@@ -120,14 +120,20 @@ app.get('/login', (req, res, next) => {
 app.post('/login', async (req, res) => {
 	var login = require('./controllers/login.js');
 	await login.login(req, res);
-	// res.render('/');
+});
+
+app.get('/forgotPassword', (req, res) => {
+	res.render('auth/forgotPassword.ejs');
+});
+
+app.post('/forgotPassword', (req, res) => {
+	
 });
 
 app.get('/signOut', async (req, res,) => {
     req.session.user = null;
     return res.redirect('/')
 });
-
 
 const storage = new GridFsStorage({
     url: uri,
