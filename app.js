@@ -154,10 +154,13 @@ app.post('/UploadPP', upload.single('file'), (req, res) => {
     res.redirect('/EditAccount');
 });
 
+app.post('/EditAccount', function (req, res) {
+	var editAccount = require('./controllers/editaccount.js');
+	editAccount.editAccount(req, res);
+});
+
 // render image to browser
 app.get('/EditAccount', (req, res) =>{
-	var edit = require('./controllers/editaccount.js');
-	edit.edit(req, res);
 	
 	// Can we move the following lines of code to the back end?
     const fname = (req.session.user.filename);

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><%= title %></title>
+    <title>Account</title>
     <link rel="stylesheet" href="assets/css/account.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="shortcut icon" type="image/jpg" href="../../outputDir/favicon.ico"/>
@@ -40,31 +40,49 @@
                 <div class="inner" style='top:-50px;'>
                     <div class="container" style="text-align:center">
                             <div class='form'>
-								<form action="/account" method="POST"><br/>
+							<form action="/EditAccount" method="post"><br/>
 								<h1>Edit Account </h1><br/>
 								<p>Only edit fields that you want to change. </p><br><p>Password is required to validate the changes.</p><br>
+                                <input class="box" type="text" name="firstname" 
+                                id="firstname" placeholder="First Name" ><br>
+                                <input class="box" type="text" name="lastname" 
+                                id="lastname" placeholder="Last Name" ><br>
 								<input class="box" type="text" name="email" id="email" 
                                 placeholder="E-Mail" ><br>
-                                <input class="box" type="text" name="fname" 
-                                id="fname" placeholder="First Name" ><br>
-                                <input class="box" type="text" name="sname" 
-                                id="Surname" placeholder="Surname" ><br>
-                                <input class="box" type="password" name="password" 
-                                id="password" placeholder="Current Password" required><br>
-                                <ul>
+                                <input class="box" type="text" name="username" 
+                                id="username" placeholder="User Name" ><br>
+								<!-- <input class="box" type="password" name="password" 
+                                id="password" placeholder="New Password" required><br> -->
+                                <input class="box" type="password" name="currentpassword" 
+                                id="currentpassword" placeholder="Current Password" required><br>
+								<h2>Gender</h2>
+								<ul>
 									<div>
 										<li>
-											<input type="radio" id="f-option" name="sexuality" value='Straight'>
-											<label for="f-option" value='men'>Males</label>
-											<input type="radio" id="s-option" name="sexuality" value='Gay'>
-											<label for="s-option" value='woman'>Female</label>
-											<input type="radio" id="ft-option" name="sexuality" value='Bisexual'>
-											<label for="ft-option" value='both'>Bisexual</label>
+											<input type="radio" id="f-option" name="gender" value='Male'>
+											<label for="f-option" value='Male'>Male</label>
+											<input type="radio" id="s-option" name="gender" value='Female'>
+											<label for="s-option" value='Female'>Female</label>
+											<input type="radio" id="t-option" name="gender" value='Other'>
+											<label for="t-option" value='Other'>Other</label>
 										</li>
 									</div>
 								</ul>
-								<input class = 'button is-danger is-light'type="submit" id="submitDetails"
-									name="submitDetails" value="Save Changes"><br>
+								<h2>Sexual Interest</h2>
+								<ul>
+									<div>
+										<li>
+											<input type="radio" id="x-option" name="sexuality" value='Male'>
+											<label for="x-option" value='Male'>Male</label>
+											<input type="radio" id="y-option" name="sexuality" value='Female'>
+											<label for="y-option" value='Female'>Female</label>
+											<input type="radio" id="z-option" name="sexuality" value='Both'>
+											<label for="z-option" value='Both'>Both</label>
+										</li>
+									</div>
+								</ul>
+								<button class='button is-danger is-light' type="submit" id="submitDetails"
+								name="submitDetails" value="Save Changes">Submit</button>
                             </form>
                         </div>
                     </div>
