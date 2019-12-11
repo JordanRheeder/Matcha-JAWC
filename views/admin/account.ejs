@@ -15,10 +15,24 @@
             <header id="header" class="alt">
                 <h2>Hello, <%= user %></h2>
                 <div style='position:absolute;left:32px;top:32px'>
-                        <figure class="image is-128x128" style="left:42px">
-                        <a href="/UploadPP"><img class="is-rounded" src='https://bulma.io/images/placeholders/128x128.png'></a>
+                    <figure class="image is-128x128 is-rounded" style="left:42px">
+                        <% if(files){ %>
+                            <% files.forEach(function(files) { %>
+                              <div class="card card-body mb-3">
+                                <% if(files.isImage) { %>
+                                  <img src="image/<%= files.filename %>" alt="">
+                                  <% } else { %>
+                                    <a href ="<%= files.filename %>" target ="_blank"><%= files.filename %></a>
+                                      <% } %>
+                              </div>
+                              <% }) %>
+                                <% } else { %>
+                                  <p><a href='/UploadPP'>Upload a Profile Picture</a></p>
+                                  <% } %>
+                        <img class="is-rounded" src='' href='/editPP'></img>
                     </figure><br/>
-                    <a class="button" href='/editprofile'>Edit Profile</a>
+                    
+                    <a class="button" href='/editprofile'>Edit Profile</a>  
                 </div>
 
                 <!-- if button is pressed initialise code. look at ejs syntax -->
