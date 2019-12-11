@@ -23,6 +23,12 @@ module.exports = {
 			if (!user) {
 				res.status(404).json({ message: 'User not found' });
 			}
+			if (user.verified === false)
+			{
+				return res.status(400).json({ verified: "Please verify your account." });
+				// res.redirect('/login');
+				// return res.redirect('/');
+			}
 			try {
 				isMatch = await bcrypt.compare(password, user.password);
 				if (isMatch) {
