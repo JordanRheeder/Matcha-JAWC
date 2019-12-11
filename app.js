@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 // 'use strict';
 
 const express = require("express"); // creates the app
+    // mailer = require('express-mailer');
 // const flash = require("express-flash"); // define a flash message and render it without redirecting the request.
 const session = require("express-session"); // self-explanatory
 const bodyParser = require("body-parser"); // https://www.npmjs.com/package/body-parser (This is where you get form data from the browser by using the 'req.body' property)
@@ -23,7 +24,7 @@ const methodOverride = require('method-override');
 const path = require('path');
 var sessionStorage = require('sessionstorage');
 const ls = require('local-storage');
-
+const nodemailer = require('nodemailer')
 
 // *****************
 
@@ -58,7 +59,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json()); 
-app.use(express.static('public')); 
+app.use(express.static('public')); //Why?
 app.use(bodyParser.urlencoded({ 
     extended: true
 }));
@@ -109,9 +110,40 @@ app.post('/register', async (req,res) => {
     res.render('auth/login.ejs', {title: 'Login'});
 })
 
-app.get('/profile', (req, res, next) => {
-    res.render('admin/account.ejs', {user: req.session.user.firstname, filename: ls.get('PP'), title: 'Profile'});
+app.get('/verify/:key', async (req, res) => {
+    console.log({key: req.params.key});
+    var verifyUser = require('./controllers/verifyUser.js')
+    verifyUser.verify(req, res);
+    res.render('admin/verify.ejs', {title: 'Verification'})
 })
+
+app.get('/profile', (req, res, next) => {
+    const filename0 = ls.get('PP');
+    console.log('Filename: \t' + ls.get('PP'));
+
+    gfs.files.find({ filename: filename0 }).toArray((err, files) => {
+        if (!files || files.length === 0) {
+            console.log('no file found...\n');
+            res.render('admin/account.ejs', {user: req.session.user.firstname, files: false, title: 'Profile'});
+        } else {
+            files.map(file => {
+                if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+                    console.log('true')
+                    file.isImage = true;
+                } else {
+                    console.log('false')
+                    file.isImage = false;
+                }
+                console.log('File exists')
+            });
+            // res.render('admin/editAccount.ejs', {files: files, title: 'Profile'})
+            console.log('Filename: \t' + ls.get('PP'));
+            res.render('admin/account.ejs', {user: req.session.user.firstname, filename: ls.get('PP'), files: files, title: 'Profile'});
+        }
+    })
+});
+
+
 
 app.get('/login', (req, res, next) => {
     res.render('auth/login.ejs', {title: 'Login'});
