@@ -27,8 +27,8 @@ const ls = require('local-storage');
 
 // *****************
 
-// Models for our DB
-    const user2 = require('./models/user');
+// Models for our DB Can remo
+    const user = require('./models/user');
 //
 let gfs;
 var uri = process.env.URI;
@@ -109,8 +109,8 @@ app.post('/register', async (req,res) => {
     res.render('auth/login.ejs', {title: 'Login'});
 })
 
-app.get('/account', (req, res, next) => {
-    res.render('admin/account.ejs', {user: req.session.user.firstname, filename: ls.get('PP'), title: 'Account'});
+app.get('/profile', (req, res, next) => {
+    res.render('admin/account.ejs', {user: req.session.user.firstname, filename: ls.get('PP'), title: 'Profile'});
 })
 
 app.get('/login', (req, res, next) => {
@@ -138,7 +138,6 @@ const storage = new GridFsStorage({
                     return reject(err);
                 }
                 const filename = buf.toString('hex') + path.extname(file.originalname);
-                // req.session.user.filename = filename;
                 const fileInfo = {
                     filename: filename,
                     bucketName: 'images'
@@ -147,8 +146,6 @@ const storage = new GridFsStorage({
                 db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { pp: filename } }); {  
                     if (err) throw(err);
                 };
-                let j = ls.get('PP');
-                console.log(j + "\n 321");
                 resolve(fileInfo);
             });
         });
@@ -161,16 +158,15 @@ app.get('/UploadPP', function(req, res){
 });
 
 app.post('/UploadPP', upload.single('file'), (req, res) => {
-    res.redirect('/EditAccount');
+    res.redirect('/editprofile');
 });
 
 // render image to browser
-app.get('/EditAccount', (req, res) =>{
+app.get('/editprofile', (req, res) =>{
     const fname = ls.get('PP');
-    console.log("EditAcc\t" + fname);
     gfs.files.find({ filename: fname }).toArray((err, files) => {
         if (!files || files.length === 0) {
-            res.render('admin/editAccount.ejs', {files: false, title: 'Account'});
+            res.render('admin/editAccount.ejs', {files: false, title: 'Profile'});
         } else {
             files.map(file => {
                 if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
@@ -182,7 +178,7 @@ app.get('/EditAccount', (req, res) =>{
                 }
                 console.log('File exists')
             });
-            res.render('admin/editAccount.ejs', {files: files, title: 'Account'})
+            res.render('admin/editAccount.ejs', {files: files, title: 'Profile'})
         }
     })
 });
