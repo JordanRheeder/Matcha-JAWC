@@ -16,8 +16,7 @@
 
             <header id="header" class="alt">
                 <div style='position:absolute;left:32px;top:32px'>
-                    <figure class="image is-128x128" style="left:42px">
-
+                    <figure class="image is-128x128 is-rounded" style="left:42px">
                         <% if(files){ %>
                             <% files.forEach(function(files) { %>
                               <div class="card card-body mb-3">
@@ -29,7 +28,7 @@
                               </div>
                               <% }) %>
                                 <% } else { %>
-                                  <p>No files to show</p>
+                                  <p><a href='/UploadPP'>Upload a Profile Picture</a></p>
                                   <% } %>
                         <img class="is-rounded" src='' href='/editPP'></img>
                     </figure><br/>
