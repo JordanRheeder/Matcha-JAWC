@@ -37,7 +37,15 @@ module.exports = {
 			gender: req.body.gender,
 			sexuality: req.body.sexuality,
 			pp: '',
+			age: req.body.age
 		});
+		if (data.age < 18) {
+			return res.render('auth/register.ejs', {title: 'Register', message: 'You need to be older than 18'})
+			// stop();
+		}
+		if (data.age > 100) {
+			return res.render('auth/register.ejs', {title: 'Register', message: 'Invalid age'})
+		}
 		let transporter = nodemailer.createTransport({
 			service: 'gmail',
 			host: 'smtp.gmail.com',
@@ -65,5 +73,6 @@ module.exports = {
 		} catch(err) {
 			console.log(err.message);
 		}
+		res.render('auth/register.ejs', { title: 'Register', message: 'Account created, verify your account!' })
 	}
 }

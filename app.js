@@ -105,15 +105,15 @@ app.get('/register', function(req,res){
     res.render('auth/register.ejs', { title: 'Register', message: false });
 })
 
-app.all('/register', function(req, res){
-    // req.flash('test', 'it worked');
-    res.redirect('/test')
-  });
+// app.all('/register', function(req, res){
+//     // req.flash('test', 'it worked');
+//     res.redirect('/registerA')
+//   });
   
-app.all('/test', async function(req, res){
+app.all('/register', async function(req, res){
     var register = require('./controllers/register.js');
     register.register(req, res);
-    res.render('auth/register.ejs', { title: 'Register', message: 'Account created, verify your account!' })
+    //res.render('auth/register.ejs', { title: 'Register', message: 'Account created, verify your account!' })
 });
 
 app.get('/login', (req, res, next) => {
