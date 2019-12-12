@@ -8,7 +8,10 @@
                     <div class="container" style="text-align:center">  
                 <div class='form'> 
                     <form action="/register" method="POST"> 
-                    <h1> Signup form </h1><br/>            
+                    <h1> Signup form </h1><br/>
+                    <% if (message) { %>
+                    <%= message %>
+                    <% } %>
                     <input class="box" type="text" name="fname" id="fname" 
                     placeholder="First Name"  required /><br> 
                                         

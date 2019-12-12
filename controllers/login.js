@@ -16,18 +16,16 @@ module.exports = {
 		const password = req.body.password;
 		console.log({ email, password });
 		if (!email || !password) {
-			res.status(400).json({ message: 'No data provided' });
+			res.render('auth/login.ejs', { title: 'Login', message: 'No data provided' });
 		} else {
 			const user = await db.collection('user').findOne({ email: email });
 			console.log(user);
 			if (!user) {
-				res.status(404).json({ message: 'User not found' });
+				return res.render('auth/login.ejs', { title: 'Login', message: 'Incorrect Credentials' });
 			}
 			if (user.verified === false)
 			{
-				return res.status(400).json({ verified: "Please verify your account." });
-				// res.redirect('/login');
-				// return res.redirect('/');
+				return res.render('auth/login.ejs', { title: 'Login', message: "Please verify your account" });
 			}
 			try {
 				isMatch = await bcrypt.compare(password, user.password);
@@ -35,11 +33,11 @@ module.exports = {
 					req.session.user = user;
 					return res.redirect('/');
 				} else {
-					return res.status(400).json({ password: 'password incorrect' });
+					return res.render('auth/login.ejs', {title: 'Login', message: 'Incorrect Credentials' });
 				}
 			} catch (error) {
 				console.log(error)
-				return res.status(500).json({ error, message: 'Something went wrong' });
+				return res.render('auth/login.ejs', { title: 'Login', message: 'Something went wrong, try again...' });
 			}
 		}
 	}
