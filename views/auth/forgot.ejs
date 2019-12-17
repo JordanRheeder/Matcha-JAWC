@@ -1,0 +1,42 @@
+<%- include('../includes/head.ejs') %>
+  <body>
+      <!-- Nav starts -->
+        <%- include('../includes/nav.ejs') %>
+            <style>
+            #className {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                max-width: 100%;
+                max-height: 100%;
+                margin: auto;
+                overflow: auto;
+            }</style>
+            <header id="header" class="alt">
+                <div class="inner">
+                    <div class="container" style="text-align:center">  
+                        <div class='form'> 
+                            <form action="/forgotPass" method="POST"><br/>   
+                                <h1> Reset Password </h1><br/> 
+                                    <input class="box" type="email" name="email" id="email" 
+                                    placeholder="E-Mail " required /><br> 
+                                    <input class="box" type="text" name="security question" id="security" placeholder="security" required /><br>
+
+                                    <input class = 'button is-danger is-light'type="submit" id="submitDetails"  
+                                    name="submitDetails" value="Reset" /><br>       
+                            </form>   
+                        </div>                
+                    </div>
+                </div>
+            </header>
+    <!-- Wrapper -->
+        <%- include('../includes/footer.ejs') %>
+    <!-- Scripts -->
+    <%- include('../includes/end.ejs') %>
+
+
+
+
+
