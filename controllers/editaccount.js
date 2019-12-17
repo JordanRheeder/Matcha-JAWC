@@ -90,12 +90,12 @@ const editAccount = {
 		try {
 			// check if current password is correct and validate all inputs into editAccount.edit* functions.
 			hash = await bcrypt.hash(req.session.user.password, 10);
-			console.log("Hash: "+hash+"\n");
+			// console.log("Hash: "+hash+"\n");
 			foundUser = await db.collection('user').find(
-				{username: req.session.user.username});
-			console.log(foundUser);
+				{email: req.session.user.email}).count();
+			// console.log(foundUser);
 			if (foundUser > 0) {
-				console.log(req.session.user.hash);
+				// console.log(req.session.user.hash);
 				if (req.body.email)
 					await editAccount.editEmail(req);
 				if (req.body.firstname)
@@ -113,11 +113,11 @@ const editAccount = {
 				if (req.body.interest)
 					await editAccount.editInterest(req);
 				}
+				console.log(req.session.user);
 			} catch (err){
 				console.log(err);
 			}
 		// }
-		res.redirect('/EditAccount');
 	}
 }
 

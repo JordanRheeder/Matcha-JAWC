@@ -199,9 +199,10 @@ app.post('/UploadPP', upload.single('file'), (req, res) => {
     res.redirect('/editprofile');
 });
 
-app.post('/editprofile', function (req, res) {
+app.post('/EditAccount', function (req, res) {
 	var editAccount = require('./controllers/editaccount.js');
 	editAccount.editAccount(req, res);
+	res.redirect('/editprofile');
 });
 
 // render image to browser
