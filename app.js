@@ -19,13 +19,13 @@ const fs = require("fs");
 const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const mongoose = require('mongoose');
-const flash = require('express-flash');
 const methodOverride = require('method-override');
 const path = require('path');
 var sessionStorage = require('sessionstorage');
 const ls = require('local-storage');
 const nodemailer = require('nodemailer')
-
+var cookieParser = require('cookie-parser');
+var flash = require('connect-flash');
 // *****************
 
 // Models for our DB Can remo
@@ -52,6 +52,7 @@ const app = express();
 app.use(methodOverride('_method'));
 var secretKey = process.env.SESSION_SECRET;
 app.use(session({
+    cookie: { maxAge: 60000 },
     secret: secretKey,
     resave: true,
     saveUninitialized: false
@@ -65,7 +66,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(__dirname));
 app.use(express.static('public'));
-
+app.use(flash());
 // Middleware
 app.use((req, res, next) => {
     res.locals.user = req.user || null;
@@ -97,18 +98,37 @@ app.get('/', (req, res) => {
     res.set({
         'Access-control-Allow-Origin': '*'
     });
-    return res.render('generic/index.ejs', {title: 'Matcha'});
+    return res.render('generic/index.ejs', { title: 'Matcha' });
 }).listen(3000)
 
 app.get('/register', function(req,res){
-    res.render('auth/register.ejs', {title: 'Register'});
+    res.render('auth/register.ejs', { title: 'Register', message: false });
 })
 
-app.post('/register', async (req,res) => {
+// app.all('/register', function(req, res){
+//     // req.flash('test', 'it worked');
+//     res.redirect('/registerA')
+//   });
+  
+app.all('/register', async function(req, res){
     var register = require('./controllers/register.js');
     register.register(req, res);
-    res.render('auth/login.ejs', {title: 'Login'});
+    //res.render('auth/register.ejs', { title: 'Register', message: 'Account created, verify your account!' })
+});
+
+app.get('/login', (req, res, next) => {
+    res.render('auth/login.ejs', {title: 'Login', message: false});
 })
+
+app.post('/login', async (req, res) => {
+    var login = require('./controllers/login.js');
+    login.login(req, res);
+});
+
+app.get('/signOut', async (req, res,) => {
+    req.session.user = null;
+    return res.redirect('/')
+});
 
 app.get('/verify/:key', async (req, res) => {
     console.log({key: req.params.key});
@@ -145,6 +165,7 @@ app.get('/profile', (req, res, next) => {
 
 
 
+<<<<<<< HEAD
 app.get('/login', (req, res, next) => {
     res.render('auth/login.ejs', {title: 'Login'});
 })
@@ -166,6 +187,8 @@ app.get('/signOut', async (req, res,) => {
     req.session.user = null;
     return res.redirect('/')
 });
+=======
+>>>>>>> 19b1dbde7d8210025b9409ecaa44a92780d44ab1
 
 const storage = new GridFsStorage({
     url: uri,
