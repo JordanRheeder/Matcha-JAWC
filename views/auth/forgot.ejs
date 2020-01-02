@@ -18,18 +18,15 @@
                 <div class="inner">
                     <div class="container" style="text-align:center">  
                         <div class='form'> 
-                            <form action="/login" method="POST"><br/>   
-                                <h1> Login </h1><br/> 
-                                <% if (message) { %>
-                                <%= message %>
-                                <% } %>            
-                                <input class="box" type="email" name="email" id="email" 
-                                placeholder="E-Mail" value="wdv@mailinator.com" required /><br> 
-                    
-                                <input class="box" type="password" name="password" 
-                                id="password" placeholder="Password" value="12345678" required/><br> 
-                    
+                            <form action="/forgotPass" method="POST"><br/>   
+                                <h1> Reset Password </h1><br/> 
+                                    <input class="box" type="email" name="email" id="email" 
+                                    placeholder="E-Mail " required /><br> 
+                                    <input class="box" type="text" name="security question" id="security" placeholder="security" required /><br>
 
+                                    <input class = 'button is-danger is-light'type="submit" id="submitDetails"  
+                                    name="submitDetails" value="Reset" /><br>       
+                            </form>   
                         </div>                
                     </div>
                 </div>

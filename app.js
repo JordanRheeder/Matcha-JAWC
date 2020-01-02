@@ -132,9 +132,31 @@ app.get('/signOut', async (req, res,) => {
 
 app.get('/verify/:key', async (req, res) => {
     console.log({key: req.params.key});
-    var verifyUser = require('./controllers/verifyUser.js')
+    var verifyUser = require('./controllers/verifyUser.js');
     verifyUser.verify(req, res);
-    res.render('admin/verify.ejs', {title: 'Verification'})
+    res.render('auth/verify.ejs', {title: 'Verification'});
+})
+
+app.get('/forgotPass', (req, res) => {
+    console.log('GET:forgotpass ==> rendering now\n\t')
+
+    res.render('auth/forgot.ejs', {title: 'Reset'});
+
+})
+
+app.post('/forgotPass', (req, res) => {
+    
+    var resetUser = require('./controllers/resetSend.js');
+    resetUser.resetUser(req, res);
+})
+
+
+app.get('/reset/:key', async (req, res) => {
+    console.log({key: req.params.key});
+//     var resetUser = require('./controllers/resetUser.js');
+//     resetUser.reset(req, res);
+//     // Reset the valid account, force re-verification
+    res.render('auth/reset.ejs', {title: 'Reset'})
 })
 
 app.get('/profile', (req, res, next) => {
