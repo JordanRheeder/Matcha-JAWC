@@ -29,24 +29,25 @@ var flash = require('connect-flash');
 // *****************
 
 // Models for our DB Can remo
-    const user = require('./models/user');
+  const user = require('./models/user');
 //
 let gfs;
-var uri = process.env.URI;
+const uri = "mongodb+srv://Admin:Epicrouter1@cluster0-fkcom.mongodb.net/test?retryWrites=true&w=majority";
+
 mongoose.connect(uri, {
-    useNewUrlParser: true, 
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
     useUnifiedTopology: true,
-    useFindAndModify: false 
-}); 
+});
 var db=mongoose.connection;
-db.on('error', console.log.bind(console, "connection error")); 
+db.on('error', console.log.bind(console, "connection error"));
 db.once('open', function(callback){
     gfs = Grid(db.db, mongoose.mongo);
     gfs.collection('images');
-    console.log("connection succeeded"); 
+    console.log("connection succeeded");
 })
 // var userSchema = mongoose.model('user');
-
 
 const app = express();
 app.use(methodOverride('_method'));
@@ -59,9 +60,9 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 app.use(express.static('public')); //Why?
-app.use(bodyParser.urlencoded({ 
+app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(express.static(__dirname));
@@ -109,10 +110,10 @@ app.get('/register', function(req,res){
 //     // req.flash('test', 'it worked');
 //     res.redirect('/registerA')
 //   });
-  
+
 app.all('/register', async function(req, res){
     var register = require('./controllers/register.js');
-    register.register(req, res);
+    await register.register(req, res);
     //res.render('auth/register.ejs', { title: 'Register', message: 'Account created, verify your account!' })
 });
 
@@ -145,7 +146,7 @@ app.get('/forgotPass', (req, res) => {
 })
 
 app.post('/forgotPass', (req, res) => {
-    
+
     var resetUser = require('./controllers/resetSend.js');
     resetUser.resetUser(req, res);
 })
@@ -202,7 +203,7 @@ const storage = new GridFsStorage({
                     bucketName: 'images'
                 };
                 ls.set('PP', filename);
-                db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { pp: filename } }); {  
+                db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { pp: filename } }); {
                     if (err) throw(err);
                 };
                 resolve(fileInfo);

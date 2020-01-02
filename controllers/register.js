@@ -7,9 +7,11 @@ var emailPass = process.env.emailPass;
 var emailUser = process.env.emailUser;
 var uri = process.env.URI;
 mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}); 
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
 var db=mongoose.connection;
 
 function hash(password)
@@ -54,7 +56,7 @@ module.exports = {
 			  pass: emailPass // generated ethereal password
 			}
 		  });
-		  console.log('Hopefully logged in!??>!?')
+		  console.log('Sending the e-mail?');
 		  let info = await transporter.sendMail({
 			from: '"MatchaBot 👻" <Jrheeder@student.wethinkcode.co.za>', // sender address
 			to: req.body.email, // list of receivers
@@ -63,16 +65,21 @@ module.exports = {
 			html: `Hello ${data.firstname}, click this link to verify your account <button><a href='http://localhost:3000/verify/${data.hash}'>Verify me!</a></button>`
 		  });
 		  console.log('mail should be sent\t'+ data.hash);
+
 			db.collection('user').insertOne(data, function (err, collection) {
-				if (err) throw err;
+				if (err) {
+            console.log(err);
+        }
 				else {
 					console.log("Record insterted successfully");
-					console.log(data);	
+					console.log(data);
 				}
 		});
 		} catch(err) {
+      console.log('Here');
 			console.log(err.message);
 		}
-		res.render('auth/register.ejs', { title: 'Register', message: 'Account created, verify your account!' })
+    console.log('rendering')
+		res.render('auth/register.ejs', { title: 'Register', message: 'Account created, verify your account!' });
 	}
 }
