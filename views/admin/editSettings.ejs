@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><%= title %></title>
+    <title>Account</title>
     <link rel="stylesheet" href="assets/css/account.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="shortcut icon" type="image/jpg" href="../../outputDir/favicon.ico"/>
@@ -34,13 +34,12 @@
                     <a class="button" href='/editprofile'>Profile</a>  
                     <a class="button" href='/editsettings'>Settings</a>  
                 </div>
-
                 <!-- if button is pressed initialise code. look at ejs syntax -->
                 <div class="inner" style='top:-50px;'>
-                    <div class="container" align='center'">  
+                    <div class="container" style="text-align: center">  
                             <div class='form'> 
-                            <form action="/Profile" method="POST"><br/>   
-                                <h1> Edit Settings </h1><br/>             
+                            <form action="/EditAccount" method="POST"><br/>   
+                                <h1> Edit Profile </h1><br/>             
                                 <input class="box" type="text" name="email" id="email" 
                                 placeholder="E-Mail" ><br/> 
                                 <input class="box" type="text" name="fname" 

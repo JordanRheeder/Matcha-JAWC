@@ -19,7 +19,6 @@ module.exports = {
 			res.render('auth/login.ejs', { title: 'Login', message: 'No data provided' });
 		} else {
 			const user = await db.collection('user').findOne({ email: email });
-			console.log(user);
 			if (!user) {
 				return res.render('auth/login.ejs', { title: 'Login', message: 'Incorrect Credentials' });
 			}
@@ -36,8 +35,13 @@ module.exports = {
 					return res.render('auth/login.ejs', {title: 'Login', message: 'Incorrect Credentials' });
 				}
 			} catch (error) {
+<<<<<<< HEAD
+				console.log("==========" + error + "==========")
+				return res.status(500).json({ error, message: 'Something went wrong' });
+=======
 				console.log(error)
 				return res.render('auth/login.ejs', { title: 'Login', message: 'Something went wrong, try again...' });
+>>>>>>> 19b1dbde7d8210025b9409ecaa44a92780d44ab1
 			}
 		}
 	}

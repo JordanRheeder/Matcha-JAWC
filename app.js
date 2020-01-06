@@ -191,6 +191,27 @@ app.get('/profile', async (req, res, next) => {
 
 
 
+app.get('/login', (req, res, next) => {
+    res.render('auth/login.ejs', {title: 'Login'});
+})
+
+app.post('/login', async (req, res) => {
+	var login = require('./controllers/login.js');
+	await login.login(req, res);
+});
+
+app.get('/forgotPassword', (req, res) => {
+	res.render('auth/forgotPassword.ejs');
+});
+
+app.post('/forgotPassword', (req, res) => {
+	
+});
+
+app.get('/signOut', async (req, res,) => {
+    req.session.user = null;
+    return res.redirect('/')
+});
 
 const storage = new GridFsStorage({
     url: uri,
@@ -224,6 +245,12 @@ app.post('/UploadPP', upload.single('file'), (req, res) => {
     res.redirect('/editprofile');
 });
 
+app.post('/EditAccount', function (req, res) {
+	var editAccount = require('./controllers/editaccount.js');
+	editAccount.editAccount(req, res);
+	res.redirect('/editprofile');
+});
+
 // render image to browser
 app.get('/editprofile', (req, res) =>{
     const fname = ls.get('PP');
@@ -231,12 +258,12 @@ app.get('/editprofile', (req, res) =>{
         if (!files || files.length === 0) {
             res.render('admin/editProfile.ejs', {files: false, title: 'Profile'});
         } else {
-            files.map(file => {
-                if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-                    console.log('true')
+			files.map(file => {
+				if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+					console.log('true')
                     file.isImage = true;
                 } else {
-                    console.log('false')
+					console.log('false')
                     file.isImage = false;
                 }
                 console.log('File exists')
