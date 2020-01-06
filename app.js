@@ -145,6 +145,8 @@ app.get('/forgotPass', (req, res) => {
 
 })
 
+
+
 app.post('/forgotPass', (req, res) => {
 
     var resetUser = require('./controllers/resetSend.js');
@@ -160,14 +162,15 @@ app.get('/reset/:key', async (req, res) => {
     res.render('auth/reset.ejs', {title: 'Reset'})
 })
 
-app.get('/profile', (req, res, next) => {
-    const filename0 = ls.get('PP');
-    console.log('Filename: \t' + ls.get('PP'));
+app.get('/profile', async (req, res, next) => {
+    const filename0 = await db.collection('user').findOne({ email: req.session.user.email }, {pp: 1})
+    console.log(filename0);
+    // console.log('Filename: \t' + ls.get('PP'));
 
-    gfs.files.find({ filename: filename0 }).toArray((err, files) => {
+    gfs.files.find({ filename: filename0.pp }).toArray((err, files) => {
         if (!files || files.length === 0) {
             console.log('no file found...\n');
-            res.render('admin/account.ejs', {user: req.session.user.firstname, files: false, title: 'Profile'});
+            res.render('admin/profile.ejs', {user: req.session.user.firstname, files: false, title: 'Profile'});
         } else {
             files.map(file => {
                 if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
@@ -181,7 +184,7 @@ app.get('/profile', (req, res, next) => {
             });
             // res.render('admin/editAccount.ejs', {files: files, title: 'Profile'})
             console.log('Filename: \t' + ls.get('PP'));
-            res.render('admin/account.ejs', {user: req.session.user.firstname, filename: ls.get('PP'), files: files, title: 'Profile'});
+            res.render('admin/profile.ejs', {user: req.session.user.firstname, filename: filename0.pp, files: files, title: 'Profile'});
         }
     })
 });
@@ -224,9 +227,9 @@ app.post('/UploadPP', upload.single('file'), (req, res) => {
 // render image to browser
 app.get('/editprofile', (req, res) =>{
     const fname = ls.get('PP');
-    gfs.files.find({ filename: fname }).toArray((err, files) => {
+    try {gfs.files.find({ filename: fname }).toArray((err, files) => {
         if (!files || files.length === 0) {
-            res.render('admin/editAccount.ejs', {files: false, title: 'Profile'});
+            res.render('admin/editProfile.ejs', {files: false, title: 'Profile'});
         } else {
             files.map(file => {
                 if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
@@ -238,9 +241,17 @@ app.get('/editprofile', (req, res) =>{
                 }
                 console.log('File exists')
             });
-            res.render('admin/editAccount.ejs', {files: files, title: 'Profile'})
+            res.render('admin/editProfile.ejs', {files: files, title: 'Profile'})
         }
     })
+    } catch {
+        res.render('admin/editProfile.ejs', {files: false, title: 'Profile'});
+        console.log("Error editProfile - Line 248")
+    }
+});
+
+app.get('/editsettings', function(req, res){
+    res.render('admin/editSettings.ejs', {title: 'Profile', files: null});
 });
 
 app.get('/files/:filename', (req, res) => {
