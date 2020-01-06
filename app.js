@@ -99,6 +99,7 @@ app.get('/', (req, res) => {
     res.set({
         'Access-control-Allow-Origin': '*'
     });
+
     return res.render('generic/index.ejs', { title: 'Matcha' });
 }).listen(3000)
 
@@ -145,14 +146,11 @@ app.get('/forgotPass', (req, res) => {
 
 })
 
-
-
 app.post('/forgotPass', (req, res) => {
 
     var resetUser = require('./controllers/resetSend.js');
     resetUser.resetUser(req, res);
 })
-
 
 app.get('/reset/:key', async (req, res) => {
     console.log({key: req.params.key});
@@ -189,9 +187,6 @@ app.get('/profile', async (req, res, next) => {
     })
 });
 
-
-
-
 const storage = new GridFsStorage({
     url: uri,
     file: (req, file) => {
@@ -214,6 +209,7 @@ const storage = new GridFsStorage({
         });
     }
 });
+
 const upload = multer({storage})
 
 app.get('/UploadPP', function(req, res){
