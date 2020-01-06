@@ -12,8 +12,6 @@
   <body>
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
-
-
             <header id="header" class="alt">
                 <div style='position:absolute;left:32px;top:32px'>
                     <figure class="image is-128x128 is-rounded" style="left:42px">
@@ -32,8 +30,8 @@
                                   <% } %>
                         <img class="is-rounded" src='' href='/editPP'></img>
                     </figure><br/>
-                    
-                    <a class="button" href='/editprofile'>Edit Profile</a>  
+                    <a class="button" href='/editprofile'>Profile</a>  
+                    <a class="button" href='/editsettings'>Settings</a>  
                 </div>
 
                 <!-- if button is pressed initialise code. look at ejs syntax -->
@@ -42,30 +40,25 @@
                             <div class='form'> 
                             <form action="/Profile" method="POST"><br/>   
                                 <h1> Edit Profile </h1><br/>             
-                                <input class="box" type="text" name="email" id="email" 
-                                placeholder="E-Mail" ><br> 
-                                <input class="box" type="text" name="fname" 
-                                id="fname" placeholder="First Name" ><br>
-                                <input class="box" type="text" name="sname" 
-                                id="Surname" placeholder="Surname" ><br> 
-                                <input class="box" type="password" name="password" 
-                                id="password" placeholder="Password" ><br>
+                                <input class="box" type="text" name="bio" id="bio" 
+                                placeholder="Biography" ><br/> 
+                                <input class="box" type="text" name="interests" 
+                                id="interests" placeholder="Interests: #Geek, #Piercing, etc..." ><br/>
                                 <ul>
-                                        <div>
-                                        <li>
-                                            <input type="radio" id="f-option" name="sexuality" value='Straight'>
-                                            <label for="f-option" value='men'>Males</label>
-                                            <input type="radio" id="s-option" name="sexuality" value='Gay'>
-                                            <label for="s-option" value='woman'>Female</label>
-                                            <input type="radio" id="ft-option" name="sexuality" value='Bisexual'>
-                                            <label for="ft-option" value='both'>Bisexual</label>
-                                        </li>
-                                        </div>
-                                        </ul>
-                                        <input class = 'button is-danger is-light'type="submit" id="submitDetails"
-                                            name="submitDetails" value="Save Changes"><br> 
-                            </form>   
-                            
+                                  <div>
+                                  <li>
+                                      <input type="radio" id="f-option" name="sexuality" value='Straight'>
+                                      <label for="f-option" value='men'>Males</label>
+                                      <input type="radio" id="s-option" name="sexuality" value='Gay'>
+                                      <label for="s-option" value='woman'>Female</label>
+                                      <input type="radio" id="ft-option" name="sexuality" value='Bisexual'>
+                                      <label for="ft-option" value='both'>Bisexual</label>
+                                  </li>
+                                  </div>
+                                  </ul>
+                                  <input class = 'button is-danger is-light'type="submit" id="submitDetails"
+                                      name="submitDetails" value="Save Changes"><br/> 
+                            </form>                               
                         </div>                
                     </div>
                 </div>
