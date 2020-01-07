@@ -46,3 +46,6 @@ GOAL FOR THURSDAY -->||
 
 5: match users 
 
+6: validation on inputs
+        -> unique usernames, emails
+        -> check for garbage inputs (ie. username that 100000 letters long etc.)

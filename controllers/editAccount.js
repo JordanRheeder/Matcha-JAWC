@@ -93,7 +93,7 @@ const editAccount = {
 			// console.log("Hash: "+hash+"\n");
 			foundUser = await db.collection('user').find(
 				{email: req.session.user.email}).count();
-			// console.log(foundUser);
+			console.log("Users Found: " + foundUser);
 			if (foundUser > 0) {
 				// console.log(req.session.user.hash);
 				if (req.body.email)

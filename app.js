@@ -262,7 +262,8 @@ app.post('/UploadPP', upload.single('file'), (req, res) => {
 });
 
 app.post('/EditAccount', function (req, res) {
-	var editAccount = require('./controllers/editaccount.js');
+    var editAccount = require('./controllers/editAccount.js');
+    console.log("Req fname: " + req.body.firstname);
 	editAccount.editAccount(req, res);
 	res.redirect('/editprofile');
 });
