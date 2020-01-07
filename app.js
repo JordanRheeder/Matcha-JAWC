@@ -26,6 +26,10 @@ const ls = require('local-storage');
 const nodemailer = require('nodemailer')
 var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
+const getIP = require('external-ip')();
+var geoip = require('geoip-lite');
+ 
+
 // *****************
 
 // Models for our DB Can remo
@@ -99,7 +103,6 @@ app.get('/', (req, res) => {
     res.set({
         'Access-control-Allow-Origin': '*'
     });
-
     return res.render('generic/index.ejs', { title: 'Matcha' });
 }).listen(3000)
 
@@ -107,10 +110,6 @@ app.get('/register', function(req,res){
     res.render('auth/register.ejs', { title: 'Register', message: false });
 })
 
-// app.all('/register', function(req, res){
-//     // req.flash('test', 'it worked');
-//     res.redirect('/registerA')
-//   });
 
 app.all('/register', async function(req, res){
     var register = require('./controllers/register.js');
@@ -124,7 +123,22 @@ app.get('/login', (req, res, next) => {
 
 app.post('/login', async (req, res) => {
     var login = require('./controllers/login.js');
-    login.login(req, res);
+    await login.login(req, res);
+    getIP((err, ip) => {
+        if (err) {
+            // every service in the list has failed
+            throw err;
+        }
+        // set local variable ip and upon login set ip??
+        ls.set('IP', ip);
+        db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { ip: ip } }); {
+            if (err) throw(err);
+        };
+    });
+    const extIP = ls.get('IP');
+    console.log(extIP)
+    var geo = geoip.lookup(extIP);
+    console.log(geo);
 });
 
 app.get('/signOut', async (req, res,) => {
