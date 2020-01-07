@@ -131,9 +131,10 @@ app.post('/login', async (req, res) => {
             throw err;
         }
         // set local variable ip and upon login set ip??
-        db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { ip: ip } }); {
-            if (err) throw(err);
-        };
+        db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, {
+            $set: { ip: ip } }); {
+                if (err) throw(err);
+            };
     });
     // const ip = ls.get('IP')
     // console.log(ip);

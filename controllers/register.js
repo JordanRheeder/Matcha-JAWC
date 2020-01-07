@@ -112,7 +112,7 @@ module.exports = {
 			text: "Find your lover : key etc", // plain text body
 			html: `Hello ${data.firstname}, click this link to verify your account <button><a href='http://localhost:3000/verify/${data.hash}'>Verify me!</a></button>`
 		  });
-		  console.log('mail should be sent\t'+ data.hash);
+		  console.log('mail should be sent\t'+ data.hash + req.body.email);
 
 			db.collection('user').insertOne(data, function (err, collection) {
 				if (err) {
