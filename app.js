@@ -26,9 +26,6 @@ const ls = require('local-storage');
 const nodemailer = require('nodemailer')
 var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
-const getIP = require('external-ip')();
-// var geoip = require('geoip-lite');
-var ip2location = require('ip-to-location');
 
 
 // *****************
@@ -125,28 +122,7 @@ app.get('/login', (req, res, next) => {
 app.post('/login', async (req, res) => {
     var login = require('./controllers/login.js');
     await login.login(req, res);
-    await getIP((err, ip) => {
-        if (err) {
-            // every service in the list has failed
-            throw err;
-        }
-        // set local variable ip and upon login set ip??
-        db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { ip: ip } }); {
-            if (err) throw(err);
-        };
-    });
-    // const ip = ls.get('IP')
-    // console.log(ip);
-    // console.log(ip);
-    let ip = await db.collection('user').findOne({hash: req.session.user.hash}, {ip: 1})
-    console.log(ip.ip);
-    ip2location.fetch(ip.ip, function(err, res){
-        console.log(res);
-        db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { country_name: res.country_name, region_name: res.region_name, city: res.city, zip_code: res.zip_code } }); {
-            if (err) throw(err);
-        };
-        // Okay so we are returned with an object which needs to be put into user-model
-    })
+
 });
 
 app.get('/signOut', async (req, res,) => {
