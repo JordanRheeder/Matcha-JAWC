@@ -142,6 +142,10 @@ app.post('/login', async (req, res) => {
     console.log(ip.ip);
     ip2location.fetch(ip.ip, function(err, res){
         console.log(res);
+        db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { country_name: res.country_name, region_name: res.region_name, city: res.city, zip_code: res.zip_code } }); {
+            if (err) throw(err);
+        };
+        // Okay so we are returned with an object which needs to be put into user-model
     })
 });
 
