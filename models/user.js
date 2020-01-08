@@ -25,8 +25,8 @@ var userSchema = new Schema({
     region_name: {type: String, required: false, default: "", trim: true},
     city: {type: String, required: false, default: "", trim: true},
     zip_code: {type: String, required: false, default: "", trim: true},
-    // longitude: {type: String, required: false, default: "South Africa", trim: true},
-    // latitude: {type: String, required: false, default: "South Africa", trim: true},
+    longitude: {type: String, required: false, default: "", trim: true},
+    latitude: {type: String, required: false, default: "", trim: true},
 });
 module.exports = mongoose.model('user', userSchema);
 
