@@ -124,25 +124,25 @@ app.get('/login', (req, res, next) => {
 app.post('/login', async (req, res) => {
     var login = require('./controllers/login.js');
     await login.login(req, res);
-    await getIP((err, ip) => {
-        if (err) {
-            // every service in the list has failed
-            throw err;
-        }
+    // await getIP((err, ip) => {
+    //     if (err) {
+    //         // every service in the list has failed
+    //         throw err;
+    //     }
         // set local variable ip and upon login set ip??
-        db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, {
-            $set: { ip: ip } }); {
-                if (err) throw(err);
-            };
-    });
+        // db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, {
+        //     $set: { ip: ip } }); {
+        //         if (err) throw(err);
+        //     };
+    // });
     // const ip = ls.get('IP')
     // console.log(ip);
     // console.log(ip);
-    let ip = await db.collection('user').findOne({hash: req.session.user.hash}, {ip: 1})
-    console.log(ip.ip);
-    ip2location.fetch(ip.ip, function(err, res){
-        console.log(res);
-    })
+    // let ip = await db.collection('user').findOne({hash: req.session.user.hash}, {ip: 1})
+    // console.log(ip.ip);
+    // ip2location.fetch(ip.ip, function(err, res){
+    //     console.log(res);
+    // })
 });
 
 app.get('/signOut', async (req, res,) => {
@@ -335,6 +335,11 @@ app.get('/files/:filename', (req, res) => {
 
 app.get('/chats', (req,res) => {
     return res.render('chats/chat.ejs', {title: 'Chats'});
-})
+});
 
 console.log("Started: Now listening on P-3000");
+
+
+app.get('/matches', (req, res) => {
+    return res.render('matches/matches.ejs', {title: 'Matches'});
+});

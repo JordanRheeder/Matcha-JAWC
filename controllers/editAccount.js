@@ -85,17 +85,32 @@ const editAccount = {
 			console.log(err);
 		}
 	},
+	
+	editAge: async function(req) {
+		try {
+			await db.collection('user').update(
+				{hash: req.session.user.hash},
+				{$set: {Age: req.body.age}});
+				req.session.user.age = req.body.age;
+		} catch (err) {
+			console.log(err);
+		}
+	},
 
 	editAccount: async function(req, res) {
 		try {
 			// check if current password is correct and validate all inputs into editAccount.edit* functions.
 			// hashedPassword = await bcrypt.hash(req.body.password, 10);
 			// console.log("Hashed Password: "+hashedPassword+"\n");
+			var isValid = require('./validation');
+			console.log(req.session.user);
 			foundUser = await db.collection('user').find(
 				{hash: req.session.user.hash}).count();
 			isMatch = await bcrypt.compare(req.body.password, req.session.user.password);
 			console.log("Users Found: " + foundUser);
-			if (foundUser > 0 && isMatch) {
+			var validated = await isValid.validate(req, res);
+			console.log(validated);
+			if (foundUser > 0 && isMatch && validated) {
 				// console.log(req.session.user.hash);
 				if (req.body.email)
 					await editAccount.editEmail(req);
@@ -113,6 +128,8 @@ const editAccount = {
 					await editAccount.editGender(req);
 				if (req.body.interest)
 					await editAccount.editInterest(req);
+				if (req.body.age)
+					await editAccount.editAge(req);
 				}
 				console.log(req.session.user);
 			} catch (err){
