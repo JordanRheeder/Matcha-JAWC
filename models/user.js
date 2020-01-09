@@ -22,6 +22,12 @@ var userSchema = new Schema({
     location: {type: JSON, default: '', required: false, trim: true},
     ip: {type: String, default: '', required: false, trim: true},
     fame: {type: String, required: false, defualt: 0, trim:true},
-    country: {type: String, required: false, default: "South Africa", trim: true}
+    country_name: {type: String, required: false, default: "South Africa", trim: true},
+    region_name: {type: String, required: false, default: "", trim: true},
+    city: {type: String, required: false, default: "", trim: true},
+    zip_code: {type: String, required: false, default: "", trim: true},
+    longitude: {type: String, required: false, default: "", trim: true},
+    latitude: {type: String, required: false, default: "", trim: true},
 });
 module.exports = mongoose.model('user', userSchema);
+

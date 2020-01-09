@@ -51,3 +51,17 @@ GOAL FOR THURSDAY -->||
         -> check for garbage inputs (ie. username that 100000 letters long etc.)
 
 7: server crashes on wrong password/email, due to the IP tracking. IP tracking needs to be moved to auth/login.js in the if case where email and password is correct.
+
+8: need error messages if user inputs aren't valid (popup message that can be used globally)
+
+
+
+
+
+
+
+
+
+
+
+
