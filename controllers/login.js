@@ -45,9 +45,6 @@ module.exports = {
 							if (err) throw(err);
 						};
 					});
-					// const ip = ls.get('IP')
-					// console.log(ip);
-					// console.log(ip);
 					let ip = await db.collection('user').findOne({hash: req.session.user.hash}, {ip: 1})
 					console.log(ip.ip);
 					ip2location.fetch(ip.ip, function(err, res){
