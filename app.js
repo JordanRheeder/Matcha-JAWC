@@ -26,6 +26,7 @@ const ls = require('local-storage');
 const nodemailer = require('nodemailer')
 var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
+const client = require('socket.io');
 
 // *****************
 
@@ -33,7 +34,7 @@ var flash = require('connect-flash');
   const user = require('./models/user');
 //
 let gfs;
-const uri = "mongodb+srv://Admin:Epicrouter1@cluster0-fkcom.mongodb.net/test?retryWrites=true&w=majority";
+const uri = process.env.URI;
 
 mongoose.connect(uri, {
     useNewUrlParser: true,
@@ -153,7 +154,7 @@ app.get('/reset/:key', async (req, res) => {
 //     var resetUser = require('./controllers/resetUser.js');
 //     resetUser.reset(req, res);
 //     // Reset the valid account, force re-verification
-    res.render('auth/reset.ejs', {title: 'Reset'})
+    res.render('auth/reset.ejs', {title: 'Reset'});
 })
 
 app.get('/profile', async (req, res, next) => {
