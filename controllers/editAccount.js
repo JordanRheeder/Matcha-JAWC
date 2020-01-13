@@ -99,18 +99,17 @@ const editAccount = {
 
 	editAccount: async function(req, res) {
 		try {
-			// check if current password is correct and validate all inputs into editAccount.edit* functions.
-			// hashedPassword = await bcrypt.hash(req.body.password, 10);
-			// console.log("Hashed Password: "+hashedPassword+"\n");
-			var isValid = require('./validation');
+			const validation = require("./validation.js");
+			console.log("Calling validation functioln\n");
+			var validInputs = await validation.validate(req, res);
+			console.log("Function finished, are inputs valid: " + validInputs);
 			console.log(req.session.user);
-			foundUser = await db.collection('user').find(
-				{hash: req.session.user.hash}).count();
+			foundUser = await db.collection('user').count(
+				{hash: req.session.user.hash});
 			isMatch = await bcrypt.compare(req.body.password, req.session.user.password);
 			console.log("Users Found: " + foundUser);
-			var validated = await isValid.validate(req, res);
-			console.log(validated);
-			if (foundUser > 0 && isMatch && validated) {
+			console.log(validInputs);
+			if (foundUser > 0 && isMatch && validInputs) {
 				// console.log(req.session.user.hash);
 				if (req.body.email)
 					await editAccount.editEmail(req);
