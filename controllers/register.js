@@ -17,7 +17,11 @@ var db=mongoose.connection;
 module.exports = {
 	register: async function registerNewUser(req, res) {
 	try {
-		if (validation(req)) {
+		const validation = require("./validation.js");
+		console.log("Calling validation function\n");
+		var validInputs = await validation.validate(req, res);
+		console.log("Function finished, are inputs valid: " + validInputs);
+		if (validInputs) {
 			let hashedpassword = await hash(req.body.password)
 			var data = new user({
 					firstname: req.body.fname,
@@ -38,7 +42,7 @@ module.exports = {
 					pass: emailPass // generated ethereal password
 					}
 				});
-			console.log('Hopefully logged in!??>!?')
+			// console.log('Hopefully logged in!??>!?')
 			let info = await transporter.sendMail({
 					from: '"MatchaBot 👻" <Jrheeder@student.wethinkcode.co.za>', // sender address
 					to: req.body.email, // list of receivers
@@ -46,19 +50,19 @@ module.exports = {
 					text: "Find your lover : key etc", // plain text body
 					html: `Hello ${data.firstname}, click this link to verify your account <button><a href='http://localhost:3000/verify/${data.hash}'>Verify me!</a></button>`
 				});
-			console.log('mail should be sent\t'+ data.hash);
+			// console.log('mail should be sent\t'+ data.hash);
 				db.collection('user').insertOne(data, function (err, collection) {
 					if (err) throw err;
 					else {
-						console.log("Record insterted successfully");
-						console.log(data);	
+						// console.log("Record insterted successfully");
+						// console.log(data);	
 					}
 				});
 			}
 		} catch(err) {
 			console.log(err.message);
 		}
-		console.log(data);
+		// console.log(data);
 	}
 }
 
@@ -104,7 +108,7 @@ module.exports = {
 			  pass: emailPass // generated ethereal password
 			}
 		  });
-		  console.log('Sending the e-mail?');
+		//   console.log('Sending the e-mail?');
 		  let info = await transporter.sendMail({
 			from: '"MatchaBot 👻" <Jrheeder@student.wethinkcode.co.za>', // sender address
 			to: req.body.email, // list of receivers
@@ -112,22 +116,22 @@ module.exports = {
 			text: "Find your lover : key etc", // plain text body
 			html: `Hello ${data.firstname}, click this link to verify your account <button><a href='http://localhost:3000/verify/${data.hash}'>Verify me!</a></button>`
 		  });
-		  console.log('mail should be sent\t'+ data.hash + req.body.email);
+		//   console.log('mail should be sent\t'+ data.hash + req.body.email);
 
 			db.collection('user').insertOne(data, function (err, collection) {
 				if (err) {
             console.log(err);
         }
 				else {
-					console.log("Record insterted successfully");
-					console.log(data);
+					// console.log("Record insterted successfully");
+					// console.log(data);
 				}
 		});
 		} catch(err) {
-      console.log('Here');
+    //   console.log('Here');
 			console.log(err.message);
 		}
-    console.log('rendering')
+    // console.log('rendering')
 		res.render('auth/register.ejs', { title: 'Register', message: 'Account created, verify your account!' });
 	}
 }
