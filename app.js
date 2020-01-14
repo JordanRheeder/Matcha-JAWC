@@ -26,13 +26,13 @@ const ls = require('local-storage');
 const nodemailer = require('nodemailer')
 var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
-const client = require('socket.io');
+const client = require('socket.io')(server);;
 
 
 // *****************
 
 // Models for our DB Can remo
-  const user = require('./models/user');
+// const user = require('./models/user');
 //
 let gfs;
 const uri = process.env.URI;
@@ -53,6 +53,26 @@ db.once('open', function(callback){
 // var userSchema = mongoose.model('user');
 
 const app = express();
+
+var server = app.listen(3000);
+
+// Socket.io code below need to move into it's own file
+client.on('connection', (socket) => {
+    console.log("new user connected");
+    // set our username
+    socket.username = "Arata";
+    // listen on change_username
+    socket.on('change_username', (data) => {
+        socket.username = data.username;
+    });
+    // listen on new message
+    socket.on('new_message', (data) => {
+        // show the message
+        client.sockets.emit('new_message', {message: data.message, username: socket.username});
+    });
+});
+
+
 app.use(methodOverride('_method'));
 var secretKey = process.env.SESSION_SECRET;
 app.use(session({
@@ -88,22 +108,17 @@ initializePassport(
     email => db.collection('user').findOne({ email: email })
 )
 
-//
-
 // View engine
 
 app.set('view-engine', 'ejs');
 app.set('views', 'views');
-
-//
-
 
 app.get('/', (req, res) => {
     res.set({
         'Access-control-Allow-Origin': '*'
     });
     return res.render('generic/index.ejs', { title: 'Matcha' });
-}).listen(3000)
+});
 
 app.get('/register', function(req,res){
     res.render('auth/register.ejs', { title: 'Register', message: false });
@@ -113,7 +128,6 @@ app.get('/register', function(req,res){
 app.all('/register', async function(req, res){
     var register = require('./controllers/register.js');
     await register.register(req, res);
-    //res.render('auth/register.ejs', { title: 'Register', message: 'Account created, verify your account!' })
 });
 
 app.get('/login', (req, res, next) => {
@@ -153,16 +167,12 @@ app.post('/forgotPass', (req, res) => {
 
 app.get('/reset/:key', async (req, res) => {
     console.log({key: req.params.key});
-//     var resetUser = require('./controllers/resetUser.js');
-//     resetUser.reset(req, res);
-//     // Reset the valid account, force re-verification
     res.render('auth/reset.ejs', {title: 'Reset'});
 })
 
 app.get('/profile', async (req, res, next) => {
     const filename0 = await db.collection('user').findOne({ email: req.session.user.email }, {pp: 1})
     console.log(filename0);
-    // console.log('Filename: \t' + ls.get('PP'));
 
     gfs.files.find({ filename: filename0.pp }).toArray((err, files) => {
         if (!files || files.length === 0) {
@@ -179,7 +189,6 @@ app.get('/profile', async (req, res, next) => {
                 }
                 console.log('File exists')
             });
-            // res.render('admin/editAccount.ejs', {files: files, title: 'Profile'})
             console.log('Filename: \t' + ls.get('PP'));
             res.render('admin/profile.ejs', {user: req.session.user.firstname, filename: filename0.pp, files: files, title: 'Profile'});
         }
