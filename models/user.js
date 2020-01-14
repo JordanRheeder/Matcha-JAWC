@@ -8,6 +8,7 @@ var userSchema = new Schema({
     password: {type: String, trim:true, required: [true, "can't be blank"]},
 	hash: {type: String, trim:true, required: [true, "can't be blank"]},
     gender: {type: String, trim:true, required: [true, "can't be blank"]},
+    // sexuality needs to be removed.
     sexuality: {type: String, trim:true, required: [true, "can't be blank"]},
     verified: {type: Boolean, default: false, required: false},
     age: {type: String, trim:true, required: [true, "can't be blank"]},

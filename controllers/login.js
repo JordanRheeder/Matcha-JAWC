@@ -23,7 +23,6 @@ module.exports = {
 			res.render('auth/login.ejs', { title: 'Login', message: 'No data provided' });
 		} else {
 			const user = await db.collection('user').findOne({ email: email });
-			console.log(user);
 			if (!user) {
 				return res.render('auth/login.ejs', { title: 'Login', message: 'Incorrect Credentials' });
 			}

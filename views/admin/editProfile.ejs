@@ -36,29 +36,62 @@
 
                 <!-- if button is pressed initialise code. look at ejs syntax -->
                 <div class="inner" style='top:-50px;'>
-                    <div class="container" align='center'">  
+                    <div class="container" style="text-align:center">  
                             <div class='form'> 
-                            <form action="/Profile" method="POST"><br/>   
+                            <form action="/EditAccount" method="POST"><br/>   
                                 <h1> Edit Profile </h1><br/>             
+                                
                                 <input class="box" type="text" name="bio" id="bio" 
                                 placeholder="Biography" ><br/> 
+                                
                                 <input class="box" type="text" name="interests" 
                                 id="interests" placeholder="Interests: #Geek, #Piercing, etc..." ><br/>
+                                
+                                <input class="box" type="text" name="firstname" id="firstname" 
+                                placeholder="First Name"   /><br> 
+                                                    
+                                <input class="box" type="text" name="lastname" id="lastname" 
+                                placeholder="Surname"   /><br> 
+                                                    
+                                <input class="box" type="email" name="email" id="email" 
+                                placeholder="E-Mail"  /><br> 
+                                
+                                <input class="box" type="text" name="age" id="age" 
+                                placeholder="Age"   /><br> 
+                                                    
+                                <input class="box" type="text" name="username" id="username" 
+                                placeholder="Username"   /><br> 
+            
+                                <input class="box" type="password" name="password" 
+                                id="password" placeholder="Password" required/>
+                      <h2>Gender</h2>
                                 <ul>
-                                  <div>
-                                  <li>
-                                      <input type="radio" id="f-option" name="sexuality" value='Straight'>
-                                      <label for="f-option" value='men'>Males</label>
-                                      <input type="radio" id="s-option" name="sexuality" value='Gay'>
-                                      <label for="s-option" value='woman'>Female</label>
-                                      <input type="radio" id="ft-option" name="sexuality" value='Bisexual'>
-                                      <label for="ft-option" value='both'>Bisexual</label>
-                                  </li>
-                                  </div>
-                                  </ul>
-                                  <input class = 'button is-danger is-light'type="submit" id="submitDetails"
-                                      name="submitDetails" value="Save Changes"><br/> 
-                            </form>                               
+                        <div>
+                          <li>
+                            <input type="radio" id="f-option" name="gender" value='Male'>
+                            <label for="f-option" value='Male'>Male</label>
+                            <input type="radio" id="s-option" name="gender" value='Female'>
+                            <label for="s-option" value='Female'>Female</label>
+                            <input type="radio" id="t-option" name="gender" value='Other'>
+                            <label for="t-option" value='Other'>Other</label>
+                          </li>
+                        </div>
+                                </ul>
+                      <h2>Sexual Interest</h2>
+                                <ul>
+                        <div>
+                          <li>
+                            <input type="radio" id="x-option" name="interest" value='Male'>
+                            <label for="x-option" value='Male'>Male</label>
+                            <input type="radio" id="y-option" name="interest" value='Female'>
+                            <label for="y-option" value='Female'>Female</label>
+                            <input type="radio" id="z-option" name="interest" value='Both'>
+                            <label for="z-option" value='Both'>Both</label>
+                          </li>
+                        </div>
+                                </ul>
+                                <input class='button is-danger is-light' type="submit" id="submitDetails" name="submitDetails" value="Submit" /><br>        
+                                </form>                               
                         </div>                
                     </div>
                 </div>
