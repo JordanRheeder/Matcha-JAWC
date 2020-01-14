@@ -59,7 +59,7 @@ var server = app.listen(3000);
 client.on('connection', (socket) => {
     console.log("new user connected");
     // set our username
-    socket.username = "Arata";
+    socket.username = "Default";
     // listen on change_username
     socket.on('change_username', (data) => {
         socket.username = data.username;
