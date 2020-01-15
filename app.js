@@ -26,7 +26,12 @@ const ls = require('local-storage');
 const nodemailer = require('nodemailer')
 var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
-const client = require('socket.io')(server);;
+const app = express();
+const http = require('http');
+// var server = app.listen(3000);
+const server = http.createServer(app)
+const io = require('socket.io')(server);
+module.exports = io;
 
 // *****************
 
@@ -41,6 +46,9 @@ mongoose.connect(uri, {
     useFindAndModify: false,
     useCreateIndex: true,
     useUnifiedTopology: true,
+}).then(result => {
+    server.listen(3000);
+
 });
 var db=mongoose.connection;
 db.on('error', console.log.bind(console, "connection error"));
@@ -51,25 +59,7 @@ db.once('open', function(callback){
 })
 // var userSchema = mongoose.model('user');
 
-const app = express();
 
-var server = app.listen(3000);
-
-// Socket.io code below need to move into it's own file
-client.on('connection', (socket) => {
-    console.log("new user connected");
-    // set our username
-    socket.username = "Default";
-    // listen on change_username
-    socket.on('change_username', (data) => {
-        socket.username = data.username;
-    });
-    // listen on new message
-    socket.on('new_message', (data) => {
-        // show the message
-        client.sockets.emit('new_message', {message: data.message, username: socket.username});
-    });
-});
 
 
 app.use(methodOverride('_method'));
@@ -83,14 +73,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
-app.use(express.static('public')); //Why?
+app.use(express.static('public')); 
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(express.static(__dirname));
 app.use(express.static('public'));
 app.use(flash());
-// Middleware
+
 app.use((req, res, next) => {
     res.locals.user = req.user || null;
     next();
@@ -322,8 +312,24 @@ app.get('/files/:filename', (req, res) => {
   });
 
 app.get('/chats', (req,res) => {
+    
     return res.render('chats/chat.ejs', {title: 'Chats'});
+
 });
+
+app.all('/chats', (req, res) => {
+    // 
+    // pass this into socket(chat) controller
+    var chat = require('./controllers/chat.js');
+    // var event = require('./views/static/eventManager.js');
+    chat.chat(req, res);
+    return res.render('chats/chat.ejs', {title: 'Chats'});
+})
+
+// key is going to be the room name we will be joining. Could possibly change
+// app.get('/chats:key', (req,res) => {
+//     return res.render('chats/chat.ejs', {title: 'Chats'});
+// });
 
 console.log("Started: Now listening on P-3000");
 

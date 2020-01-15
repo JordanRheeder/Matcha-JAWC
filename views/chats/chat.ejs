@@ -6,12 +6,15 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="assets/css/account.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <link rel="shortcut icon" type="image/jpg" href="../../outputDir/favicon.ico"/>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="./../static/eventManager.js">
+        var socket = io.connect('http://localhost:3000');
+    </script>
     <!-- <%- include('../includes/nav.ejs') %> -->
     <style>
-
-
       *{
         box-sizing:border-box;
       }
@@ -189,48 +192,31 @@
                         <ul id="chat">
                           <!-- Inject who is messaging -->
                             <h2>They are: </h2>
+                            
                             <li class="you">
                                 <div class="triangle"></div>
                                 <div class="message">
                                     Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
                                 </div>
                             </li>
-                            <li class="me">
-                                
+                            <li class="me">          
                                 <div class="triangle"></div>
                                 <div class="message">
                                     Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
                                 </div>
                             </li>
                         </ul>
+                        <form action="/chats" method="POST">
                         <footer>
-
                             <textarea type="text" value="Enter your message" onfocus="this.style.color='fff'; 
-                            this.value='';" style="color: Black;" ">Enter your message</textarea>
-                            <input class='button is-danger is-light' type="submit" id="sendMessage"
-                            name="sendMessage" value="Send"><br/> 
+                            this.value='';" style="color: Black;" " id="message" name="message">Enter your message</textarea>
+                            <input class='button is-danger is-light' type="submit" id="sendMessage" name="sendMessage" value="Send"><br/> 
                         </footer>
+                      </form>
                     </main>
                 </div>
-
-                  <!-- <div class="chat-message clearfix" style="margin-top: 50vmin">
-                    <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3" cols="75" style="color: #F0EDE5"></textarea>
-                    <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
-                    <i class="fa fa-file-image-o"></i>
-                    <br/>
-                    <input class='button is-danger is-light' type="submit" id="sendMessage"
-                    name="sendMessage" value="Send"><br/> 
-                  </div>
-                </div> -->
             </header>
     <!-- Wrapper -->
         <%- include('../includes/footer.ejs') %>
     <!-- Scripts -->
     <%- include('../includes/end.ejs') %>
-
-
-
-
-
-
-
