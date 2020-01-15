@@ -63,5 +63,8 @@ GOAL FOR THURSDAY -->||
 
 
 
-
+Matches:    Show potential Matches on /matches
+            Create matches table (contains id of both matched users)
+            Create chats table (Contains text of messages, id of sent user, id of received user)
+            
 

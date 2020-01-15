@@ -330,6 +330,6 @@ console.log("Started: Now listening on P-3000");
 
 app.get('/matches', (req, res) => {
     var matches = require('./controllers/matches.js');
-    matches.findUsers(req, res);
-    return res.render('matches/matches.ejs', {title: 'Matches'});
+    var userdata = matches.findUsers(req, res);
+    return res.render('matches/matches.ejs', {title: 'Matches', userdata: userdata});
 });
