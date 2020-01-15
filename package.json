@@ -34,6 +34,7 @@
     "fs": "0.0.1-security",
     "geoip-lite": "^1.4.0",
     "gridfs-stream": "^1.1.1",
+    "http": "0.0.0",
     "ip-location": "^1.0.1",
     "ip-to-location": "^1.0.1",
     "knex": "^0.20.3",
@@ -49,6 +50,7 @@
     "path": "^0.12.7",
     "pg": "^7.14.0",
     "sessionstorage": "^0.1.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "uuid": "^3.3.3"
   }
 }
