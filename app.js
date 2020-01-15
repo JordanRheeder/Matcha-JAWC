@@ -334,8 +334,9 @@ app.all('/chats', (req, res) => {
 console.log("Started: Now listening on P-3000");
 
 
-app.get('/matches', (req, res) => {
+app.get('/matches', async function(req, res) {
     var matches = require('./controllers/matches.js');
-    var userdata = matches.findUsers(req, res);
+    var userdata = await matches.findUsers(req, res);
+    console.log(userdata);
     return res.render('matches/matches.ejs', {title: 'Matches', userdata: userdata});
 });

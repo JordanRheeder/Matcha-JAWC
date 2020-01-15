@@ -14,6 +14,36 @@
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
 
+        <!-- <%- i = 0; %> -->
+        <!-- %= while (userdata[0]) {%> -->
+        <div class="box" style="width: 50vw; display: flex; margin: auto;">
+          <article class="media">
+            <div class="media-left">
+              <figure class="image is-64x64">
+                <img src="image/<%= userdata[0].pp %>" alt="Image">
+              </figure>
+            </div>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong><%= userdata[0].firstname %> <%= userdata[0].lastname %></strong> <small><%= userdata[0].gender %></small>
+                  <br>
+                      <%= userdata[0].bio %>
+                </p>
+              </div>
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item" aria-label="like">
+                    <span class="icon is-small">
+                      <i class="fas fa-heart" aria-hidden="true"></i>
+                    </span>
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </article>
+        </div>
+        <!-- <%= i++; %> -->
 
             <header id="header" class="alt">
                 <!-- if button is pressed initialise code. look at ejs syntax -->
