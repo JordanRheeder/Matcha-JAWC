@@ -33,6 +33,7 @@ module.exports = {
 					gender: req.body.gender,
 					interests: req.body.interest,
 					pp: '',
+					age: req.body.age,
 				});
 				if (data.age < 18) {
 					return res.render('auth/register.ejs', {title: 'Register', message: 'You need to be older than 18'})

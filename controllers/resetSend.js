@@ -26,7 +26,8 @@ function hash(password)
 module.exports = {
 	resetUser: async function resetUser(req, res) {
 	try {
-        let newpass = await hash(Math.random().toString(16).slice(2, 8));
+		// let newpass = await Math.random().toString(16).slice(2, 8);
+		let newpass = "asdf";
 		var data = new user({
 			email: req.body.email,
 			// hash: Date.now() + Math.random().toString(16).slice(2, 14),
@@ -47,9 +48,11 @@ module.exports = {
 			text: "Find your lover : key etc", // plain text body
 			html: `Hello ${data.email}, your new auto-generated password is : ${newpass}. Please use this to login and change your password manually.`
 		  });
+		  console.log('Info set')
         //   console.log('mail should be sent\t'+ data.hash);
-        db.collection('user').findOneAndUpdate({ email: req.body.email }, { $set: { password: newpass} });
+        db.collection('user').findOneAndUpdate({ email: req.body.email }, { $set: { password: hash(newpass)} });
 		} catch(err) {
+			console.log("ERROR:")
 			console.log(err.message);
 		}
 		res.render('auth/forgot.ejs', { title: 'Reset' })

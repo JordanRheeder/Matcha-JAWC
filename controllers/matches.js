@@ -17,8 +17,7 @@ module.exports = {
         userinterests = req.session.user.interests;
         //user gender
         usergender = req.session.user.gender;
-        var queryObj = {};
-        Object.assign(queryObj, {verified: true});
+        var queryObj = {verified: true};
         if (usergender == "male" || usergender == "female")
           Object.assign(queryObj, { $or: [{interests: usergender}, {interests: "both"}]});
         if (userinterests == "male" || userinterests == "female")
