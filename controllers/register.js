@@ -18,7 +18,7 @@ module.exports = {
 	register: async function registerNewUser(req, res) {
 	try {
 		const validation = require("./validation.js");
-		console.log("Calling validation functioln\n");
+		console.log("Calling validation function\n");
 		var validInputs = await validation.validate(req, res);
 		console.log("Function finished, are inputs valid: " + validInputs);
 		if (validInputs) {
@@ -31,7 +31,7 @@ module.exports = {
 					password: hashedpassword,
 					hash: Date.now() + Math.random().toString(16).slice(2, 14),
 					gender: req.body.gender,
-					interest: req.body.interest,
+					interests: req.body.interest,
 					pp: '',
 				});
 				if (data.age < 18) {
