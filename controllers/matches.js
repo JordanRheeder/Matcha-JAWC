@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const user = require('../models/user');
 
 var uri = process.env.URI;
 mongoose.connect(uri, {
@@ -19,14 +20,14 @@ module.exports = {
         usergender = req.session.user.gender;
         var queryObj = {verified: true};
         if (usergender == "male" || usergender == "female")
-          Object.assign(queryObj, { $or: [{interests: usergender}, {interests: "both"}]});
+          await Object.assign(queryObj, { $or: [{interests: usergender}, {interests: "both"}]});
         if (userinterests == "male" || userinterests == "female")
-          Object.assign(queryObj, {gender: userinterests});
+          await Object.assign(queryObj, {gender: userinterests});
         
         
         console.log('::queryObj:::', queryObj);
         //, username: { $ne: req.session.user.username}, pp: {$ne: ''}
-        var X = await db.collection('user').find( queryObj ).project({_id: 0, city: 1, pp: 1, firstname: 1, lastname: 1, username: 1, gender: 1, age: 1, bio: 1, fame: 1}).toArray();
+        var X = await db.collection('user').find( queryObj ).project({_id: 0, hash: 1, city: 1, pp: 1, firstname: 1, lastname: 1, username: 1, gender: 1, age: 1, bio: 1, fame: 1}).toArray();
         // console.log(X);
         return (X);
       }

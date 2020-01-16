@@ -59,9 +59,6 @@ db.once('open', function(callback){
 })
 // var userSchema = mongoose.model('user');
 
-
-
-
 app.use(methodOverride('_method'));
 var secretKey = process.env.SESSION_SECRET;
 app.use(session({
@@ -130,7 +127,7 @@ app.post('/login', async (req, res) => {
 
 app.get('/signOut', async (req, res,) => {
     req.session.user = null;
-    return res.redirect('/')
+    return res.redirect('/login')
 });
 
 app.get('/verify/:key', async (req, res) => {
@@ -337,5 +334,12 @@ app.get('/matches', async function(req, res) {
     var matches = require('./controllers/matches.js');
     var userdata = await matches.findUsers(req, res);
     console.log(userdata);
+    console.log(req.session.user);
     return res.render('matches/matches.ejs', {title: 'Matches', userdata: userdata});
+});
+
+app.post('/matches', async function(req, res) {
+    // console.log("matches.post called");
+
+    return res.render('chats/chat.ejs', {title: 'Chats'});
 });
