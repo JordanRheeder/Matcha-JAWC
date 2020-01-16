@@ -10,6 +10,7 @@ var db=mongoose.connection;
 module.exports = {
 	validate: async function validateRegistrationDetails(req, res) {
 		console.log("Now in validation function.");
+		// password length < 8
 		var pattern = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
 		if (req.body.username) {
 			var foundUser = await db.collection('user')
