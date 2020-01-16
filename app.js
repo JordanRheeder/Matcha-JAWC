@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Modules
 // 'use strict';
 
-const express = require("express"); // creates the app
+// const express = require("express"); // creates the app
     // mailer = require('express-mailer');
 // const flash = require("express-flash"); // define a flash message and render it without redirecting the request.
 const session = require("express-session"); // self-explanatory
@@ -26,11 +26,14 @@ const ls = require('local-storage');
 const nodemailer = require('nodemailer')
 var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
-const app = express();
-const http = require('http');
-// var server = app.listen(3000);
-const server = http.createServer(app)
-const io = require('socket.io')(server);
+
+var express = require('express')
+  , app = express()
+  , http = require('http')
+  , server = http.createServer(app)
+  , io = require('socket.io').listen(server);
+server.listen(3000);
+
 module.exports = io;
 
 // *****************
@@ -46,10 +49,7 @@ mongoose.connect(uri, {
     useFindAndModify: false,
     useCreateIndex: true,
     useUnifiedTopology: true,
-}).then(result => {
-    server.listen(3000);
-
-});
+})
 var db=mongoose.connection;
 db.on('error', console.log.bind(console, "connection error"));
 db.once('open', function(callback){
@@ -323,8 +323,7 @@ app.all('/chats', (req, res) => {
     var chat = require('./controllers/chat.js');
     // var event = require('./views/static/eventManager.js');
     chat.chat(req, res);
-    return res.render('chats/chat.ejs', {title: 'Chats'});
-})
+});
 
 // key is going to be the room name we will be joining. Could possibly change
 // app.get('/chats:key', (req,res) => {
