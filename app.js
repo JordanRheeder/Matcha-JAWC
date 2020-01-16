@@ -339,7 +339,8 @@ app.get('/matches', async function(req, res) {
 });
 
 app.post('/matches', async function(req, res) {
-    // console.log("matches.post called");
-
+    console.log("matches.post called");
+    var matches = require('./controllers/matches');
+    matches.matchUsers(req.body.hash, req.session.user.hash);
     return res.render('chats/chat.ejs', {title: 'Chats'});
 });
