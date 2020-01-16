@@ -107,6 +107,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/register', function(req,res){
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     res.render('auth/register.ejs', { title: 'Register', message: false });
 })
 
@@ -145,7 +147,6 @@ app.get('/forgotPass', (req, res) => {
 })
 
 app.post('/forgotPass', (req, res) => {
-
     var resetUser = require('./controllers/resetSend.js');
     resetUser.resetUser(req, res);
 })
@@ -156,6 +157,8 @@ app.get('/reset/:key', async (req, res) => {
 })
 
 app.get('/profile', async (req, res, next) => {
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     const filename0 = await db.collection('user').findOne({ email: req.session.user.email }, {pp: 1})
     console.log(filename0);
 
@@ -193,10 +196,6 @@ app.get('/forgotPassword', (req, res) => {
 	res.render('auth/forgotPassword.ejs');
 });
 
-app.post('/forgotPassword', (req, res) => {
-	
-});
-
 app.get('/signOut', async (req, res,) => {
     req.session.user = null;
     return res.redirect('/')
@@ -228,6 +227,8 @@ const storage = new GridFsStorage({
 const upload = multer({storage})
 
 app.get('/UploadPP', function(req, res){
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     return res.render('admin/UploadPP.ejs', {title: 'Upload'});
 });
 
@@ -245,6 +246,8 @@ app.post('/EditAccount', function (req, res) {
 
 // render image to browser
 app.get('/editprofile', (req, res) =>{
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     const fname = ls.get('PP');
     try {gfs.files.find({ filename: fname }).toArray((err, files) => {
         if (!files || files.length === 0) {
@@ -270,6 +273,8 @@ app.get('/editprofile', (req, res) =>{
 });
 
 app.get('/editsettings', function(req, res){
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     res.render('admin/editSettings.ejs', {title: 'Profile', files: null});
 });
 
@@ -309,7 +314,8 @@ app.get('/files/:filename', (req, res) => {
   });
 
 app.get('/chats', (req,res) => {
-    
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     return res.render('chats/chat.ejs', {title: 'Chats'});
 
 });
@@ -331,6 +337,8 @@ console.log("Started: Now listening on P-3000");
 
 
 app.get('/matches', async function(req, res) {
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     var matches = require('./controllers/matches.js');
     var userdata = await matches.findUsers(req, res);
     console.log(userdata);

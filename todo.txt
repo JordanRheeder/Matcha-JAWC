@@ -25,13 +25,7 @@ var userSchema = new Schema({
 
 1: interests will be handled as strings/json and iterate until # and then put that into db to do queries.
 
-1.5: Biography upload to db
 1.5.5: display that on a user-profile-page (implement)
-
-
-
-2: grab users ip location, research api
-
 
 
 3: min-max fame rating
@@ -50,8 +44,6 @@ GOAL FOR THURSDAY -->||
         -> unique usernames, emails
         -> check for garbage inputs (ie. username that 100000 letters long etc.)
 
-// 7: server crashes on wrong password/email, due to the IP tracking. IP tracking needs to be moved to auth/login.js in the if case where email and password is correct.
-
 8: need error messages if user inputs aren't valid (popup message that can be used globally)
 
 
@@ -63,8 +55,4 @@ GOAL FOR THURSDAY -->||
 
 
 
-Matches:    Show potential Matches on /matches
-            Create matches table (contains id of both matched users)
-            Create chats table (Contains text of messages, id of sent user, id of received user)
-            
 
