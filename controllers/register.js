@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer')
 
-var emailPass = process.env.EMAILPASS;
-var emailUser = process.env.EMAILUSER;
+var emailPass = process.env.emailPass;
+var emailUser = process.env.emailUser;
 var uri = process.env.URI;
 mongoose.connect(uri, {
   useNewUrlParser: true,
@@ -34,13 +34,14 @@ module.exports = {
 					interest: req.body.interest,
 					pp: '',
 				});
-				if (data.age < 18) {
-					return res.render('auth/register.ejs', {title: 'Register', message: 'You need to be older than 18'})
-					// stop();
-				}
-				if (data.age > 100) {
-					return res.render('auth/register.ejs', {title: 'Register', message: 'Invalid age'})
-				}
+			// console.log(data);
+			if (data.age < 18) {
+				return res.render('auth/register.ejs', {title: 'Register', message: 'You need to be older than 18'})
+				// stop();
+			}
+			if (data.age > 100) {
+				return res.render('auth/register.ejs', {title: 'Register', message: 'Invalid age'})
+			}
 			let transporter = nodemailer.createTransport({
 				service: 'gmail',
 				host: 'smtp.gmail.com',

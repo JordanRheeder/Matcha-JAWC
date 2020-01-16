@@ -16,7 +16,7 @@ module.exports = {
 			var foundUser = await db.collection('user')
 			.count({username: req.body.username});
 			// console.log("Same Usernames Found: " + foundUser);
-			if (req.body.username.length < 7 || req.body.username.length > 25 || foundUser || pattern.test(req.body.username))
+			if (req.body.username.length < 4 || req.body.username.length > 25 || foundUser || pattern.test(req.body.username))
 				return (false);
 			}
 		var foundEmail = await db.collection('user')

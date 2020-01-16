@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer')
 
-var emailPass = process.env.EMAILPASS;
-var emailUser = process.env.EMAILUSER;
+var emailPass = process.env.emailPass;
+var emailUser = process.env.emailUser;
 var uri = process.env.URI;
 mongoose.connect(uri, {
   useNewUrlParser: true,
