@@ -51,6 +51,8 @@ mongoose.connect(uri, {
     useUnifiedTopology: true,
 })
 var db=mongoose.connection;
+db.collection('matches').find({});
+db.collection('user').find({});
 db.on('error', console.log.bind(console, "connection error"));
 db.once('open', function(callback){
     gfs = Grid(db.db, mongoose.mongo);
@@ -107,8 +109,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/register', function(req,res){
-    if (!req.session.user)
-        res.render('auth/login.ejs', {title: 'Login', message: false});
     res.render('auth/register.ejs', { title: 'Register', message: false });
 })
 
