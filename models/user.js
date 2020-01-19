@@ -28,6 +28,7 @@ var userSchema = new Schema({
     zip_code: {type: String, required: false, default: "", trim: true},
     longitude: {type: String, required: false, default: "", trim: true},
     latitude: {type: String, required: false, default: "", trim: true},
+    
 });
 module.exports = mongoose.model('user', userSchema);
 
