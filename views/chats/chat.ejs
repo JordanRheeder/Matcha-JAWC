@@ -6,22 +6,24 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="assets/css/account.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <link rel="shortcut icon" type="image/jpg" href="../../outputDir/favicon.ico"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io.connect('http://localhost:3000');
     
-      // on connection to server, ask for user's name with an anonymous callback
-      socket.on('connect', function(){
+      // on connection to server, we will get the username and return it using ip as a search term from mongo.
+      socket.emit('connection', function(){
         // call the server-side function 'adduser' and send one parameter (value of prompt)
         // socket.emit('adduser', prompt("What's your name?"));
         console.log('Connected to client from server')
-      });
+        // client side code
+        // generate a roomname 
+        // console.log('connected with gen')
+        // socket.emit('create', 'room1');  
       // listener, whenever the server emits 'updatechat', this updates the chat body
-      socket.on('updatechat', function ( data) {
-        $('#conversation').append('<b>' + ':</b> ' + data + '<br>');
+      socket.on('updatechat', function (username, data) {
+        $('#conversation').append('<b>' + '</b> ' + data + '<br>');
       });
     
       // listener, whenever the server emits 'updaterooms', this updates the room the client is in
@@ -45,12 +47,14 @@
 	$(function(){
 		// when the client clicks SEND
 		$('#datasend').click( function() {
-			var message = $('#data').val();
+      var message = $('#data').val();
+      
 			$('#data').val('');
-			// tell server to execute 'sendchat' and send along one parameter
-			socket.emit('sendchat', message);
+      // tell server to execute 'sendchat' and send along one parameter
+      
+			socket.emit('sendchat', username, message);
 		});
-
+    
 		// when the client hits ENTER on their keyboard
 		$('#data').keypress(function(e) {
 			if(e.which == 13) {
