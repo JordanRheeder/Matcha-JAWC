@@ -162,7 +162,7 @@ app.get('/reset/:key', async (req, res) => {
 
 app.get('/profile', async (req, res, next) => {
     if (!req.session.user)
-        res.render('auth/login.ejs', {title: 'Login', message: false});
+        res.redirect('/login');
     const filename0 = await db.collection('user').findOne({ email: req.session.user.email }, {pp: 1})
     console.log(filename0);
 
@@ -232,7 +232,7 @@ const upload = multer({storage})
 
 app.get('/UploadPP', function(req, res){
     if (!req.session.user)
-        res.render('auth/login.ejs', {title: 'Login', message: false});
+        res.redirect('/login');
     return res.render('admin/UploadPP.ejs', {title: 'Upload'});
 });
 
@@ -251,7 +251,7 @@ app.post('/EditAccount', function (req, res) {
 // render image to browser
 app.get('/editprofile', (req, res) =>{
     if (!req.session.user)
-        res.render('auth/login.ejs', {title: 'Login', message: false});
+        res.redirect('/login');
     const fname = ls.get('PP');
     try {gfs.files.find({ filename: fname }).toArray((err, files) => {
         if (!files || files.length === 0) {
@@ -278,7 +278,7 @@ app.get('/editprofile', (req, res) =>{
 
 app.get('/editsettings', function(req, res){
     if (!req.session.user)
-        res.render('auth/login.ejs', {title: 'Login', message: false});
+        res.redirect('/login');
     res.render('admin/editSettings.ejs', {title: 'Profile', files: null});
 });
 
@@ -296,31 +296,40 @@ app.get('/files/:filename', (req, res) => {
     });
   });
 
-  app.get('/image/:filename', (req, res) => {
+app.get('/image/:filename', (req, res) => {
     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-      // Check if the input is a valid image or not
-      if (!file || file.length === 0) {
+    // Check if the input is a valid image or not
+        if (!file || file.length === 0) {
         return res.status(404).json({
-          err: 'No file exists'
+            err: 'No file exists'
         });
-      }
-      // If the file exists then check whether it is an image
-      if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-        // Read output to browser
+    }
+    // If the file exists then check whether it is an image
+    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+    // Read output to browser
         const readstream = gfs.createReadStream(file.filename);
         readstream.pipe(res);
-      } else {
+    } else {
         res.status(404).json({
-          err: 'Not an image'
+            err: 'Not an image'
         });
-      }
+    }
     });
-  });
+});
 
-app.get('/chats', (req,res) => {
+app.get('/chats/:keys', async (req,res) => {
     if (!req.session.user)
-        res.render('auth/login.ejs', {title: 'Login', message: false});
-    return res.render('chats/chat.ejs', {title: 'Chats'});
+        res.redirect('/login');
+    else if (!req.params.keys || req.params.keys == "")
+        username = req.session.user.username;
+    else
+        username = req.params.keys;
+    const getUserData = require('./controllers/profile');
+    // console.log(req.params.keys);
+    console.log(username);
+    var userdata = await getUserData.getUserDetails(username);
+    console.log(userdata);
+    return res.render('chats/chat.ejs', {title: 'Chats', userdata: userdata});
 });
 
 // app.get('/generateRoomName', ( req, res) => {
@@ -334,20 +343,24 @@ app.get('/chats', (req,res) => {
 
 
 app.get('/chats', ( req, res ) => {
+    if (!req.session.user)
+        res.redirect('/login');
     // var key = req.params.key;
-    console.log('1')
-    var firstname = req.session.user.firstname;
-    console.log(firstname)
-    var roomName = require('./controllers/roomName.js');
-    roomName.generateName(req, res);
-    console.log('roomName called');
-    res.render('chats/chat.ejs', {title: 'Chats'});
+    // console.log('1')
+    // var firstname = req.session.user.firstname;
+    // console.log(firstname)
+    // var roomName = require('./controllers/roomName.js');
+    // roomName.generateName(req, res);
+    // console.log('roomName called');
+    res.redirect('chats/' + req.session.user.username);
 });
 
 
 
 app.post('/chats', (req, res) => {
     // pass this into socket(chat) controller
+    if (!req.session.user)
+        res.redirect('/login');
     var chat = require('./controllers/chat.js');
     chat.chat(req, res);
 });
@@ -362,7 +375,7 @@ console.log("Started: Now listening on P-3000");
 
 app.get('/matches', async function(req, res) {
     if (!req.session.user)
-        res.render('auth/login.ejs', {title: 'Login', message: false});
+        res.redirect('/login');
     var matches = require('./controllers/matches.js');
     var userdata = await matches.findUsers(req, res);
     console.log(userdata);
