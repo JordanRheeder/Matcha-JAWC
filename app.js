@@ -163,28 +163,41 @@ app.get('/reset/:key', async (req, res) => {
 app.get('/profile/:keys', async (req, res, next) => {
     if (!req.session.user)
         res.redirect('/login');
-    const filename0 = await db.collection('user').findOne({ username: req.params.keys }, {pp: 1, firstname: 1})
-    console.log(filename0);
-
-    gfs.files.find({ filename: filename0.pp }).toArray((err, files) => {
-        if (!files || files.length === 0) {
-            console.log('no file found...\n');
-            res.render('admin/profile.ejs', {user: filename0.firstname, files: false, title: 'Profile'});
-        } else {
-            files.map(file => {
-                if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-                    console.log('true')
-                    file.isImage = true;
+    try {
+        await db.collection('user').findOne({ username: req.params.keys }, {pp: 1, firstname: 1}, (e, filename0) => {
+            if (e)
+                throw (e);
+            else {
+                gfs.files.find({ filename: filename0.firstname }).toArray((err, files) => {
+                    if (!files || files.length === 0) {
+                        console.log('no file found...\n');
+                        res.render('admin/profile.ejs', {user: filename0.firstname, files: false, title: 'Profile'});
                 } else {
-                    console.log('false')
-                    file.isImage = false;
-                }
-                console.log('File exists')
-            });
-            console.log('Filename: \t' + ls.get('PP'));
-            res.render('admin/profile.ejs', {user: filename0.firstname, filename: filename0.pp, files: files, title: 'Profile'});
-        }
-    })
+                    files.map(file => {
+                        if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+                            console.log('true')
+                        } else {
+                            console.log('false')
+                        }
+                        console.log('File exists')
+                    });
+                    console.log('Filename: \t' + ls.get('PP'));
+                    res.render('admin/profile.ejs', {user: filename0.firstname, filename: filename0.firstname, files: files, title: 'Profile'});
+                }})
+                console.log(filename0);
+            }
+        })} catch (e) {
+    //
+    //
+    //
+    //
+    //  need to redirect to 404 and say that no user is found
+        res.redirect('/login');
+    //
+    //
+    //
+    //
+    }
 });
 
 
@@ -268,10 +281,8 @@ app.get('/editprofile', (req, res) =>{
 			files.map(file => {
 				if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
 					console.log('true')
-                    file.isImage = true;
                 } else {
 					console.log('false')
-                    file.isImage = false;
                 }
                 console.log('File exists')
             });
