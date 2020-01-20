@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const getIP = require('external-ip')();
 // var geoip = require('geoip-lite');
 var ip2location = require('ip-to-location');
-
 var uri = process.env.URI;
 
 mongoose.connect(uri, {
@@ -43,6 +42,7 @@ module.exports = {
 						db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { ip: ip } }); {
 							if (err) throw(err);
 						};
+						
 					});
 					let ip = await db.collection('user').findOne({hash: req.session.user.hash}, {ip: 1})
 					console.log(ip.ip);

@@ -53,6 +53,8 @@ mongoose.connect(uri, {
 var db=mongoose.connection;
 db.collection('matches').find({});
 db.collection('user').find({});
+
+module.exports = db;
 db.on('error', console.log.bind(console, "connection error"));
 db.once('open', function(callback){
     gfs = Grid(db.db, mongoose.mongo);
@@ -125,6 +127,7 @@ app.get('/login', (req, res, next) => {
 app.post('/login', async (req, res) => {
     var login = require('./controllers/login.js');
     await login.login(req, res);
+
 });
 
 app.get('/signOut', async (req, res,) => {
@@ -317,14 +320,34 @@ app.get('/chats', (req,res) => {
     if (!req.session.user)
         res.render('auth/login.ejs', {title: 'Login', message: false});
     return res.render('chats/chat.ejs', {title: 'Chats'});
-
 });
 
-app.all('/chats', (req, res) => {
-    // 
+// app.get('/generateRoomName', ( req, res) => {
+//     var roomName = require('./controllers/roomName.js');
+//     roomName.roomName(req, res);
+
+// });
+
+// room connector, read from array stored from mongodb.
+
+
+
+app.get('/chats', ( req, res ) => {
+    // var key = req.params.key;
+    console.log('1')
+    var firstname = req.session.user.firstname;
+    console.log(firstname)
+    var roomName = require('./controllers/roomName.js');
+    roomName.generateName(req, res);
+    console.log('roomName called');
+    res.render('chats/chat.ejs', {title: 'Chats'});
+});
+
+
+
+app.post('/chats', (req, res) => {
     // pass this into socket(chat) controller
     var chat = require('./controllers/chat.js');
-    // var event = require('./views/static/eventManager.js');
     chat.chat(req, res);
 });
 

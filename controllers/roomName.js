@@ -12,18 +12,24 @@ mongoose.connect(uriUser, {
 var dbUser=mongoose.connection;
 
 module.exports = {
-	chat: function chatUser(req, res) {
-        io.sockets.on('connection', function (socket) {
+    generateName: async function generateName(req, res) {
+        console.log('here');
+        // io.sockets.on('connection', function () {
+            // console.log('here2')
             // when the client emits 'sendchat', this listens and executes
             // console.log(socket.data);
-            var firstName = dbUser.collection('user').findOne({ firstname: firstName });
-            console.log(firstName);
-            
-            socket.on('sendchat', function (firstName, data) {
-                // we tell the client to execute 'updatechat' with 2 parameters
-                io.sockets.emit('updatechat', firstName, data);
-                console.log(data + "\t" + firstName + "\tSent from client to server");
-            })
-        });
+            // io.sockets.on('create'), function(room) {
+                // socket.join(room);
+                // console.log(room);
+            // }
+        try {
+            var firstName = await db.collection('user').findOne({ firstname: req.session.user.firstname });
+            console.log(firstName.firstname + 'test');
+        } catch (error) {
+            console.log(error)
+            // return res.render('auth/login.ejs', { title: 'Login', message: 'Something went wrong, try again...' });
+            return res.render('/chats', {title: 'Chat'});
+        }
+        // });
     }
 };
