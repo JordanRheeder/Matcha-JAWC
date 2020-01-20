@@ -160,16 +160,16 @@ app.get('/reset/:key', async (req, res) => {
     res.render('auth/reset.ejs', {title: 'Reset'});
 })
 
-app.get('/profile', async (req, res, next) => {
+app.get('/profile/:keys', async (req, res, next) => {
     if (!req.session.user)
         res.redirect('/login');
-    const filename0 = await db.collection('user').findOne({ email: req.session.user.email }, {pp: 1})
+    const filename0 = await db.collection('user').findOne({ username: req.params.keys }, {pp: 1, firstname: 1})
     console.log(filename0);
 
     gfs.files.find({ filename: filename0.pp }).toArray((err, files) => {
         if (!files || files.length === 0) {
             console.log('no file found...\n');
-            res.render('admin/profile.ejs', {user: req.session.user.firstname, files: false, title: 'Profile'});
+            res.render('admin/profile.ejs', {user: filename0.firstname, files: false, title: 'Profile'});
         } else {
             files.map(file => {
                 if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
@@ -182,14 +182,21 @@ app.get('/profile', async (req, res, next) => {
                 console.log('File exists')
             });
             console.log('Filename: \t' + ls.get('PP'));
-            res.render('admin/profile.ejs', {user: req.session.user.firstname, filename: filename0.pp, files: files, title: 'Profile'});
+            res.render('admin/profile.ejs', {user: filename0.firstname, filename: filename0.pp, files: files, title: 'Profile'});
         }
     })
 });
 
+
+app.get('/profile', async (req, res, next) => {
+    if (!req.session.user)
+        res.redirect('/login');
+    res.redirect('/profile/' + req.session.user.username);
+});
+
 app.get('/login', (req, res, next) => {
     res.render('auth/login.ejs', {title: 'Login'});
-})
+});
 
 app.post('/login', async (req, res) => {
 	var login = require('./controllers/login.js');
@@ -253,6 +260,7 @@ app.get('/editprofile', (req, res) =>{
     if (!req.session.user)
         res.redirect('/login');
     const fname = ls.get('PP');
+    console.log("fname: " + fname);
     try {gfs.files.find({ filename: fname }).toArray((err, files) => {
         if (!files || files.length === 0) {
             res.render('admin/editProfile.ejs', {files: false, title: 'Profile'});
@@ -352,7 +360,7 @@ app.get('/chats', ( req, res ) => {
     // var roomName = require('./controllers/roomName.js');
     // roomName.generateName(req, res);
     // console.log('roomName called');
-    res.redirect('chats/' + req.session.user.username);
+    res.redirect('/chats/' + req.session.user.username);
 });
 
 
