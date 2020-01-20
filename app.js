@@ -51,8 +51,6 @@ mongoose.connect(uri, {
     useUnifiedTopology: true,
 })
 var db=mongoose.connection;
-db.collection('matches').find({});
-db.collection('user').find({});
 
 module.exports = db;
 db.on('error', console.log.bind(console, "connection error"));
@@ -62,6 +60,9 @@ db.once('open', function(callback){
     console.log("connection succeeded");
 })
 // var userSchema = mongoose.model('user');
+
+db.collection('matches').find({});
+db.collection('user').find({});
 
 app.use(methodOverride('_method'));
 var secretKey = process.env.SESSION_SECRET;
