@@ -13,7 +13,7 @@ var userSchema = new Schema({
     verified: {type: Boolean, default: false, required: false},
     age: {type: String, trim:true, required: [true, "can't be blank"]},
     bio: {type: String, trim:true, required: false},
-    interests: {type: Array, trim:true, required: false},
+    interests: {type: String, trim:true, required: false},
     pp: {type: String, default: '', required: false, trim: true},
     pp2: {type: String, default: '', required: false, trim: true},
     pp3: {type: String, default: '', required: false, trim: true},
@@ -28,6 +28,7 @@ var userSchema = new Schema({
     zip_code: {type: String, required: false, default: "", trim: true},
     longitude: {type: String, required: false, default: "", trim: true},
     latitude: {type: String, required: false, default: "", trim: true},
+    tags: {type: String, required: false, default: "", trim: true},
 });
 module.exports = mongoose.model('user', userSchema);
 

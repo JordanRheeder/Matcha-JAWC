@@ -97,6 +97,28 @@ const editAccount = {
 		}
 	},
 
+	editBio: async function(req) {
+		try {
+			await db.collection('user').update(
+				{hash: req.session.user.hash},
+				{$set: {bio: req.body.bio}});
+				req.session.user.bio = req.body.bio;
+		} catch (err) {
+			console.log(err);
+		}
+	},
+
+	editTags: async function(req) {
+		try {
+			await db.collection('user').update(
+				{hash: req.session.user.hash},
+				{$set: {tags: req.body.tags}});
+				req.session.user.tags = req.body.tags;
+		} catch (err) {
+			console.log(err);
+		}
+	},
+
 	editAccount: async function(req, res) {
 		try {
 			const validation = require("./validation.js");
@@ -129,6 +151,10 @@ const editAccount = {
 					await editAccount.editInterest(req);
 				if (req.body.age)
 					await editAccount.editAge(req);
+				if (req.body.bio)
+					await editAccount.editBio(req);
+				if (req.body.tags)
+					await editAccount.editTags(req);
 				}
 				console.log(req.session.user);
 			} catch (err){

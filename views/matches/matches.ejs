@@ -6,7 +6,6 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="assets/css/account.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <link rel="shortcut icon" type="image/jpg" href="../../outputDir/favicon.ico"/>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <!-- <%- include('../includes/nav.ejs') %> -->
   </head>
@@ -14,6 +13,54 @@
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
 
+        <form action="/matches" method="POST">
+          <div style="width:180px;">
+            tags<input class="asdf" type="text" name="tags" value="1" style="
+            width: 10vw;display: flex;margin: auto;">fame
+            <input class="asdf" type="text" name="fame" value="0" style="
+            width: 10vw;display: flex;margin: auto;">distance
+            <input class="asdf" type="text" name="distance" value="100" style="
+            width: 10vw;display: flex;margin: auto;">age
+            <input class="asdf" type="text" name="age" value="18" style="
+            width: 10vw;display: flex;margin: auto;">
+            <input class="asdf" type="submit"></input>
+        </div>
+      </form>
+
+        <% for (let i of userdata) { %>
+          <div class="box" style="width: 30vw; display: flex; margin: auto;">
+            <article class="media">
+              <div class="media-left">
+                <figure class="image is-64x64">
+                  <img src="image/<%= i.pp %>" alt="Image">
+                </figure>
+              </div>
+              <div class="media-content">
+                <div class="content">
+                  <p>
+                    <strong><% i.firstname %> <% i.lastname %></strong> <small><% i.gender %></small>
+                    <br>
+                        <% i.bio %>
+                  </p>
+                </div>
+                <form action="/matches" method="post">
+                  <button>
+                    <nav class="level is-mobile">
+                      <div class="level-left">
+                        <a class="level-item" aria-label="match">
+                          <span class="icon is-small">
+                            <input type="hidden" value="<%= i.hash %>" name="hash">
+                            <i type="submit" class="fas fa-heart" aria-hidden="true"></i>
+                          </span>
+                        </a>
+                      </div>
+                    </nav>
+                </button>
+                </form>
+              </div>
+            </article>
+          </div>
+          <% } %>
 
             <header id="header" class="alt">
                 <!-- if button is pressed initialise code. look at ejs syntax -->

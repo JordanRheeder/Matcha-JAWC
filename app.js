@@ -51,6 +51,8 @@ mongoose.connect(uri, {
     useUnifiedTopology: true,
 })
 var db=mongoose.connection;
+
+module.exports = db;
 db.on('error', console.log.bind(console, "connection error"));
 db.once('open', function(callback){
     gfs = Grid(db.db, mongoose.mongo);
@@ -59,8 +61,8 @@ db.once('open', function(callback){
 })
 // var userSchema = mongoose.model('user');
 
-
-
+db.collection('matches').find({});
+db.collection('user').find({});
 
 app.use(methodOverride('_method'));
 var secretKey = process.env.SESSION_SECRET;
@@ -126,11 +128,12 @@ app.get('/login', (req, res, next) => {
 app.post('/login', async (req, res) => {
     var login = require('./controllers/login.js');
     await login.login(req, res);
+
 });
 
 app.get('/signOut', async (req, res,) => {
     req.session.user = null;
-    return res.redirect('/')
+    return res.redirect('/login')
 });
 
 app.get('/verify/:key', async (req, res) => {
@@ -148,7 +151,6 @@ app.get('/forgotPass', (req, res) => {
 })
 
 app.post('/forgotPass', (req, res) => {
-
     var resetUser = require('./controllers/resetSend.js');
     resetUser.resetUser(req, res);
 })
@@ -159,6 +161,8 @@ app.get('/reset/:key', async (req, res) => {
 })
 
 app.get('/profile', async (req, res, next) => {
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     const filename0 = await db.collection('user').findOne({ email: req.session.user.email }, {pp: 1})
     console.log(filename0);
 
@@ -196,10 +200,6 @@ app.get('/forgotPassword', (req, res) => {
 	res.render('auth/forgotPassword.ejs');
 });
 
-app.post('/forgotPassword', (req, res) => {
-	
-});
-
 app.get('/signOut', async (req, res,) => {
     req.session.user = null;
     return res.redirect('/')
@@ -231,6 +231,8 @@ const storage = new GridFsStorage({
 const upload = multer({storage})
 
 app.get('/UploadPP', function(req, res){
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     return res.render('admin/UploadPP.ejs', {title: 'Upload'});
 });
 
@@ -248,6 +250,8 @@ app.post('/EditAccount', function (req, res) {
 
 // render image to browser
 app.get('/editprofile', (req, res) =>{
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     const fname = ls.get('PP');
     try {gfs.files.find({ filename: fname }).toArray((err, files) => {
         if (!files || files.length === 0) {
@@ -273,6 +277,8 @@ app.get('/editprofile', (req, res) =>{
 });
 
 app.get('/editsettings', function(req, res){
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     res.render('admin/editSettings.ejs', {title: 'Profile', files: null});
 });
 
@@ -312,16 +318,37 @@ app.get('/files/:filename', (req, res) => {
   });
 
 app.get('/chats', (req,res) => {
-    
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     return res.render('chats/chat.ejs', {title: 'Chats'});
-
 });
 
-app.all('/chats', (req, res) => {
-    // 
+// app.get('/generateRoomName', ( req, res) => {
+//     var roomName = require('./controllers/roomName.js');
+//     roomName.roomName(req, res);
+
+// });
+
+// room connector, read from array stored from mongodb.
+
+
+
+app.get('/chats', ( req, res ) => {
+    // var key = req.params.key;
+    console.log('1')
+    var firstname = req.session.user.firstname;
+    console.log(firstname)
+    var roomName = require('./controllers/roomName.js');
+    roomName.generateName(req, res);
+    console.log('roomName called');
+    res.render('chats/chat.ejs', {title: 'Chats'});
+});
+
+
+
+app.post('/chats', (req, res) => {
     // pass this into socket(chat) controller
     var chat = require('./controllers/chat.js');
-    // var event = require('./views/static/eventManager.js');
     chat.chat(req, res);
 });
 
@@ -333,8 +360,19 @@ app.all('/chats', (req, res) => {
 console.log("Started: Now listening on P-3000");
 
 
-app.get('/matches', (req, res) => {
+app.get('/matches', async function(req, res) {
+    if (!req.session.user)
+        res.render('auth/login.ejs', {title: 'Login', message: false});
     var matches = require('./controllers/matches.js');
-    matches.findUsers(req, res);
-    return res.render('matches/matches.ejs', {title: 'Matches'});
+    var userdata = await matches.findUsers(req, res);
+    console.log(userdata);
+    console.log(req.session.user);
+    return res.render('matches/matches.ejs', {title: 'Matches', userdata: userdata});
+});
+
+app.post('/matches', async function(req, res) {
+    console.log("matches.post called");
+    var matches = require('./controllers/matches');
+    matches.matchUsers(req.body.hash, req.session.user.hash);
+    return res.render('chats/chat.ejs', {title: 'Chats'});
 });
