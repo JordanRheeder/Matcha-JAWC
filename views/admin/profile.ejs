@@ -15,12 +15,12 @@
             <header id="header" class="alt">
                 <h2>Hello, <a href='/test'><%= user %></a></h2>
                 <div style='position:absolute;left:32px;top:32px'>
-                    <figure class="image is-128x128 is-rounded" style="left:42px">
+                    <figure class="image is-128x128" style="left:42px">
                         <% if(files){ %>
                             <% files.forEach(function(files) { %>
                               <div class="card card-body mb-3">
                                 <% if(files.isImage) { %>
-                                  <img src="image/<%= files.filename %>" alt="">
+                                  <img class="is-rounded" src="image/<%= files.filename %>" alt="">
                                   <% } else { %>
                                     <a href ="<%= files.filename %>" target ="_blank"><%= files.filename %></a>
                                       <% } %>
@@ -29,7 +29,7 @@
                                 <% } else { %>
                                   <p><a href='/UploadPP'>Upload a Profile Picture</a></p>
                                   <% } %>
-                        <img class="is-rounded" src='' href='/editPP'></img>
+                       <!-- <img class="is-rounded" src='' href='/editPP'></img> -->
                     </figure><br/>
                     
                     <a class="button" href='/editprofile'>Edit Profile</a>  
@@ -38,10 +38,24 @@
 
                 <!-- if button is pressed initialise code. look at ejs syntax -->
                 <div class="inner">
-                                 
+                  <div class="columns is-multiline is-mobile">
+                    <div class="column is-one-third">
+                      <div class="box">
+                      <p class="title is-5">column is one third</p>
+                      <p class="subtitle">This column is one third</p>
+                    </div>
+
+                    </div>
+                    <div class="column">
+                      <div class="box">
+                        <p class="title is-5">Flexible column</p>
+                        <p class="subtitle">This column will take up the remaining space available.</p>
+                      </div>
+                    </div>
+                  </div>            
                 </div>
             </header>
-            <div> <img> </img></div>
+
   </body>
     <!-- Wrapper -->
         <%- include('../includes/footer.ejs') %>

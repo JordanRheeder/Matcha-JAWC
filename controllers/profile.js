@@ -8,4 +8,4 @@ mongoose.connect(uri, {
 });
 var db=mongoose.connection;
 
-//or query database once for all user details and then seperate them out into the ones I want from the frontend or backend
+//query database once for all user details and then seperate them out into the ones I want from the frontend or backend
