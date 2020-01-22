@@ -1084,11 +1084,11 @@
 				}
 
 			.item header strong, .item header b {
-				color: #ffffff;
+				color: #000000;
 			}
 
 			.item header h1, .item header h2, .item header h3, .item header h4, .item header h5, .item header h6 {
-				color: #ffffff;
+				color: #000000;
 			}
 
 			.item header blockquote {
@@ -1308,7 +1308,7 @@
 			}
 
 		#header strong, #header b {
-			color: #ffffff;
+			color: #000000;
 		}
 
 		#header h1, #header h2, #header h3, #header h4, #header h5, #header h6 {
