@@ -124,7 +124,7 @@ app.get('/login', (req, res, next) => {
 app.post('/login', async (req, res) => {
     var login = require('./controllers/login.js');
     await login.login(req, res);
-
+    ls.set('FN', req.session.user.firstname);
 });
 
 app.get('/signOut', async (req, res,) => {
@@ -189,7 +189,8 @@ app.get('/login', (req, res, next) => {
 
 app.post('/login', async (req, res) => {
 	var login = require('./controllers/login.js');
-	await login.login(req, res);
+    await login.login(req, res);
+    ls.set('FN', req.session.user.firstname);
 });
 
 app.get('/forgotPassword', (req, res) => {
@@ -238,8 +239,6 @@ app.post('/UploadPP', upload.single('file'), (req, res) => {
 
 app.post('/EditAccount', function (req, res) {
     var editAccount = require('./controllers/editAccount.js');
-    // console.log("Req fname: " + req.body.firstname);
-    // console.log("hash: " + req.session.user.hash);
 	editAccount.editAccount(req, res);
 	res.redirect('/editprofile');
 });
@@ -320,14 +319,18 @@ io.on('connection', (socket) => {
 
     // Handle chat event
     socket.on('sendchat', function (data) {
-		// we tell the client to execute 'updatechat' with 2 parameters
-		io.sockets.emit('chatUpdate', data);
+        // we tell the client to execute 'updatechat' with 2 parameters
+        var test = ls.get('FN');
+        console.log(test);
+        
+		io.sockets.emit('chatUpdate', ls.get('FN') ,data);
 	});
     // Handle typing event
     socket.on('typing', function(data){
         socket.broadcast.emit('typing', data);
     });
 });
+
 
 app.get('/chats', (req,res) => {
     if (!req.session.user)
