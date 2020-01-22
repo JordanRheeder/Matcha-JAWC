@@ -26,15 +26,13 @@ const ls = require('local-storage');
 const nodemailer = require('nodemailer')
 var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
-
 var express = require('express')
-  , app = express()
-  , http = require('http')
-  , server = http.createServer(app)
-  , io = require('socket.io').listen(server);
-server.listen(3000);
-
-module.exports = io;
+var app = express();
+var server = app.listen(3000, function(){
+    console.log('listening for requests on port 3000,');
+});
+var socket = require('socket.io');
+var io = socket(server);
 
 // *****************
 
@@ -75,12 +73,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
-app.use(express.static('public')); 
+app.use(express.static(__dirname)); 
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(express.static(__dirname));
-app.use(express.static('public'));
 app.use(flash());
 
 app.use((req, res, next) => {
@@ -316,6 +312,23 @@ app.get('/files/:filename', (req, res) => {
       }
     });
   });
+  
+// Socket setup & pass server
+
+io.on('connection', (socket) => {
+
+    console.log('made socket connection', socket.id);
+
+    // Handle chat event
+    socket.on('sendchat', function (data) {
+		// we tell the client to execute 'updatechat' with 2 parameters
+		io.sockets.emit('chatUpdate', data);
+	});
+    // Handle typing event
+    socket.on('typing', function(data){
+        socket.broadcast.emit('typing', data);
+    });
+});
 
 app.get('/chats', (req,res) => {
     if (!req.session.user)
@@ -323,42 +336,12 @@ app.get('/chats', (req,res) => {
     return res.render('chats/chat.ejs', {title: 'Chats'});
 });
 
-// app.get('/generateRoomName', ( req, res) => {
-//     var roomName = require('./controllers/roomName.js');
-//     roomName.roomName(req, res);
-
-// });
-
-// room connector, read from array stored from mongodb.
-
-
-
-app.get('/chats', ( req, res ) => {
-    // var key = req.params.key;
-    console.log('1')
-    var firstname = req.session.user.firstname;
-    console.log(firstname)
-    var roomName = require('./controllers/roomName.js');
-    roomName.generateName(req, res);
-    console.log('roomName called');
-    res.render('chats/chat.ejs', {title: 'Chats'});
-});
-
-
-
 app.post('/chats', (req, res) => {
     // pass this into socket(chat) controller
-    var chat = require('./controllers/chat.js');
-    chat.chat(req, res);
+    // var chat = require('./controllers/chat.js');
+    // chat.chat(req, res);
+    // res.render('chats/chat.ejs', {title: 'Chats'});
 });
-
-// key is going to be the room name we will be joining. Could possibly change
-// app.get('/chats:key', (req,res) => {
-//     return res.render('chats/chat.ejs', {title: 'Chats'});
-// });
-
-console.log("Started: Now listening on P-3000");
-
 
 app.get('/matches', async function(req, res) {
     if (!req.session.user)
