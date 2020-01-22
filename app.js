@@ -314,7 +314,6 @@ app.get('/files/:filename', (req, res) => {
   });
   
 // Socket setup & pass server
-
 io.on('connection', (socket) => {
 
     console.log('made socket connection', socket.id);
