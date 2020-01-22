@@ -32,7 +32,7 @@ router.get('/verify/:key', async (req, res) => {
 });
 
 router.get('/login', (req, res, next) => {
-    res.render('auth/login.ejs', {title: 'Login'});
+    res.render('auth/login.ejs', {title: 'Login', user: res.locals.user, message: false});
     //auth
 });
 
@@ -46,12 +46,12 @@ router.get('/login', (req, res, next) => {
 });
 
 router.get('/forgotPassword', (req, res) => {
-    res.render('auth/forgotPassword.ejs', { user: res.locals.user });
+    res.render('auth/forgotPassword.ejs', { user: res.locals.user, message: false });
 });
 
 router.get('/reset/:key', async (req, res) => {
 //     console.log({key: req.params.key});
-    res.render('auth/reset.ejs', { title: 'Reset', user: res.locals.user });
+    res.render('auth/reset.ejs', { title: 'Reset', user: res.locals.user, message: false });
 });
 
 
