@@ -41,10 +41,12 @@ $(function(){
 });
 
 // Listen for events
-socket.on('chatUpdate', function(data){
-    $('#conversation').append('<b>' + '</b> ' + data + '<br>');
-    // $('#output').append('<b>' + ':</b> ' + data + '<br>');
-	});
+socket.on('chatUpdate', function(name ,data){
+    console.log(data + '123');
+    if (data) {
+        $('#conversation').append("<b>"+name+"</b>" + ":\t" + data + "\n<br/>");
+    }
+});
 
 // socket.on('typing', function(data){
 //     feedback.innerHTML = '<p><em>' + data + ' is typing a message...</em></p>';
