@@ -4,17 +4,18 @@ const bcrypt = require('bcrypt');
 const getIP = require('external-ip')();
 // var geoip = require('geoip-lite');
 var ip2location = require('ip-to-location');
-var uri = process.env.URI;
+// var uri = process.env.URI;
 
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}); 
+// mongoose.connect(uri, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// }); 
 
-var db=mongoose.connection;
+// var db=mongoose.connection;
 
 module.exports = {
 	login: async function loginUser(req, res) {
+		console.log(req.body);
 		const email = req.body.email;
 		const password = req.body.password;
 		console.log({ email, password });

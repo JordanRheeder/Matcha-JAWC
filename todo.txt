@@ -47,7 +47,11 @@ GOAL FOR THURSDAY -->||
 8: need error messages if user inputs aren't valid (popup message that can be used globally)
 
 
+9: fix app.js
 
+10: fix file Schema
+
+11: add proper models
 
 
 
