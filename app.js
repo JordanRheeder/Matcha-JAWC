@@ -332,13 +332,13 @@ io.on('connection', (socket) => {
 });
 
 
-app.get('/chats', (req,res) => {
+app.get('/chats/:key', (req,res) => {
     if (!req.session.user)
         res.render('auth/login.ejs', {title: 'Login', message: false});
     return res.render('chats/chat.ejs', {title: 'Chats'});
 });
 
-app.post('/chats', (req, res) => {
+app.post('/chats/:key', (req, res) => {
     // pass this into socket(chat) controller
     // var chat = require('./controllers/chat.js');
     // chat.chat(req, res);
@@ -351,7 +351,7 @@ app.get('/matches', async function(req, res) {
     var matches = require('./controllers/matches.js');
     var userdata = await matches.findUsers(req, res);
     console.log(userdata);
-    console.log(req.session.user);
+    // console.log(req.session.user);
     return res.render('matches/matches.ejs', {title: 'Matches', userdata: userdata});
 });
 
