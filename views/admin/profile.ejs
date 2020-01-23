@@ -13,23 +13,22 @@
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
-                <h2>Hello, <a href='/test'><%= user %></a></h2>
-                <div style='position:absolute;left:32px;top:32px'>
-                    <figure class="image is-128x128" style="left:42px">
-                        <% if(files){ %>
+                <h2 style='position:absolute;left:800px;top:32px'>Hello, <a href='/test'><%= user %></a></h2>
+               <div style='position:absolute;left:32px;top:32px'>
+                <figure class="image is-128x128" style="left:42px">
+                     <% if(files){ %>
                             <% files.forEach(function(files) { %>
-                              <div class="card card-body mb-3">
+                              
                                 <% if(files.isImage) { %>
-                                  <img class="is-rounded" src="image/<%= files.filename %>" alt="">
+                                  <img src="image/<%= files.filename %>" alt="">
                                   <% } else { %>
                                     <a href ="<%= files.filename %>" target ="_blank"><%= files.filename %></a>
                                       <% } %>
-                              </div>
-                              <% }) %>
+                                  <% }) %>
                                 <% } else { %>
                                   <p><a href='/UploadPP'>Upload a Profile Picture</a></p>
                                   <% } %>
-                       <!-- <img class="is-rounded" src='' href='/editPP'></img> -->
+                        <img src='' href='/editPP'></img> 
                     </figure><br/>
                     
                     <a class="button" href='/editprofile'>Edit Profile</a>  
