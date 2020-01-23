@@ -10,10 +10,16 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
+    <style>
+      section{
+        display : flex;
+        flex-flow: row wrap;
+      }
+    </style>
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
-                <h2 style='position:absolute;left:800px;top:32px'>Hello, <a href='/test'><%= user %></a></h2>
+                <h2 style='position:absolute;left:800px;top:32px'>Hello,<%= user %></h2>
                <div style='position:absolute;left:32px;top:32px'>
                 <figure class="image is-128x128" style="left:42px">
                      <% if(files){ %>
@@ -29,7 +35,7 @@
                                   <p><a href='/UploadPP'>Upload a Profile Picture</a></p>
                                   <% } %>
                         <img src='' href='/editPP'></img> 
-                    </figure><br/>
+                                </figure><br/>
                     
                     <a class="button" href='/editprofile'>Edit Profile</a>  
                     <a class="button" href='/editsettings'>Settings</a>  
@@ -37,21 +43,14 @@
 
                 <!-- if button is pressed initialise code. look at ejs syntax -->
                 <div class="inner">
-                  <div class="columns is-multiline is-mobile">
-                    <div class="column is-one-third">
-                      <div class="box">
-                      <p class="title is-5">column is one third</p>
-                      <p class="subtitle">This column is one third</p>
-                    </div>
-
-                    </div>
-                    <div class="column">
-                      <div class="box">
-                        <p class="title is-5">Flexible column</p>
-                        <p class="subtitle">This column will take up the remaining space available.</p>
-                      </div>
-                    </div>
-                  </div>            
+                  <section>
+                    <article>
+                      <h1>Images</h1>
+                    </article>
+                    <article>
+                      <h1>Bio</h1>
+                    </article>
+                  </section>          
                 </div>
             </header>
 
