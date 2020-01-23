@@ -42,23 +42,9 @@ module.exports = io;
 // const user = require('./models/user');
 //
 let gfs;
-const uri = process.env.URI;
 
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-})
-var db=mongoose.connection;
+const db = require('./models/dbcon');
 
-module.exports = db;
-db.on('error', console.log.bind(console, "connection error"));
-db.once('open', function(callback){
-    gfs = Grid(db.db, mongoose.mongo);
-    gfs.collection('images');
-    console.log("connection succeeded");
-})
 // var userSchema = mongoose.model('user');
 
 db.collection('matches').find({});
@@ -145,9 +131,7 @@ app.get('/verify/:key', async (req, res) => {
 
 app.get('/forgotPass', (req, res) => {
     console.log('GET:forgotpass ==> rendering now\n\t')
-
     res.render('auth/forgot.ejs', {title: 'Reset'});
-
 })
 
 app.post('/forgotPass', (req, res) => {
@@ -222,41 +206,7 @@ app.get('/editprofile', (req, res) =>{
 app.get('/profile/:keys', async (req, res, next) => {
     if (!req.session.user)
         res.redirect('/login');
-    try {
-        await db.collection('user').findOne({ username: req.params.keys }, {pp: 1, firstname: 1}, (e, filename0) => {
-            if (e)
-                throw (e);
-            else {
-                gfs.files.find({ filename: filename0.firstname }).toArray((err, files) => {
-                    if (!files || files.length === 0) {
-                        console.log('no file found...\n');
-                        res.render('admin/profile.ejs', {user: filename0.firstname, files: false, title: 'Profile'});
-                } else {
-                    files.map(file => {
-                        if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-                            console.log('true')
-                        } else {
-                            console.log('false')
-                        }
-                        console.log('File exists')
-                    });
-                    console.log('Filename: \t' + ls.get('PP'));
-                    res.render('admin/profile.ejs', {user: filename0.firstname, filename: filename0.firstname, files: files, title: 'Profile'});
-                }})
-                console.log(filename0);
-            }
-        })} catch (e) {
-    //
-    //
-    //
-    //
-    //  need to redirect to 404 and say that no user is found
-        res.redirect('/login');
-    //
-    //
-    //
-    //
-    }
+    res.render('admin/profile.ejs', {title: 'Profile', });
 });
 
 
@@ -336,7 +286,13 @@ app.get('/profile', async (req, res, next) => {
 //     res.redirect('/editprofile');
 // });
 
-
+app.post('/uploadProfilePicture', async (req, res) => {
+    if (!req.session.user)
+        res.redirect('/login');
+    const storeProfilePicture = require('./controllers/profile.js');
+    await storeProfilePicture.storeUserProfilePictures(req.body.file, 1);
+    res.render('admin/uploadProfilePicture.ejs', {title: "Upload Profile Picture"});
+});
 
 app.get('/chats/:keys', async (req,res) => {
     if (!req.session.user)

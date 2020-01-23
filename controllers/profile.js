@@ -7,5 +7,9 @@ module.exports = {
         const userdata = await app.db.collection('user').findOne({ username: username }, {projection: { password: 0 }});
         // console.log(userdata);
         return (userdata);
+    },
+
+    storeUserProfilePictures: async function storeProfilePictures(image, isProfilePicture) {
+        console.log(image);
     }
 }

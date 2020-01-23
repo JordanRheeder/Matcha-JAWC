@@ -15,22 +15,14 @@
             <header id="header" class="alt">
                 <h2>Hello, <a href='/test'><%= user %></a></h2>
                 <div style='position:absolute;left:32px;top:32px'>
-                    <figure class="image is-128x128 is-rounded" style="left:42px">
-                        <% if(files){ %>
-                            <% files.forEach(function(files) { %>
-                              <div class="card card-body mb-3">
-                                <% if(files.isImage) { %>
-                                  <img src="image/<%= files.filename %>" alt="">
-                                  <% } else { %>
-                                    <a href ="<%= files.filename %>" target ="_blank"><%= files.filename %></a>
-                                      <% } %>
-                              </div>
-                              <% }) %>
-                                <% } else { %>
-                                  <p><a href='/UploadPP'>Upload a Profile Picture</a></p>
-                                  <% } %>
-                        <img class="is-rounded" src='' href='/editPP'></img>
-                    </figure><br/>
+                    <form action="/uploadProfilePicture" method="POST" enctype="multipart/form-data"><br/>   
+                        <h3> Edit Profile Image </h3><br/>             
+                        <div class="file">
+                                <input class="file" type="file" name="file" id="file" style='align-self: center'>
+                        </div>
+                        <input class = 'button is-danger is-light'type="submit" id="submit"
+                            name="submit" value="Submit" /><br> 
+                    </form><br/>
                     
                     <a class="button" href='/editprofile'>Profile</a>  
                     <a class="button" href='/editsettings'>Settings</a>  
