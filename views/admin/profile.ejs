@@ -15,12 +15,18 @@
         display : flex;
         flex-flow: row wrap;
       }
+
+      .profilenav {
+        display:flex;
+        flex-flow: column wrap;
+      }
     </style>
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
-                <h2 style='position:absolute;left:800px;top:32px'>Hello,<%= user %></h2>
-               <div style='position:absolute;left:32px;top:32px'>
+                
+               <div class="profilenav" style='position:absolute;left:32px;top:32px'>
+                <h2>Hello,<%= user %></h2>
                 <figure class="image is-128x128" style="left:42px">
                      <% if(files){ %>
                             <% files.forEach(function(files) { %>
@@ -44,12 +50,12 @@
                 <!-- if button is pressed initialise code. look at ejs syntax -->
                 <div class="inner">
                   <section>
-                    <article>
+                    <div>
                       <h1>Images</h1>
-                    </article>
-                    <article>
+                    </div>
+                    <div>
                       <h1>Bio</h1>
-                    </article>
+                    </div>
                   </section>          
                 </div>
             </header>
