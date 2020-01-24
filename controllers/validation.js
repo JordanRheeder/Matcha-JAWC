@@ -15,6 +15,7 @@ module.exports = {
 		if (req.body.username) {
 			var foundUser = await db.collection('user')
 			.count({username: req.body.username});
+			console.log("asdf\n");
 			// console.log("Same Usernames Found: " + foundUser);
 			if (req.body.username.length < 7 || req.body.username.length > 25 || foundUser || pattern.test(req.body.username))
 				return (false);

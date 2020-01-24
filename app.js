@@ -318,8 +318,8 @@ app.get('/files/:filename', (req, res) => {
   });
 
 app.get('/chats', (req,res) => {
-    if (!req.session.user)
-        res.render('auth/login.ejs', {title: 'Login', message: false});
+    // if (!req.session.user)
+    //     res.render('auth/login.ejs', {title: 'Login', message: false});
     return res.render('chats/chat.ejs', {title: 'Chats'});
 });
 

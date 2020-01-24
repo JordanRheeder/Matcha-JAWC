@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer')
 
-var emailPass = process.env.EMAILPASS;
-var emailUser = process.env.EMAILUSER;
+var emailPass = process.env.emailPass;
+var emailUser = process.env.emailUser;
+
 var uri = process.env.URI;
+
 mongoose.connect(uri, {
   useNewUrlParser: true,
   useFindAndModify: false,
@@ -42,12 +44,17 @@ module.exports = {
 				if (data.age > 100) {
 					return res.render('auth/register.ejs', {title: 'Register', message: 'Invalid age'})
 				}
+			console.log(emailUser + ' ' + emailPass);
 			let transporter = nodemailer.createTransport({
 				service: 'gmail',
 				host: 'smtp.gmail.com',
+				secure: false,
 				auth: {
+					type: 'login',
 					user: emailUser, // generated ethereal user
 					pass: emailPass // generated ethereal password
+					}, tls: {
+						rejectUnauthorized: false
 					}
 				});
 			console.log('Hopefully logged in!??>!?')
