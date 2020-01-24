@@ -1,5 +1,6 @@
 // const mongoose = require('mongoose');
 const app = require('../app');
+const con = require('../models/dbcon');
 
 // var uri = process.env.URI;
 // mongoose.connect(uri, {
@@ -47,12 +48,12 @@ module.exports = {
         
         console.log('::queryObj:::', queryObj);
         //, username: { $ne: req.session.user.username}, pp: {$ne: ''}
-        var X = await app.db.collection('user').find( queryObj ).project({_id: 0, city: 1, pp: 1, firstname: 1, lastname: 1, username: 1, hash: 1, gender: 1, age: 1, bio: 1, fame: 1}).toArray();
+        var X = await con.db.collection('user').find( queryObj ).project({_id: 0, city: 1, pp: 1, firstname: 1, lastname: 1, username: 1, hash: 1, gender: 1, age: 1, bio: 1, fame: 1}).toArray();
         // console.log(X);
         return (X);
     },
 
     matchUsers: async function matchUsers(likedUser, loggedUser) {
-        app.db.collection('matches').insertOne({likedUser: likedUser, loggedUser: loggedUser, blocked: false,});
+        con.db.collection('matches').insertOne({likedUser: likedUser, loggedUser: loggedUser, blocked: false,});
     }
 }

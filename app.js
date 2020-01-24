@@ -117,11 +117,6 @@ app.post('/login', async (req, res) => {
 
 });
 
-app.get('/signOut', async (req, res,) => {
-    req.session.user = null;
-    return res.redirect('/login')
-});
-
 app.get('/verify/:key', async (req, res) => {
     console.log({key: req.params.key});
     var verifyUser = require('./controllers/verifyUser.js');
@@ -159,7 +154,7 @@ app.get('/forgotPassword', (req, res) => {
 
 app.get('/signOut', async (req, res,) => {
     req.session.user = null;
-    return res.redirect('/')
+    return res.redirect('/login')
 });
 
 app.post('/EditAccount', function (req, res) {
