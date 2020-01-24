@@ -13,18 +13,20 @@
       var socket = io.connect('http://localhost:3000');
     
       // on connection to server, we will get the username and return it using ip as a search term from mongo.
-      socket.emit('connection', function(){
+      socket.emit('connection', function() {
         // call the server-side function 'adduser' and send one parameter (value of prompt)
         // socket.emit('adduser', prompt("What's your name?"));
         console.log('Connected to client from server')
         // client side code
         // generate a roomname 
         // console.log('connected with gen')
-        // socket.emit('create', 'room1');  
+        // socket.emit('create', 'room1');
+      });  
       // listener, whenever the server emits 'updatechat', this updates the chat body
       socket.on('updatechat', function (username, data) {
         $('#conversation').append('<b>' + '</b> ' + data + '<br>');
       });
+    
     
       // listener, whenever the server emits 'updaterooms', this updates the room the client is in
       socket.on('updaterooms', function(rooms, current_room) {
@@ -262,7 +264,7 @@
                         <form action="/chats" method="POST">
                         <footer>
                             <textarea type="text" value="Enter your message" onfocus="this.style.color='fff'; 
-                            this.value='';" style="color: Black;" " id="data" name="data">Enter your message</textarea>
+                            this.value='';" style="color: Black;" id="data" name="data">Enter your message</textarea>
                             <input class='button is-danger is-light' type="submit" id="datasend" name="datasend" value="send"><br/> 
                         </footer>
                       </form>
