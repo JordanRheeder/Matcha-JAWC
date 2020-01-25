@@ -9,22 +9,22 @@ if (process.env.NODE_ENV !== 'production') {
 // const flash = require("express-flash"); // define a flash message and render it without redirecting the request.
 const session = require("express-session"); // self-explanatory
 const bodyParser = require("body-parser"); // https://www.npmjs.com/package/body-parser (This is where you get form data from the browser by using the 'req.body' property)
-const multer = require("multer"); // multer is short for 'multipart/form-data' which is primarily used for uploading files. Also have a look at 'formidable'
+// const multer = require("multer"); // multer is short for 'multipart/form-data' which is primarily used for uploading files. Also have a look at 'formidable'
 // Not sure which is better
-const crypto = require("crypto");
-const bcrypt = require("bcrypt"); // using bcrypt because it can generate us a hash which we can use to create our user tokens and apply it to the sql database.
+// const crypto = require("crypto");
+// const bcrypt = require("bcrypt"); // using bcrypt because it can generate us a hash which we can use to create our user tokens and apply it to the sql database.
 //
 const passport = require("passport"); // Allows for different login/out strategies http://www.passportjs.org/
-const fs = require("fs");
-const GridFsStorage = require('multer-gridfs-storage');
-const Grid = require('gridfs-stream');
-const mongoose = require('mongoose');
+// const fs = require("fs");
+// const GridFsStorage = require('multer-gridfs-storage');
+// const Grid = require('gridfs-stream');
+// const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-const path = require('path');
-var sessionStorage = require('sessionstorage');
+// const path = require('path');
+// var sessionStorage = require('sessionstorage');
 const ls = require('local-storage');
-const nodemailer = require('nodemailer')
-var cookieParser = require('cookie-parser');
+// const nodemailer = require('nodemailer')
+// var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
 var express = require('express')
 var app = express();
@@ -51,7 +51,7 @@ db.collection('user').find({});
 app.use(methodOverride('_method'));
 var secretKey = process.env.SESSION_SECRET;
 app.use(session({
-    cookie: { maxAge: 6000000 },
+    cookie: { maxAge: 60000 },
     secret: secretKey,
     resave: true,
     saveUninitialized: false
