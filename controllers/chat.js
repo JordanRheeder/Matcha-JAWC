@@ -13,17 +13,26 @@ var dbUser=mongoose.connection;
 
 module.exports = {
 	chat: function chatUser(req, res) {
-        io.sockets.on('connection', function (socket) {
-            // when the client emits 'sendchat', this listens and executes
-            // console.log(socket.data);
-            var firstName = dbUser.collection('user').findOne({ firstname: firstName });
-            console.log(firstName);
-            
-            socket.on('sendchat', function (firstName, data) {
-                // we tell the client to execute 'updatechat' with 2 parameters
-                io.sockets.emit('updatechat', firstName, data);
-                console.log(data + "\t" + firstName + "\tSent from client to server");
-            })
+        io.on('connection', (socket) => {
+
+            console.log('made socket connection', socket.id);
+        
+            // Handle chat event
+            io.on('chat', function(data){
+                console.log(data.message);
+                io.socket.emit('chat', data);
+                console.log('received');
+                io.sockets.emit('chat', data);
+            });
+            // Handle typing event
+            socket.on('typing', function(data){
+                socket.broadcast.emit('typing', data);
+            });
+        });
+        
+        io.on('chat', function(data){
+            console.log(data.message);
+            io.sockets.emit('chat', data);
         });
     }
 };

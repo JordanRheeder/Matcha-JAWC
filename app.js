@@ -26,15 +26,13 @@ const ls = require('local-storage');
 const nodemailer = require('nodemailer')
 var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
-
 var express = require('express')
-  , app = express()
-  , http = require('http')
-  , server = http.createServer(app)
-  , io = require('socket.io').listen(server);
-server.listen(3000);
-
-module.exports = io;
+var app = express();
+var server = app.listen(3000, function(){
+    console.log('listening for requests on port 3000,');
+});
+var socket = require('socket.io');
+var io = socket(server);
 
 // *****************
 
@@ -53,7 +51,7 @@ db.collection('user').find({});
 app.use(methodOverride('_method'));
 var secretKey = process.env.SESSION_SECRET;
 app.use(session({
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 6000000 },
     secret: secretKey,
     resave: true,
     saveUninitialized: false
@@ -61,12 +59,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
-app.use(express.static('public')); 
+app.use(express.static(__dirname)); 
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(express.static(__dirname));
-app.use(express.static('public'));
 app.use(flash());
 
 app.use((req, res, next) => {
@@ -114,7 +110,7 @@ app.get('/login', (req, res, next) => {
 app.post('/login', async (req, res) => {
     var login = require('./controllers/login.js');
     await login.login(req, res);
-
+    ls.set('FN', req.session.user.firstname);
 });
 
 app.get('/verify/:key', async (req, res) => {
@@ -145,7 +141,8 @@ app.get('/login', (req, res, next) => {
 
 app.post('/login', async (req, res) => {
 	var login = require('./controllers/login.js');
-	await login.login(req, res);
+    await login.login(req, res);
+    ls.set('FN', req.session.user.firstname);
 });
 
 app.get('/forgotPassword', (req, res) => {
@@ -153,14 +150,13 @@ app.get('/forgotPassword', (req, res) => {
 });
 
 app.get('/signOut', async (req, res,) => {
-    req.session.user = null;
+    req.session.destroy;
+    console.log("User Signed out.");
     return res.redirect('/login')
 });
 
 app.post('/EditAccount', function (req, res) {
     var editAccount = require('./controllers/editAccount.js');
-    // console.log("Req fname: " + req.body.firstname);
-    // console.log("hash: " + req.session.user.hash);
 	editAccount.editAccount(req, res);
 	res.redirect('/editprofile');
 });
@@ -312,8 +308,6 @@ app.get('/chats/:keys', async (req,res) => {
 
 // room connector, read from array stored from mongodb.
 
-
-
 app.get('/chats', ( req, res ) => {
     if (!req.session.user)
         res.redirect('/login');
@@ -327,8 +321,6 @@ app.get('/chats', ( req, res ) => {
     res.redirect('/chats/' + req.session.user.username);
 });
 
-
-
 app.post('/chats', (req, res) => {
     // pass this into socket(chat) controller
     if (!req.session.user)
@@ -337,21 +329,13 @@ app.post('/chats', (req, res) => {
     chat.chat(req, res);
 });
 
-// key is going to be the room name we will be joining. Could possibly change
-// app.get('/chats:key', (req,res) => {
-//     return res.render('chats/chat.ejs', {title: 'Chats'});
-// });
-
-console.log("Started: Now listening on P-3000");
-
-
 app.get('/matches', async function(req, res) {
     if (!req.session.user)
         res.redirect('/login');
     var matches = require('./controllers/matches.js');
     var userdata = await matches.findUsers(req, res);
     console.log(userdata);
-    console.log(req.session.user);
+    // console.log(req.session.user);
     return res.render('matches/matches.ejs', {title: 'Matches', userdata: userdata});
 });
 

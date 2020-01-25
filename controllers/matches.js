@@ -19,12 +19,19 @@ module.exports = {
         userinterests = req.session.user.interests;
         //user gender
         usergender = req.session.user.gender;
+        // console.log(userinterests+'\n'+usergender);
         var queryObj = {verified: true};
-        if (usergender == "male" || usergender == "female")
-          await Object.assign(queryObj, { $or: [{interests: usergender}, {interests: "both"}]});
-        if (userinterests == "male" || userinterests == "female")
-          await Object.assign(queryObj, {gender: userinterests});
+        // We need to only see users who are verified.
+      // console.log(JSON.stringify(queryObj));
         
+        if (usergender == "male" || usergender == "female")
+          var dog = await Object.assign(queryObj, { $or: [{interests: usergender}, {interests: "both"}]});
+        if (userinterests == "male" || userinterests == "female")
+          var deg = await Object.assign(queryObj, {gender: userinterests});
+        
+          // console.log(JSON.stringify(dog));
+          // console.log(JSON.stringify(deg));
+
         // exclude users that have already matches with currently logged in user
         // find all users by user.hash
         // put all hashes into array
@@ -46,7 +53,7 @@ module.exports = {
         // await Object.assign(orObj, {hash: {$or: orObj}});
 
         
-        console.log('::queryObj:::', queryObj);
+        // console.log('::queryObj:::', queryObj);
         //, username: { $ne: req.session.user.username}, pp: {$ne: ''}
         var X = await con.db.collection('user').find( queryObj ).project({_id: 0, city: 1, pp: 1, firstname: 1, lastname: 1, username: 1, hash: 1, gender: 1, age: 1, bio: 1, fame: 1}).toArray();
         // console.log(X);
