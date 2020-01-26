@@ -8,13 +8,12 @@ mongoose.connect(uri, {
 });
 var db=mongoose.connection;
 
-//query database once for all user details and then seperate them out into the ones I want from the frontend or backend
+//use get method to get username of required profile, request all details of user, send object to frontend
 
 let fakeUser = {};
 
 fakeUser.ID = "0";
 fakeUser.verified = true;
-fakeUser.interests = "both";
 fakeUser.pp = "link to an image";
 fakeUser.pp2 = "link to an image";
 fakeUser.pp3 = "link to an image";

@@ -65,7 +65,7 @@ db.collection('user').find({});
 app.use(methodOverride('_method'));
 var secretKey = process.env.SESSION_SECRET;
 app.use(session({
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 21600000 },
     secret: secretKey,
     resave: true,
     saveUninitialized: false
