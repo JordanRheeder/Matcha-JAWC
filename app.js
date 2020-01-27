@@ -9,22 +9,22 @@ if (process.env.NODE_ENV !== 'production') {
 // const flash = require("express-flash"); // define a flash message and render it without redirecting the request.
 const session = require("express-session"); // self-explanatory
 const bodyParser = require("body-parser"); // https://www.npmjs.com/package/body-parser (This is where you get form data from the browser by using the 'req.body' property)
-// const multer = require("multer"); // multer is short for 'multipart/form-data' which is primarily used for uploading files. Also have a look at 'formidable'
+const multer = require("multer"); // multer is short for 'multipart/form-data' which is primarily used for uploading files. Also have a look at 'formidable'
 // Not sure which is better
-// const crypto = require("crypto");
-// const bcrypt = require("bcrypt"); // using bcrypt because it can generate us a hash which we can use to create our user tokens and apply it to the sql database.
+const crypto = require("crypto");
+const bcrypt = require("bcrypt"); // using bcrypt because it can generate us a hash which we can use to create our user tokens and apply it to the sql database.
 //
 const passport = require("passport"); // Allows for different login/out strategies http://www.passportjs.org/
-// const fs = require("fs");
-// const GridFsStorage = require('multer-gridfs-storage');
-// const Grid = require('gridfs-stream');
-// const mongoose = require('mongoose');
+const fs = require("fs");
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-// const path = require('path');
-// var sessionStorage = require('sessionstorage');
+const path = require('path');
+var sessionStorage = require('sessionstorage');
 const ls = require('local-storage');
-// const nodemailer = require('nodemailer')
-// var cookieParser = require('cookie-parser');
+const nodemailer = require('nodemailer')
+var cookieParser = require('cookie-parser');
 var flash = require('connect-flash');
 var express = require('express')
 var app = express();
@@ -51,11 +51,25 @@ db.collection('user').find({});
 app.use(methodOverride('_method'));
 var secretKey = process.env.SESSION_SECRET;
 app.use(session({
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 3600000 },
     secret: secretKey,
     resave: true,
     saveUninitialized: false
 }));
+
+// const store = new MongoDBStore({
+//     uri: mongodb_uri,
+//     collection: 'sessions'
+// });
+// app.use(session(
+//     {
+//         secret: 'my secret',
+//         resave: false,
+//         saveUninitialized: false,
+//         store: store
+//     }
+// ));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
@@ -142,7 +156,7 @@ app.get('/login', (req, res, next) => {
 app.post('/login', async (req, res) => {
 	var login = require('./controllers/login.js');
     await login.login(req, res);
-    ls.set('FN', req.session.user.firstname);
+    // ls.set('FN', req.session.user.firstname);
 });
 
 app.get('/forgotPassword', (req, res) => {
@@ -150,8 +164,8 @@ app.get('/forgotPassword', (req, res) => {
 });
 
 app.get('/signOut', async (req, res,) => {
+    req.session.user = null;
     req.session.destroy;
-    console.log("User Signed out.");
     return res.redirect('/login')
 });
 
@@ -204,6 +218,7 @@ app.get('/profile/:keys', async (req, res, next) => {
 app.get('/profile', async (req, res, next) => {
     if (!req.session.user)
         res.redirect('/login');
+    else
     res.redirect('/profile/' + req.session.user.username);
 });
 
@@ -281,8 +296,8 @@ app.post('/uploadProfilePicture', async (req, res) => {
     if (!req.session.user)
         res.redirect('/login');
     const storeProfilePicture = require('./controllers/profile.js');
-    await storeProfilePicture.storeUserProfilePictures(req.body.file, 1);
-    res.render('admin/uploadProfilePicture.ejs', {title: "Upload Profile Picture"});
+    await storeProfilePicture.storeUserProfilePictures(req, res, 1);
+    // res.redirect('/profile');
 });
 
 app.get('/chats/:keys', async (req,res) => {
@@ -343,5 +358,5 @@ app.post('/matches', async function(req, res) {
     console.log("matches.post called");
     var matches = require('./controllers/matches');
     matches.matchUsers(req.body.hash, req.session.user.hash);
-    return res.render('chats/chat.ejs', {title: 'Chats'});
+    res.redirect('/chats');
 });

@@ -47,7 +47,9 @@ GOAL FOR THURSDAY -->||
 8: need error messages if user inputs aren't valid (popup message that can be used globally)
 
 
-
+session lasts longer than 60 secs now
+long- and latitude is now stored in db for later use in matching process
+removed sexuality and location columns from userSchema
 
 
 

@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const user = require("../models/user.js");
+// const mongoose = require("mongoose");
+// const user = require("../models/user.js");
 const bcrypt = require('bcrypt');
 const con = require("../models/dbcon");
 
@@ -91,7 +91,7 @@ const editAccount = {
 		try {
 			await con.db.collection('user').update(
 				{hash: req.session.user.hash},
-				{$set: {Age: req.body.age}});
+				{$set: {age: req.body.age}});
 				req.session.user.age = req.body.age;
 		} catch (err) {
 			console.log(err);

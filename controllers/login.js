@@ -40,10 +40,12 @@ module.exports = {
 						
 					});
 					let ip = await con.db.collection('user').findOne({hash: req.session.user.hash}, {ip: 1})
-					console.log(ip.ip);
+					console.log(ip);
 					ip2location.fetch(ip.ip, function(err, res){
 						console.log(res);
-						con.db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { country_name: res.country_name, region_name: res.region_name, city: res.city, zip_code: res.zip_code } }); {
+						con.db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { country_name: res.country_name,
+							region_name: res.region_name, city: res.city, zip_code: res.zip_code, latitude: res.latitude,
+							longitude: res.longitude } }); {
 							if (err) throw(err);
 						};
 						// Okay so we are returned with an object which needs to be put into user-model
