@@ -40,13 +40,13 @@ module.exports = {
         // store hashes into object
         // insert object into queryObj to exclude all already matched users
 
-        const likedUsers = await con.db.collection('matches').find({loggedUser: req.session.user.hash}).project({_id: 0, likedUser: 1}).toArray();
-        var orObj = {};
-        console.log(likedUsers);
-        for (i = 0; likedUsers != null; i++) {
-            await Object.assign(orObj, likedUsers);
-        }
-        console.log(orObj);
+        // const likedUsers = await con.db.collection('matches').find({loggedUser: req.session.user.hash}).project({_id: 0, likedUser: 1}).toArray();
+        // var orObj = {};
+        // console.log(likedUsers);
+        // for (i = 0; likedUsers != null; i++) {
+        //     await Object.assign(orObj, likedUsers);
+        // }
+        // console.log(orObj);
 
         // likedUsers.forEach(i => {
         //       Object.assign(orObj, i['likedUser']);
@@ -56,7 +56,7 @@ module.exports = {
         // await Object.assign(orObj, {hash: {$or: orObj}});
         
         //, username: { $ne: req.session.user.username}, pp: {$ne: ''}
-        await Object.assign(queryObj, {$ne: {$or: orObj}});
+        // await Object.assign(queryObj, {$ne: {$or: orObj}});
         console.log('::queryObj:::', queryObj);
         var X = await con.db.collection('user').find( queryObj ).project({_id: 0, city: 1, pp: 1, firstname: 1, lastname: 1, username: 1, hash: 1,
           gender: 1, age: 1, bio: 1, fame: 1}).toArray();
