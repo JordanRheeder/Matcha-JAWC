@@ -16,16 +16,24 @@
         flex-flow: row wrap;
         column-gap: 20px;
       }
-      .profilenav {
-        display:flex;
+      .imageBox{
+        display: flex;
         flex-flow: column wrap;
+        row-gap: 20px;
+      }
+
+      .profileDetails{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        row-gap: 20px;
       }
     </style>
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
-                <h2>Hello, <a href='/test'><%= user %></a></h2>
                 <div style='position:absolute;left:32px;top:32px'>
+                  <h2>Hello, <%= user %></h2>
                     <form method="POST" enctype="multipart/form-data" id="submitImage"><br/>   
                         <h3> Edit Profile Image </h3><br/>             
                         <div class="file">
@@ -45,11 +53,24 @@
                   <section>
                     <div>
                       <h1>Images</h1>
+                      <box class="imageBox"><img alt="This is the first image">
+                        <img alt="This is the second image">
+                        <img alt="This is the third image">
+                        <img alt ="This is the fourth image">
+                        <img alt="This is the fifth image">
+                    </box>
                     </div>
                     <div>
                       <h1>Bio</h1>
+                      <box class="profileDetails">
+                        <h5>First Name Last Name Age</h5>
+                        <p>Gender and Interests</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, omnis beatae illum ipsam quidem optio ratione recusandae temporibus magnam quia obcaecati impedit natus perspiciatis eveniet et perferendis ea nobis facilis?</p>
+                        <p>tags</p>
+                        <h5>Location</h5>
+                      </box>
                     </div>
-                  </section>          
+                  </section>        
                 </div>
                 <script>
                     document.getElementById("submit").onclick = function (event) {
