@@ -13,27 +13,38 @@
     <style>
       section{
         display : flex;
-        flex-flow: row wrap;
+        flex-direction: row;
         column-gap: 20px;
       }
-      .imageBox{
-        display: flex;
-        flex-flow: column wrap;
-        row-gap: 20px;
-      }
 
-      .profileDetails{
-        display: flex;
+      .profileBox{
+        flex: 1 auto;
+        display:flex;
         flex-direction: column;
         flex-wrap: wrap;
         row-gap: 20px;
       }
+      .imageDiv{
+        flex: 2 auto;
+      }
+      
+      .imageBox{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 20px;
+        row-gap: 20px;
+      }
+
+
     </style>
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
-            <header id="header" class="alt">
-                <div style='position:absolute;left:32px;top:32px'>
-                  <h2>Hello, <%= user %></h2>
+        <header id="header" class="alt">
+          <div class="inner">
+          <section>
+            <div class="profileBox">
+                  <h2>Hello, <%= user.username %></h2>
                     <form method="POST" enctype="multipart/form-data" id="submitImage"><br/>   
                         <h3> Edit Profile Image </h3><br/>             
                         <div class="file">
@@ -49,9 +60,9 @@
                 </div>
 
                 <!-- if button is pressed initialise code. look at ejs syntax -->
-                <div class="inner">
-                  <section>
-                    <div>
+                
+                  
+                    <div class="imageDiv">
                       <h1>Images</h1>
                       <box class="imageBox"><img alt="This is the first image">
                         <img alt="This is the second image">
@@ -60,7 +71,9 @@
                         <img alt="This is the fifth image">
                     </box>
                     </div>
-                    <div>
+                    </section>
+                    
+                    <div class="bioDiv">
                       <h1>Bio</h1>
                       <box class="profileDetails">
                         <h5>First Name Last Name Age</h5>
@@ -70,7 +83,7 @@
                         <h5>Location</h5>
                       </box>
                     </div>
-                  </section>        
+
                 </div>
                 <script>
                     document.getElementById("submit").onclick = function (event) {
