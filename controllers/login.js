@@ -6,12 +6,7 @@ const getIP = require('external-ip')();
 var ip2location = require('ip-to-location');
 var uri = process.env.URI;
 
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}); 
-
-var db=mongoose.connection;
+const con = require('../models/dbcon');
 
 module.exports = {
 	login: async function loginUser(req, res) {
@@ -21,7 +16,7 @@ module.exports = {
 		if (!email || !password) {
 			res.render('auth/login.ejs', { title: 'Login', message: 'No data provided' });
 		} else {
-			const user = await db.collection('user').findOne({ email: email });
+			const user = await con.db.collection('user').findOne({ email: email });
 			if (!user) {
 				return res.render('auth/login.ejs', { title: 'Login', message: 'Incorrect Credentials' });
 			}
@@ -39,16 +34,18 @@ module.exports = {
 							throw err;
 						}
 						// set local variable ip and upon login set ip??
-						db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { ip: ip } }); {
+						con.db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { ip: ip } }); {
 							if (err) throw(err);
 						};
 						
 					});
-					let ip = await db.collection('user').findOne({hash: req.session.user.hash}, {ip: 1})
-					console.log(ip.ip);
+					let ip = await con.db.collection('user').findOne({hash: req.session.user.hash}, {ip: 1})
+					console.log(ip);
 					ip2location.fetch(ip.ip, function(err, res){
 						console.log(res);
-						db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { country_name: res.country_name, region_name: res.region_name, city: res.city, zip_code: res.zip_code } }); {
+						con.db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { country_name: res.country_name,
+							region_name: res.region_name, city: res.city, zip_code: res.zip_code, latitude: res.latitude,
+							longitude: res.longitude } }); {
 							if (err) throw(err);
 						};
 						// Okay so we are returned with an object which needs to be put into user-model

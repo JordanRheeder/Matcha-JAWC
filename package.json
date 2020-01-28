@@ -43,6 +43,7 @@
     "method-override": "^3.0.0",
     "mongodb": "^3.3.5",
     "mongoose": "^5.7.13",
+    "monk": "^7.1.2",
     "multer": "^1.4.2",
     "multer-gridfs-storage": "^4.0.1",
     "nodemailer": "^6.4.1",

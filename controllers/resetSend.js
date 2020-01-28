@@ -1,16 +1,17 @@
 const user = require("../models/user.js");
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const con = require("../models/dbcon");
 
-var emailPass = process.env.emailPass;
-var emailUser = process.env.emailUser;
-var uri = process.env.URI;
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}); 
-var db=mongoose.connection;
+// var emailPass = process.env.emailPass;
+// var emailUser = process.env.emailUser;
+// var uri = process.env.URI;
+// mongoose.connect(uri, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// }); 
+// var db=mongoose.connection;
 
 function hash(password)
 {
@@ -51,7 +52,7 @@ module.exports = {
 		  console.log('Info set')
 		//   console.log('mail should be sent\t'+ data.hash);
 		newpass = await hash(newpass);
-        db.collection('user').findOneAndUpdate({ email: req.body.email }, { $set: { password: newpass} });
+        con.db.collection('user').findOneAndUpdate({ email: req.body.email }, { $set: { password: newpass} });
 		} catch(err) {
 			console.log("ERROR:")
 			console.log(err.message);

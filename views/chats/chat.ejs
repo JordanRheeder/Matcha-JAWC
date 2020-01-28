@@ -1,74 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= title %></title>
-    <link rel="stylesheet" href="assets/css/account.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link rel="stylesheet" href="./../../assets/css/account.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      var socket = io.connect('http://localhost:3000');
-    
-      // on connection to server, we will get the username and return it using ip as a search term from mongo.
-      socket.emit('connection', function() {
-        // call the server-side function 'adduser' and send one parameter (value of prompt)
-        // socket.emit('adduser', prompt("What's your name?"));
-        console.log('Connected to client from server')
-        // client side code
-        // generate a roomname 
-        // console.log('connected with gen')
-        // socket.emit('create', 'room1');
-      });  
-      // listener, whenever the server emits 'updatechat', this updates the chat body
-      socket.on('updatechat', function (username, data) {
-        $('#conversation').append('<b>' + '</b> ' + data + '<br>');
-      });
-    
-    
-      // listener, whenever the server emits 'updaterooms', this updates the room the client is in
-      socket.on('updaterooms', function(rooms, current_room) {
-        $('#rooms').empty();
-        $.each(rooms, function(key, value) {
-          if(value == current_room){
-            $('#rooms').append('<div>' + value + '</div>');
-          }
-          else {
-            $('#rooms').append('<div><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
-          }
-        });
-      });
-    
-      function switchRoom(room){
-        socket.emit('switchRoom', room);
-      }
-      
-	// on load of page
-	$(function(){
-		// when the client clicks SEND
-		$('#datasend').click( function() {
-      var message = $('#data').val();
-      
-			$('#data').val('');
-      // tell server to execute 'sendchat' and send along one parameter
-      
-			socket.emit('sendchat', username, message);
-		});
-    
-		// when the client hits ENTER on their keyboard
-		$('#data').keypress(function(e) {
-			if(e.which == 13) {
-				$(this).blur();
-				$('#datasend').focus().click();
-			}
-		});
-	});
-
-</script>
-
-    <!-- <%- include('../includes/nav.ejs') %> -->
+    <script src="/views/chats/chat.js"></script>
     <style>
       *{
         box-sizing:border-box;
@@ -184,6 +125,9 @@
       #chat .me .message{
         background-color:#6fbced;
       }
+      #conversation {
+        color: black;
+      }
       #chat .triangle{
         width: 0;
         height: 0;
@@ -234,10 +178,9 @@
     </style>
   </head>
   <body>
-      <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
-                <!-- if button is pressed initialise code. look at ejs syntax -->
+                
                 <div class="inner">
                   <div>
                     
@@ -245,21 +188,15 @@
                   <div id="container">
                     <main>
                         <ul id="chat">
-                          <!-- Inject who is messaging -->
-                            <h2>They are: </h2>
-                            
+                          
+                            <h2>Chat</h2>
                             <li class="you">
-                                <div class="triangle"></div>
-                                <div class="message">
-                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-                                </div>
+                              
                             </li>
+                            <div id='conversation'></div>
                             <li class="me">          
-                                <div class="triangle"></div>
-                                <div class="message">
-                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-                                </div>
                             </li>
+<<<<<<< HEAD
                         </ul>
                         <form action="/chats" method="POST">
                         <footer>
@@ -270,10 +207,20 @@
                       </form>
                     </main>
                 </div>
+=======
+                            </ul>
+                            <form action="/chats" method="POST">
+                              <footer>
+                                <textarea type="text" value="Enter your message" onfocus="this.style.color='fff'; 
+                            this.value='';" style="color: Black;" " id="message" name="message">Enter your message</textarea>
+                            <input class='button is-danger is-light' type="submit" id="send" name="send" value="send"/><br/> 
+                          </footer>
+                        </form>
+                      </main>
+                      <!-- <div id='output'></div> -->
+                    </div>
+>>>>>>> 3ecc1263a84b51da760bc64936057ff08cc03ea7
             </header>
-            <div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
-              <div id="conversation"></div>
-            </div>
 
     <!-- Wrapper -->
         <%- include('../includes/footer.ejs') %>

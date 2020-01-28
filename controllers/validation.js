@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
+const con = require('../models/dbcon');
 
-var uri = process.env.URI;
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}); 
-var db=mongoose.connection;
+// var uri = process.env.URI;
+// mongoose.connect(uri, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// }); 
+// var db=mongoose.connection;
 
 module.exports = {
 	validate: async function validateRegistrationDetails(req, res) {
@@ -13,14 +14,14 @@ module.exports = {
 		// password length < 8
 		var pattern = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
 		if (req.body.username) {
-			var foundUser = await db.collection('user')
+			var foundUser = await con.db.collection('user')
 			.count({username: req.body.username});
 			console.log("asdf\n");
 			// console.log("Same Usernames Found: " + foundUser);
 			if (req.body.username.length < 7 || req.body.username.length > 25 || foundUser || pattern.test(req.body.username))
 				return (false);
 			}
-		var foundEmail = await db.collection('user')
+		var foundEmail = await con.db.collection('user')
 		.count({email: req.body.email})
 			// console.log("Same Emails Found: " + foundEmail);
 		if (req.body.email)

@@ -15,12 +15,12 @@
 
         <form action="/matches" method="POST">
           <div style="width:180px;">
-            tags<input class="asdf" type="text" name="tags" value="1" style="
-            width: 10vw;display: flex;margin: auto;">fame
+            Tags<input class="asdf" type="text" name="tags" value="1" style="
+            width: 10vw;display: flex;margin: auto;">Fame
             <input class="asdf" type="text" name="fame" value="0" style="
-            width: 10vw;display: flex;margin: auto;">distance
+            width: 10vw;display: flex;margin: auto;">Distance (KM)
             <input class="asdf" type="text" name="distance" value="100" style="
-            width: 10vw;display: flex;margin: auto;">age
+            width: 10vw;display: flex;margin: auto;">Age
             <input class="asdf" type="text" name="age" value="18" style="
             width: 10vw;display: flex;margin: auto;">
             <input class="asdf" type="submit"></input>
@@ -38,7 +38,7 @@
               <div class="media-content">
                 <div class="content">
                   <p>
-                    <strong><% i.firstname %> <% i.lastname %></strong> <small><% i.gender %></small>
+                    <strong>Name: <%= i.firstname.slice(0,1).toUpperCase()+i.firstname.slice(1) %> <p>Gender: <%= i.gender.slice(0,1).toUpperCase()+i.gender.slice(1) %></p></p><p>Age: <%= i.age %></strong>
                     <br>
                         <% i.bio %>
                   </p>
@@ -63,7 +63,7 @@
           <% } %>
 
             <header id="header" class="alt">
-                <!-- if button is pressed initialise code. look at ejs syntax -->
+
                 <div class="inner">
                 </div>
             </header>
