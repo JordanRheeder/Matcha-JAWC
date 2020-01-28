@@ -24,24 +24,17 @@
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
-                
-               <div class="profilenav" style='position:absolute;left:32px;top:32px'>
-                <h2>Hello,<%= user %></h2>
-                <figure class="image is-128x128" style="left:42px">
-                     <% if(files){ %>
-                            <% files.forEach(function(files) { %>
-                              
-                                <% if(files.isImage) { %>
-                                  <img src="image/<%= files.filename %>" alt="">
-                                  <% } else { %>
-                                    <a href ="<%= files.filename %>" target ="_blank"><%= files.filename %></a>
-                                      <% } %>
-                                  <% }) %>
-                                <% } else { %>
-                                  <p><a href='/UploadPP'>Upload a Profile Picture</a></p>
-                                  <% } %>
-                        <img src='' href='/editPP'></img> 
-                                </figure><br/>
+                <h2>Hello, <a href='/test'><%= user %></a></h2>
+                <div style='position:absolute;left:32px;top:32px'>
+                    <form method="POST" enctype="multipart/form-data" id="submitImage"><br/>   
+                        <h3> Edit Profile Image </h3><br/>             
+                        <div class="file">
+                                <input class="file" accept="image/*" type="file" name="file" id="file" style='align-self: center'>
+
+                        </div>
+                        <input class = 'button is-danger is-light' type="submit" id="submit"
+                            name="submit" value="Submit" /><br>
+                    </form><br/>
                     
                     <a class="button" href='/editprofile'>Edit Profile</a>  
                     <a class="button" href='/editsettings'>Settings</a>  
@@ -58,6 +51,32 @@
                     </div>
                   </section>          
                 </div>
+                <script>
+                    document.getElementById("submit").onclick = function (event) {
+                        event.preventDefault();
+                        
+                        var file = document.getElementById("file").files[0];
+
+                        var reader = new FileReader;
+                        reader.readAsDataURL(file);
+                        // image = reader.result;
+                        reader.onload = function () {
+                            console.log(reader.result);
+                        };
+                        reader.onerror = function (error) {
+                            console.log('Error: ', error);
+                        };
+
+                        $.ajax({
+                            url:'/uploadProfilePicture',
+                            type: '/post/',
+                            dataType: 'json',
+                            success: (reader.result) => {
+                                console.log(image);
+                            }
+                        })
+                    }
+                </script>
             </header>
 
   </body>

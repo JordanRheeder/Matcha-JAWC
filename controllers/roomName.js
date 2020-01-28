@@ -3,13 +3,15 @@ const db = require('./../app.js'); // requiring the connection to the database.
 const mongoose = require('mongoose');
 var uriUser = 'mongodb+srv://Jordan:Epicrouter1@cluster0-fkcom.mongodb.net/user?retryWrites=true&w=majority'; // user uri to extract username, etc.
 var uriChat = 'mongodb+srv://Jordan:Epicrouter1@cluster0-fkcom.mongodb.net/chat?retryWrites=true&w=majority'; // chat uri to store texts.
-// var events = require('./../views/static/eventManager.js');
-mongoose.connect(uriUser, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}); 
+const con = require('../models/dbcon');
 
-var dbUser=mongoose.connection;
+// var events = require('./../views/static/eventManager.js');
+// mongoose.connect(uriUser, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// }); 
+
+// var dbUser=mongoose.connection;
 
 module.exports = {
     generateName: async function generateName(req, res) {
@@ -23,7 +25,7 @@ module.exports = {
                 // console.log(room);
             // }
         try {
-            var firstName = await db.collection('user').findOne({ firstname: req.session.user.firstname });
+            var firstName = await con.db.collection('user').findOne({ firstname: req.session.user.firstname });
             console.log(firstName.firstname + 'test');
         } catch (error) {
             console.log(error)
