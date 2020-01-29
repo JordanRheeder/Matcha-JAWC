@@ -346,10 +346,11 @@ app.get('/matches', async function(req, res) {
     if (!req.session.user)
         res.redirect('/login');
     var matches = require('./controllers/matches.js');
+    var tracer = require('./controllers/location.js');
     var userdata = await matches.findUsers(req, res);
-    // console.log(userdata);
-    // console.log(req.session.user);
-    return res.render('matches/matches.ejs', {title: 'Matches', userdata: userdata});
+    var location = await tracer.IPLocation(req,res,userdata);
+    console.log('app.js' + JSON.stringify(location));
+    return res.render('matches/matches.ejs', {title: 'Matches', userdata: location});
 });
 
 app.post('/matches', async function(req, res) {
