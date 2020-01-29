@@ -26,21 +26,17 @@ module.exports = {
       // console.log(JSON.stringify(queryObj));
         
         if (usergender == "male" || usergender == "female")
-          var dog = await Object.assign(queryObj, { $or: [{interests: usergender}, {interests: "both"}]});
+          await Object.assign(queryObj, { $or: [{interests: usergender}, {interests: "both"}]});
         if (userinterests == "male" || userinterests == "female")
-          var deg = await Object.assign(queryObj, {gender: userinterests});
-
+          await Object.assign(queryObj, {gender: userinterests});
           // console.log('::queryObj:::', queryObj);
-
           // console.log(JSON.stringify(dog));
           // console.log(JSON.stringify(deg));
-
         // exclude users that have already matched with currently logged in user
         // find all users by user.hash
         // put all hashes into array
         // store hashes into object
         // insert object into queryObj to exclude all already matched users
-
         // const likedUsers = await con.db.collection('matches').find({loggedUser: req.session.user.hash}).project({_id: 0, likedUser: 1}).toArray();
         // var orObj = {};
         // console.log(likedUsers);
@@ -48,29 +44,23 @@ module.exports = {
         //     await Object.assign(orObj, likedUsers);
         // }
         // console.log(orObj);
-
         // likedUsers.forEach(i => {
         //       Object.assign(orObj, i['likedUser']);
         // });
         // console.log(orObj);
         // //{ $or: [ { <expression1> }, { <expression2> }, 
         // await Object.assign(orObj, {hash: {$or: orObj}});
-        
         //, username: { $ne: req.session.user.username}, pp: {$ne: ''}
         // await Object.assign(queryObj, {$ne: {$or: orObj}});
         // console.log('::queryObj:::', queryObj);
         var X = await con.db.collection('user').find( queryObj ).project({_id: 0, city: 1, pp: 1, firstname: 1, lastname: 1, username: 1, hash: 1,
           gender: 1, age: 1, bio: 1, fame: 1, ip: 1, interests: 1}).toArray();
-        
         for (let key in JSON.stringify(X)) {
           if (X[key] !== 'undefined' && X[key] != null && X[key] != undefined) {
             var propValue = X[key];
-            // console.log(`${key} : ${X[key]}`)
-            // console.log(propValue.username, propValue.ip);
             try {
               console.log(key,propValue)
               if (propValue.ip && propValue.username && propValue.ip != '' && propValue.username != '' && X[key] && propValue) {
-                // console.log(propValue.username, propValue.ip);
                 ip2location.fetch(propValue.ip, function(err, res){
                   let dog = X[key].username;
                   console.log(dog);
