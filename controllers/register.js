@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer')
 
-var emailPass = process.env.emailPass;
-var emailUser = process.env.emailUser;
+var emailPass = process.env.EMAILPASS; //Missing credentials for "PLAIN" if this happens then update your .env to 
+var emailUser = process.env.EMAILUSER; // EMAILUSER = 'matchanoreplyjawc@gmail.com'
+									   // EMAILPASS = 'Shattered159'
+
 
 var uri = process.env.URI;
 
