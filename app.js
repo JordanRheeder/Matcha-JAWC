@@ -348,9 +348,9 @@ app.get('/matches', async function(req, res) {
     var matches = require('./controllers/matches.js');
     var tracer = require('./controllers/location.js');
     var userdata = await matches.findUsers(req, res);
-    var location = await tracer.IPLocation(req,res,userdata);
-    console.log('app.js' + JSON.stringify(location));
-    return res.render('matches/matches.ejs', {title: 'Matches', userdata: location});
+    var userArray = new Array();
+    userArray = await tracer.IPLocation(req,res,userdata);
+
 });
 
 app.post('/matches', async function(req, res) {
