@@ -31,8 +31,8 @@ module.exports = {
 			service: 'gmail',
 			host: 'smtp.gmail.com',
 			auth: {
-			  user: emailUser, // generated ethereal user
-			  pass: emailPass // generated ethereal password
+			  user: EMAILUSER, // generated ethereal user
+			  pass: EMAILPASS // generated ethereal password
 			}
 		  });
 		  console.log('Reset account')

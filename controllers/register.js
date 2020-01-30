@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer')
 
-var emailPass = process.env.emailPass;
-var emailUser = process.env.emailUser;
+var EMAILUSER = process.env.EMAILUSER;
+var EMAILPASS = process.env.EMAILPASS;
 
 var uri = process.env.URI;
 
@@ -48,8 +48,8 @@ module.exports = {
 				service: 'gmail',
 				host: 'smtp.gmail.com',
 				auth: {
-					user: emailUser, // generated ethereal user
-					pass: emailPass // generated ethereal password
+					user: EMAILUSER, // generated ethereal user
+					pass: EMAILPASS // generated ethereal password
 					}
 				});
 			console.log('Hopefully logged in!??>!?')

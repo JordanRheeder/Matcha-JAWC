@@ -1,6 +1,6 @@
 const uri = process.env.URI;
 const monk = require('monk')
-const dbcon = monk(process.env.emailUser + ':' + process.env.emailUser + '@cluster0-fkcom.mongodb.net/matcha?retryWrites=true&w=majority');
+const dbcon = monk(process.env.EMAILUSER + ':' + process.env.EMAILPASS + '@cluster0-fkcom.mongodb.net/matcha?retryWrites=true&w=majority');
 const mongoose = require('mongoose');
 
 // var db = monk('USERNAME:PASSWORD@localhost:27017/nodetest1');
