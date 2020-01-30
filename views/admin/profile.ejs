@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=view-width, initial-scale=1">
     <title><%= title %></title>
-    <link rel="stylesheet" href="../../assets/css/account.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="shortcut icon" type="image/jpg" href="../../outputDir/favicon.ico"/>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -13,7 +13,7 @@
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
-                <h2>Hello, <a href='/test'><%= user %></a></h2>
+                <h2>Hello, <a href='/test'><%= user.username %></a></h2>
                 <div style='position:absolute;left:32px;top:32px'>
                     <form method="POST" enctype="multipart/form-data" id="submitImage"><br/>   
                         <h3> Edit Profile Image </h3><br/>             
@@ -56,7 +56,7 @@
                             success: (reader.result) => {
                                 console.log(image);
                             }
-                        })
+                        });
                     }
                 </script>
             </header>

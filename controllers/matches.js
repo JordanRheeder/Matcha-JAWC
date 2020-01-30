@@ -1,7 +1,8 @@
 // const mongoose = require('mongoose');
 const app = require('../app');
 const con = require('../models/dbcon');
-
+const getIP = require('external-ip')();
+const ip2location = require('ip-to-location');
 // var uri = process.env.URI;
 // mongoose.connect(uri, {
 //     useNewUrlParser: true,
@@ -25,48 +26,41 @@ module.exports = {
       // console.log(JSON.stringify(queryObj));
         
         if (usergender == "male" || usergender == "female")
-          var dog = await Object.assign(queryObj, { $or: [{interests: usergender}, {interests: "both"}]});
+          await Object.assign(queryObj, { $or: [{interests: usergender}, {interests: "both"}]});
         if (userinterests == "male" || userinterests == "female")
-          var deg = await Object.assign(queryObj, {gender: userinterests});
-        
-          console.log('::queryObj:::', queryObj);
-
+          await Object.assign(queryObj, {gender: userinterests});
+          // console.log('::queryObj:::', queryObj);
           // console.log(JSON.stringify(dog));
           // console.log(JSON.stringify(deg));
-
         // exclude users that have already matched with currently logged in user
         // find all users by user.hash
         // put all hashes into array
         // store hashes into object
         // insert object into queryObj to exclude all already matched users
-
-        const likedUsers = await con.db.collection('matches').find({loggedUser: req.session.user.hash}).project({_id: 0, likedUser: 1}).toArray();
-        var orObj = {};
-        console.log(likedUsers);
-        for (i = 0; likedUsers != null; i++) {
-            await Object.assign(orObj, likedUsers);
-        }
-        console.log(orObj);
-
+        // const likedUsers = await con.db.collection('matches').find({loggedUser: req.session.user.hash}).project({_id: 0, likedUser: 1}).toArray();
+        // var orObj = {};
+        // console.log(likedUsers);
+        // for (i = 0; likedUsers != null; i++) {
+        //     await Object.assign(orObj, likedUsers);
+        // }
+        // console.log(orObj);
         // likedUsers.forEach(i => {
         //       Object.assign(orObj, i['likedUser']);
         // });
         // console.log(orObj);
         // //{ $or: [ { <expression1> }, { <expression2> }, 
         // await Object.assign(orObj, {hash: {$or: orObj}});
-        
         //, username: { $ne: req.session.user.username}, pp: {$ne: ''}
-        await Object.assign(queryObj, {$ne: {$or: orObj}});
-        console.log('::queryObj:::', queryObj);
+        // await Object.assign(queryObj, {$ne: {$or: orObj}});
+        // console.log('::queryObj:::', queryObj);
         var X = await con.db.collection('user').find( queryObj ).project({_id: 0, city: 1, pp: 1, firstname: 1, lastname: 1, username: 1, hash: 1,
-          gender: 1, age: 1, bio: 1, fame: 1}).toArray();
-        // console.log(X);
+          gender: 1, age: 1, bio: 1, fame: 1, ip: 1, interests: 1}).toArray();
+        // console.log("Before ret"+returnObj)
         return (X);
     },
-
-    matchUsers: async function matchUsers(likedUser, loggedUser) {
-      // var alreadyLiked = await con.db.collection('matches').count({likedUser: likedUser, loggedUser: loggedUser});
-      // if (alreadyLiked == 0)
-        con.db.collection('matches').insertOne({likedUser: likedUser, loggedUser: loggedUser, blocked: false,});
-    }
+    // matchUsers: async function matchUsers(likedUser, loggedUser) {
+    //   // var alreadyLiked = await con.db.collection('matches').count({likedUser: likedUser, loggedUser: loggedUser});
+    //   // if (alreadyLiked == 0)
+    //     con.db.collection('matches').insertOne({likedUser: likedUser, loggedUser: loggedUser, blocked: false,});
+    // }
 }
