@@ -47,18 +47,18 @@
                             
                             <div class="content">
                               <p>
-                                <strong>Name: <%= i.firstname.slice(0,1).toUpperCase()+i.firstname.slice(1) %> <p>Gender: <%= i.gender.slice(0,1).toUpperCase()+i.gender.slice(1) %></p><p>Age: <%= i.age %></p><p><%= i.dist %></p></strong>
+                                <strong>Name: <%= i.firstname.slice(0,1).toUpperCase()+i.firstname.slice(1) %> <p>Gender: <%= i.gender.slice(0,1).toUpperCase()+i.gender.slice(1) %></p><p>Age: <%= i.age %></p><p>Distance: <%= i.dist %></p></strong>
                                 <br>
                               </p>
                             </div>
-                            <form action="/matches" method="post">
-                              <button>
-                                <nav class="level is-mobile">
-                                  <div class="level-left">
-                                    <a class="level-item" aria-label="match">
-                                      <span class="icon is-small">
-                                        <input type="hidden" value="<%= i.hash %>" name="hash">
-                                        <i type="submit" class="fas fa-heart" aria-hidden="true"></i>
+                            <form action="/matches" method="post" style="align-content: center; align-items: center; align-self: center;">
+                              <button style="margin-left: 50%;">
+                                <nav class="level is-mobile" style="align-content: center; align-items: center; align-self: center;">
+                                  <div class="level-left"style="align-content: center; align-items: center; align-self: center;">
+                                    <a class="level-item" aria-label="match"style="align-content: center; align-items: center; align-self: center;">
+                                      <span class="icon is-small" style="align-content: center; align-items: center; align-self: center;">
+                                        <input type="hidden" value="<%= i.hash %>" name="hash"style="align-content: center; align-items: center; align-self: center;">
+                                        <i type="submit" class="fas fa-heart" aria-hidden="true" style="align-items: center"style="align-content: center; align-items: center; align-self: center;"></i>
                                       </span>
                                     </a>
                                   </div>
