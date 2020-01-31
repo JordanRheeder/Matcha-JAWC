@@ -34,37 +34,39 @@
                 <div class="inner">
    
                     <% for (var i of userdata) { %>
-                      <div class="box" style="width: 30vw; display: flex; margin: auto;overflow:hidden;">
+                      <div class="box" style=" display: flex;overflow:hidden;">
                         <article class="media">
                           
                           <div class="media-left">
                             <figure class="image is-64x64">
-                              <img src="image/<%= i.pp %>" alt="Image">
+                              <img src="<%=i.pp%>" alt="Image">
                             </figure>
                           </div>
                           
                           <div class="media-content">
                             
                             <div class="content">
-                              <p>
-                                <strong>Name: <%= i.firstname.slice(0,1).toUpperCase()+i.firstname.slice(1) %> <p>Gender: <%= i.gender.slice(0,1).toUpperCase()+i.gender.slice(1) %></p><p>Age: <%= i.age %></p><p>Distance: <%= i.dist %></p></strong>
-                                <br>
-                              </p>
+                              
+                              <p><strong>Name: <%= i.firstname.slice(0,1).toUpperCase()+i.firstname.slice(1) %> <p>Gender: <%= i.gender.slice(0,1).toUpperCase()+i.gender.slice(1) %></p><p>Age: <%= i.age %></p><p>Distance: <%= i.dist %></p></strong></p>
+                              <!--  -->
+                              <div style='text-align: center;'>
+                                <form action="/matches" method="post">
+                                  <button style='max-width: 35%;min-width: 35%;'>
+                                    <nav >
+                                      <div >
+                                        <a aria-label="match">
+                                          <span class="icon is-small">
+                                            <input type="hidden" value="<%= i.hash %>" name="hash"/>
+                                            <i type="submit" class="fas fa-heart" aria-hidden="true"></i>
+                                          </span>
+                                        </a>
+                                      </div>
+                                    </nav>
+                                  </button>
+                                </form>
+                              </div>
+                              <!--  -->
                             </div>
-                            <form action="/matches" method="post" style="align-content: center; align-items: center; align-self: center;">
-                              <button style="margin-left: 50%;">
-                                <nav class="level is-mobile" style="align-content: center; align-items: center; align-self: center;">
-                                  <div class="level-left"style="align-content: center; align-items: center; align-self: center;">
-                                    <a class="level-item" aria-label="match"style="align-content: center; align-items: center; align-self: center;">
-                                      <span class="icon is-small" style="align-content: center; align-items: center; align-self: center;">
-                                        <input type="hidden" value="<%= i.hash %>" name="hash"style="align-content: center; align-items: center; align-self: center;">
-                                        <i type="submit" class="fas fa-heart" aria-hidden="true" style="align-items: center"style="align-content: center; align-items: center; align-self: center;"></i>
-                                      </span>
-                                    </a>
-                                  </div>
-                                </nav>
-                            </button>
-                            </form>
                           </div>
                         </article>
                       </div>
