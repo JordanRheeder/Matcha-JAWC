@@ -27,10 +27,10 @@ module.exports = {
         // Can just put the data into a usertable but will get exponentially worse the more users that get queried... And if we get multiple at the same time... GG
         setTimeout(() => {
             return res.render('matches/matches.ejs', {title: 'Matches', userdata: dummyArray})
-        }, 2500);
-        return userdata.map(element => ip2location.fetch(element.ip)
+        }, 650);
+        return userdata.map(element => {if (element.ip && element.hash != req.session.user.hash)ip2location.fetch(element.ip)
             .then((ress, err)=>distance(req.session.user.latitude, req.session.user.longitude, ress.latitude, ress.longitude))
             .then(distance => {element.dist = Math.trunc(distance)+" km"; dummyArray.push(element); console.log({dummyArray}); return element; }) 
-        )
+        })
     }
 }
