@@ -355,7 +355,7 @@ app.get('/matches', async function(req, res) {
 
 app.post('/matches', async function(req, res) {
     console.log("matches.post called");
-    var matches = require('./controllers/matches');
-    matches.matchUsers(req.body.hash, req.session.user.hash);
-    res.redirect('/chats');
+    var matches = require('./controllers/matchPost.js');
+    matches.matchUser(req,res);
+    // res.redirect('/chats');
 });
