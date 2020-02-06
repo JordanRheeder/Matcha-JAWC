@@ -17,7 +17,7 @@
 
         
         <header id="header" class="alt">
-            <form action="/matches" method="POST">
+            <!-- <form action="/matches" method="POST">
               <div style="width:180px;">
                 Tags<input  type="text" name="tags" value="1" style="
                 width: 10vw;display: flex;margin: auto;">Fame
@@ -29,42 +29,44 @@
                 width: 10vw;display: flex;margin: auto;">
                 <input class="asdf" type="submit"></input>
               </div>
-            </form>
+            </form> -->
   
                 <div class="inner">
    
-                    <% for (let i in userdata) { %>
-                      <div class="box" style="width: 30vw; display: flex; margin: auto;overflow:hidden;">
+                    <% for (var i of userdata) { %>
+                      <div class="box" style=" display: flex;overflow:hidden;">
                         <article class="media">
                           
                           <div class="media-left">
                             <figure class="image is-64x64">
-                              <img src="image/<%= i.pp %>" alt="Image">
+                              <img src="<%=i.pp%>" alt="Image">
                             </figure>
                           </div>
                           
                           <div class="media-content">
                             
                             <div class="content">
-                              <p>
-                                <strong>Name: <%= i.name.slice(0,1).toUpperCase()+i.name.slice(1) %> <p>Gender: <%= i.gender.slice(0,1).toUpperCase()+i.gender.slice(1) %></p><p>Age: <%= i.age %></p><p><%= i.dist %></p></strong>
-                                <br>
-                              </p>
+                              
+                              <p><strong>Name: <%= i.firstname.slice(0,1).toUpperCase()+i.firstname.slice(1) %> <p>Gender: <%= i.gender.slice(0,1).toUpperCase()+i.gender.slice(1) %></p><p>Age: <%= i.age %></p><p>Distance: <%= i.dist %></p></strong></p>
+                              <!--  -->
+                              <div style='text-align: center;'>
+                                <form action="/matches" method="post">
+                                  <button style='max-width: 35%;min-width: 35%;'>
+                                    <nav >
+                                      <div >
+                                        <a aria-label="match">
+                                          <span class="icon is-small">
+                                            <input type="hidden" value="<%= i.hash %>" name="hash"/>
+                                            <i type="submit" class="fas fa-heart" aria-hidden="true"></i>
+                                          </span>
+                                        </a>
+                                      </div>
+                                    </nav>
+                                  </button>
+                                </form>
+                              </div>
+                              <!--  -->
                             </div>
-                            <form action="/matches" method="post">
-                              <button>
-                                <nav class="level is-mobile">
-                                  <div class="level-left">
-                                    <a class="level-item" aria-label="match">
-                                      <span class="icon is-small">
-                                        <input type="hidden" value="<%= i.hash %>" name="hash">
-                                        <i type="submit" class="fas fa-heart" aria-hidden="true"></i>
-                                      </span>
-                                    </a>
-                                  </div>
-                                </nav>
-                            </button>
-                            </form>
                           </div>
                         </article>
                       </div>
