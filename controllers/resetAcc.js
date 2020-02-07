@@ -4,15 +4,6 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer')
 const con = require("../models/dbcon");
 
-// var emailPass = process.env.emailPass;
-// var emailUser = process.env.emailUser;
-// var uri = process.env.URI;
-// mongoose.connect(uri, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// }); 
-// var db=mongoose.connection;
-
 function hash(password)
 {
 	return new Promise((resolve, reject) => {

@@ -38,31 +38,17 @@
                 <div class="inner" style='top:-50px;'>
                     <div class="container" style="text-align: center">  
                             <div class='form'> 
-                            <form action="/EditAccount" method="POST"><br/>   
-                                <h1> Edit Settings </h1><br/>             
-                                <input class="box" type="text" name="email"
-                                id="email" placeholder="E-Mail" ><br/> 
-                                <input class="box" type="text" name="fname" 
-                                id="firstname" placeholder="First Name" ><br/>
-                                <input class="box" type="text" name="sname" 
-                                id="lastname" placeholder="Surname" ><br/> 
+                            <form action="/setNewPassword" method="POST"><br/>   
+                                <h1> Edit Settings </h1><br/>
+
                                 <input class="box" type="password" name="password" 
                                 id="password" placeholder="Password" ><br/>
-                 
-                                <ul>
-                                  <div>
-                                  <li>
-                                      <input type="radio" id="f-option" name="sexuality" value='Straight'>
-                                      <label for="f-option" value='men'>Males</label>
-                                      <input type="radio" id="s-option" name="sexuality" value='Gay'>
-                                      <label for="s-option" value='woman'>Female</label>
-                                      <input type="radio" id="ft-option" name="sexuality" value='Bisexual'>
-                                      <label for="ft-option" value='both'>Bisexual</label>
-                                  </li>
-                                  </div>
-                                  </ul>
-                                  <input class = 'button is-danger is-light'type="submit" id="submitDetails"
-                                      name="submitDetails" value="Save Changes"><br/> 
+
+                                <input class="box" type="password" name="newpassword" 
+                                id="newpassword" placeholder="New Password" ><br/>
+
+                                <input class = 'button is-danger is-light' type="submit" id="submitDetails"
+                                    name="submitDetails"><br/>
                             </form>                               
                         </div>                
                     </div>

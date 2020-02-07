@@ -198,3 +198,16 @@ app.post('/matches', async function(req, res) {
     var matches = require('./controllers/matchPost.js');
     matches.matchUser(req,res);
 });
+
+app.post('/setNewPassword', async function (req, res) {
+    if (!req.session.user)
+        res.redirect('/login');
+    var resetPass = require('./controllers/setNewPassword');
+    await resetPass.setNewPassword(req, res);
+    res.redirect('/profile');
+});
+
+app.get('/setNewPassword', async function (req, res) {
+    if (!req.session.user)
+        res.redirect('/login');
+});
