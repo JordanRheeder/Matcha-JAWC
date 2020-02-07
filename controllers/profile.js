@@ -7,7 +7,7 @@ module.exports = {
         // retreive session.user details from database
         // return data
         const userdata = await con.db.collection('user').findOne({ username: username }, {projection: { password: 0 }});
-        // console.log(userdata);
+        // console.log(userdata.profilePicture);
         return (userdata);
     },
 
@@ -25,19 +25,19 @@ module.exports = {
 
     storeUserProfilePictures: async function storeProfilePictures(req, res, isProfilePicture) {
 
-        // base64String = await this.convertImageToBase64(req.body.file);
+        // base64String = await this.convertImageToBase64(req.body.image);
 
-        // console.log()
+        // console.log(req.body.image);
 
         if (isProfilePicture !== 0) {
-            await con.db.collection('images').updateOne({hash: req.session.user.hash}, {$set: {image: base64String,
-                userHash: req.session.user.hash, profilePicture: true}}, {upsert: true});
-            console.log('Inserted Profile image in matcha.profilePicture.');
+            await con.db.collection('user').updateOne({hash: req.session.user.hash}, {$set: {profilePicture: req.body.image}}, {upsert: true});
+            req.session.user.profilePicture = req.body.image;
+            console.log('Inserted Profile image in user.profilePicture.');
             res.redirect('/profile');
         } else if (isProfilePicture === 0) {
             var pictureCount = await con.db.collection('images').count({hash: req.session.user.hash});
             if (pictureCount < 5)
-                await con.db.collection('images').insertOne({hash: req.session.user.hash}, { $set: {image: base64String,
+                await con.db.collection('images').insertOne({hash: req.session.user.hash}, { $set: {image: req.body.image,
                     userHash: req.session.user.hash, profilePicture: false}});
             // else
             //     return err msg

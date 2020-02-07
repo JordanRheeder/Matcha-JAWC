@@ -39,7 +39,7 @@ module.exports = {
 						};
 						
 					});
-					let ip = await con.db.collection('user').findOne({hash: req.session.user.hash}, {ip: 1})
+					let ip = await con.db.collection('user').findOne({hash: req.session.user.hash}, { projection: {profilePicture: 0}});
 					console.log(ip);
 					ip2location.fetch(ip.ip, function(err, res){
 						console.log(res);

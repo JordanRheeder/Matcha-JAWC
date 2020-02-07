@@ -21,6 +21,7 @@ var userSchema = new Schema({
     longitude: {required: false, default: ""},
     latitude: {required: false, default: ""},
     tags: {type: String, required: false, default: "", trim: true},
+    profilePicture: {type: String, required: false, default: "", trim: false},
 });
 module.exports = mongoose.model('user', userSchema);
 

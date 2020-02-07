@@ -57,24 +57,14 @@ app.use(session({
     saveUninitialized: false
 }));
 
-// const store = new MongoDBStore({
-//     uri: mongodb_uri,
-//     collection: 'sessions'
-// });
-// app.use(session(
-//     {
-//         secret: 'my secret',
-//         resave: false,
-//         saveUninitialized: false,
-//         store: store
-//     }
-// ));
-
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+    limit: '50mb'
+}));
 app.use(express.static(__dirname)); 
 app.use(bodyParser.urlencoded({
+    limit: '50mb',
     extended: true
 }));
 app.use(flash());
@@ -185,33 +175,19 @@ app.get('/editsettings', function(req, res){
 app.get('/editprofile', (req, res) =>{
     if (!req.session.user)
         res.redirect('/login');
-    const fname = ls.get('PP');
-    console.log("fname: " + fname);
-    try {gfs.files.find({ filename: fname }).toArray((err, files) => {
-        if (!files || files.length === 0) {
-            res.render('admin/editProfile.ejs', {files: false, title: 'Profile'});
-        } else {
-			files.map(file => {
-				if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-					console.log('true')
-                } else {
-					console.log('false')
-                }
-                console.log('File exists')
-            });
-            res.render('admin/editProfile.ejs', {files: files, title: 'Profile'})
-        }
-    })
-    } catch {
-        res.render('admin/editProfile.ejs', {files: false, title: 'Profile'});
-        console.log("Error editProfile - Line 248")
-    }
+    res.render('admin/editProfile.ejs', {files: false, title: 'Profile'});
 });
 
 app.get('/profile/:keys', async (req, res, next) => {
     if (!req.session.user)
-        res.redirect('/login');
-    res.render('admin/profile.ejs', {title: 'Profile', });
+    res.redirect('/login');
+    else {
+        const getUserData = require("./controllers/profile");
+        // var userData = getUserData.getUserdata(req.params.keys);
+        var userData = await getUserData.getUserDetails(req.params.keys); 
+        // console.log(userData.profilePicture);
+        res.render('admin/profile.ejs', {title: 'Profile', user: userData});
+    }
 });
 
 
@@ -219,78 +195,8 @@ app.get('/profile', async (req, res, next) => {
     if (!req.session.user)
         res.redirect('/login');
     else
-    res.redirect('/profile/' + req.session.user.username);
+        res.redirect('/profile/' + req.session.user.username);
 });
-
-// app.get('/files/:filename', (req, res) => {
-//     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-//       // Check if file
-//       if (!file || file.length === 0) {
-//         return res.status(404).json({
-//           err: 'No file exists'
-//         });
-//       }
-//       // If File exists this will get executed
-//       const readstream = gfs.createReadStream(file.filename);
-//       return readstream.pipe(res);
-//     });
-//   });
-
-// app.get('/image/:filename', (req, res) => {
-//     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-//     // Check if the input is a valid image or not
-//         if (!file || file.length === 0) {
-//         return res.status(404).json({
-//             err: 'No file exists'
-//         });
-//     }
-//     // If the file exists then check whether it is an image
-//     if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-//     // Read output to browser
-//         const readstream = gfs.createReadStream(file.filename);
-//         readstream.pipe(res);
-//     } else {
-//         res.status(404).json({
-//             err: 'Not an image'
-//         });
-//     }
-//     });
-// });
-
-// const storage = new GridFsStorage({
-//     url: uri,
-//     file: (req, file) => {
-//         return new Promise((resolve, reject) => {
-//             crypto.randomBytes(16, (err, buf)=> {
-//                 if (err) {
-//                     return reject(err);
-//                 }
-//                 const filename = buf.toString('hex') + path.extname(file.originalname);
-//                 const fileInfo = {
-//                     filename: filename,
-//                     bucketName: 'images'
-//                 };
-//                 ls.set('PP', filename);
-//                 db.collection('user').findOneAndUpdate({ hash: req.session.user.hash }, { $set: { pp: filename } }); {
-//                     if (err) throw(err);
-//                 };
-//                 resolve(fileInfo);
-//             });
-//         });
-//     }
-// });
-
-// const upload = multer({storage})
-
-// app.get('/UploadPP', function(req, res){
-//     if (!req.session.user)
-//         res.redirect('/login');
-//     return res.render('admin/UploadPP.ejs', {title: 'Upload'});
-// });
-
-// app.post('/UploadPP', upload.single('file'), (req, res) => {
-//     res.redirect('/editprofile');
-// });
 
 app.post('/uploadProfilePicture', async (req, res) => {
     if (!req.session.user)
@@ -309,10 +215,11 @@ app.get('/chats/:keys', async (req,res) => {
         username = req.params.keys;
     const getUserData = require('./controllers/profile');
     // console.log(req.params.keys);
-    console.log(username);
-    var userdata = await getUserData.getUserDetails(username);
-    console.log(userdata);
-    return res.render('chats/chat.ejs', {title: 'Chats', userdata: userdata});
+    // console.log(username);
+    var userData = await getUserData.getUserDetails(username);
+    // console.log(userdata);
+    // console.log(userdata);
+    return res.render('chats/chat.ejs', {title: 'Chats', user: userData});
 });
 
 // app.get('/generateRoomName', ( req, res) => {

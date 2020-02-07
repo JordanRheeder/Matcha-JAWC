@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="shortcut icon" type="image/jpg" href="../../outputDir/favicon.ico"/>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <style>
     </style>
   </head>
@@ -17,26 +17,49 @@
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
                 <div style='position:absolute;left:32px;top:32px'>
-                    <figure class="image is-128x128 is-rounded" style="left:42px">
-                        <% if(files){ %>
-                            <% files.forEach(function(files) { %>
-                              <div class="card card-body mb-3">
-                                <% if(files.isImage) { %>
-                                  <img src="image/<%= files.filename %>" alt="">
-                                  <% } else { %>
-                                    <a href ="<%= files.filename %>" target ="_blank"><%= files.filename %></a>
-                                      <% } %>
+                        </div>
+                          <p>
+                            <form method="POST" enctype="multipart/form-data" id="submitImage"><br/>   
+                              <h3> Edit Profile Image </h3><br/>             
+                              <div class="file">
+                                <input class="file" accept="image/*" type="file" name="file" id="file" style='align-self: center'>
                               </div>
-                              <% }) %>
-                                <% } else { %>
-                                  <p><a href='/UploadPP'>Upload a Profile Picture</a></p>
-                                  <% } %>
-                        <img class="is-rounded" src='' href='/editPP'></img>
-                    </figure><br/>
+                              <input class = 'button is-danger is-light' type="submit" id="submit"
+                                name="submit" value="Submit" /><br>
+                            </form><br/>
+                          </p>
+                          <script>
+                            document.getElementById("submit").onclick = function (event) {
+                                event.preventDefault();
+                                
+                                var file = document.getElementById("file").files[0];
+
+                                var reader = new FileReader;
+                                reader.readAsDataURL(file);
+                                // image = reader.result;
+                                reader.onload = function () {
+                                    console.log(reader.result);
+                                    axios({
+                                        method: 'post',
+                                        url: '/uploadProfilePicture',
+                                        data: {
+                                            image: reader.result,
+                                        }
+                                    });
+                                    alert("Uploaded new profile picture.");
+                                };
+                                reader.onerror = function (error) {
+                                    console.log('Error: ', error);
+                                    alert("Failed to upload new profile picture.");
+                                };
+                            }
+                        </script><br/>
+                </div>
+                <div>
                     <a class="button" href='/editprofile'>Profile</a>  
                     <a class="button" href='/editsettings'>Settings</a>  
                 </div>
-                <div class="inner" style=''>
+                <div class="inner">
                     <div class="container" style="text-align:center">  
                             <div class='form'> 
                             <form action="/EditAccount" method="POST"><br/>   

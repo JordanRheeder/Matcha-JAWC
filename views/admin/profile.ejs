@@ -8,13 +8,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="shortcut icon" type="image/jpg" href="../../outputDir/favicon.ico"/>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
             <header id="header" class="alt">
-                <h2>Hello, <a href='/test'><%= user.username %></a></h2>
-                <div style='position:absolute;left:32px;top:32px'>
+                    <h2>Hello, <a href='/test'><%= user.username %></a></h2>
+                    <div style='position:absolute;left:32px;top:32px'>
+                    <% if (user.profilePicture) { %>
+                        <img src="<%= user.profilePicture %>" alt="Profile Picture" style="height: 10vw;width: 10vw;">
+                    <% } else { %>
                     <form method="POST" enctype="multipart/form-data" id="submitImage"><br/>   
                         <h3> Edit Profile Image </h3><br/>             
                         <div class="file">
@@ -24,9 +28,11 @@
                         <input class = 'button is-danger is-light' type="submit" id="submit"
                             name="submit" value="Submit" /><br>
                     </form><br/>
-                    
-                    <a class="button" href='/editprofile'>Profile</a>  
-                    <a class="button" href='/editsettings'>Settings</a>  
+                    <% } %>
+                    <div>
+                        <a class="button" href='/editprofile'>Profile</a>  
+                        <a class="button" href='/editsettings'>Settings</a>  
+                    </div>
                 </div>
 
                 <!-- if button is pressed initialise code. look at ejs syntax -->
@@ -44,19 +50,19 @@
                         // image = reader.result;
                         reader.onload = function () {
                             console.log(reader.result);
+                            axios({
+                                method: 'post',
+                                url: '/uploadProfilePicture',
+                                data: {
+                                    image: reader.result,
+                                }
+                            });
+                            alert("Uploaded new profile picture.");
                         };
                         reader.onerror = function (error) {
                             console.log('Error: ', error);
+                            alert("Failed to upload new profile picture.");
                         };
-
-                        $.ajax({
-                            url:'/uploadProfilePicture',
-                            type: '/post/',
-                            dataType: 'json',
-                            success: (reader.result) => {
-                                console.log(image);
-                            }
-                        });
                     }
                 </script>
             </header>
