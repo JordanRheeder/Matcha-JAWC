@@ -38,10 +38,7 @@ app.use(session({
     resave: true,
     saveUninitialized: false
 }));
-<<<<<<< HEAD
 
-=======
->>>>>>> fed0e352234a7fd4c34f6658cdde4677b540926b
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json({
@@ -155,10 +152,7 @@ app.get('/profile', async (req, res, next) => {
     else
         res.redirect('/profile/' + req.session.user.username);
 });
-<<<<<<< HEAD
 
-=======
->>>>>>> fed0e352234a7fd4c34f6658cdde4677b540926b
 app.post('/uploadProfilePicture', async (req, res) => {
     if (!req.session.user)
         res.redirect('/login');
@@ -174,19 +168,10 @@ app.get('/chats/:keys', async (req,res) => {
     else
         username = req.params.keys;
     const getUserData = require('./controllers/profile');
-<<<<<<< HEAD
-    // console.log(req.params.keys);
-    // console.log(username);
-    var userData = await getUserData.getUserDetails(username);
-    // console.log(userdata);
-    // console.log(userdata);
-    return res.render('chats/chat.ejs', {title: 'Chats', user: userData});
-=======
     console.log(username);
     var userdata = await getUserData.getUserDetails(username);
     // console.log(userdata);
     return res.render('chats/chat.ejs', {title: 'Chats', userdata: userdata});
->>>>>>> fed0e352234a7fd4c34f6658cdde4677b540926b
 });
 app.get('/chats', ( req, res ) => {
     if (!req.session.user)
