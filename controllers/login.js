@@ -1,8 +1,8 @@
 const user = require("../models/user.js");
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const getIP = require('external-ip')();
 // var geoip = require('geoip-lite');
+const getIP = require('external-ip')();
 var ip2location = require('ip-to-location');
 var uri = process.env.URI;
 
