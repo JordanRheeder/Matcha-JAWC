@@ -40,11 +40,10 @@
     </style>
       <!-- Nav starts -->
         <%- include('../includes/nav.ejs') %>
-        <header id="header" class="alt">
+       <header id="header" class="alt">
           <div class="inner">
           <section>
             <div class="profileBox">
-                  <h2>Hello, <%= user.username %></h2>
                     <form method="POST" enctype="multipart/form-data" id="submitImage"><br/>   
                         <h3> Edit Profile Image </h3><br/>             
                         <div class="file">
@@ -83,7 +82,6 @@
                         <h5>Location</h5>
                       </box>
                     </div>
-
                 </div>
                 <script>
                     document.getElementById("submit").onclick = function (event) {
