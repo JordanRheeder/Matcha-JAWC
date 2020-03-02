@@ -19,7 +19,7 @@ module.exports = {
         
             // Handle chat event
             io.on('chat', function(data){
-                console.log(data.message);
+                console.log("test1"+data.message);
                 io.socket.emit('chat', data);
                 console.log('received');
                 io.sockets.emit('chat', data);
@@ -31,7 +31,7 @@ module.exports = {
         });
         
         io.on('chat', function(data){
-            console.log(data.message);
+            console.log("test2"+data.message);
             io.sockets.emit('chat', data);
         });
     }
